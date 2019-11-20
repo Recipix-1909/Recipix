@@ -9,6 +9,13 @@ Recipix is an app that recommends recipes based on items that are in your fridge
 
 The front end will be done with React Native and Expo for development purposes. We are also going to be using Redux to handle our actions and reducer,  and for the backend we plan on using Firebase.
 
+Technologies
+•	Expo BarCodeScanner – used to scan barcodes
+•	Firebase – database
+•	React Native – used to develop mobile applications
+•	Redux – state management
+•	Edamam – product & recipe lookup
+
 Future Features:
 •	Recommendation Engine
 •	Auto complete for recipes
