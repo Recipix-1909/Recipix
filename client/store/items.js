@@ -1,5 +1,7 @@
 import axios from "axios";
 import { edamamFoodAPIID, edamamFoodAPIKEY } from "../../secrets";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
 //action type
 
@@ -38,5 +40,9 @@ const itemsReducer = (items = {}, action) => {
     case SAVE_ITEM: {
       return { ...items, item: action.item };
     }
+    default:
+      return items;
   }
 };
+
+export const store = createStore(itemsReducer, applyMiddleware(thunk));
