@@ -1,5 +1,7 @@
 import axios from "axios";
 import { edamamFoodAPIID, edamamFoodAPIKEY } from "../../secrets";
+import { createStore, applyMiddleware } from "redux";
+import thunk from "redux-thunk";
 
 //action type
 
@@ -23,25 +25,16 @@ const saveItem = item => {
 };
 
 //thunk
-export const saveItemThunk = (userId, item) => {
+export const saveItemThunk = (userId, serialNum, expirationDate) => {
   return async dispatch => {
-    const { data } = await axios.get("/api/item/");
-    dispatch(getItem(data));
-    if (data.serialNum) {
-      await axios.post(`/api/fridge/${userId}/add`, item);
-    } else {
-      // API call to Edamam
-      const { data } = await axios.get(
-        `https://api.edamam.com/api/food-database/parser?upc=${data.serialNum}&app_id=${edamamFoodAPIID}&app_key=${edamamFoodAPIKEY}`
-      );
-      const edamamItem = {
-        name: data.hints.food.label,
-        serialNum: data.text.slice(4),
-        imageUrl: data.hints.food.image
-      };
-      await axios.post(`/api/fridge/${userId}/add`, edamamItem);
-      await axios.post("/api/item/", edamamItem);
-    }
+    const { data } = await axios.post(
+      `http://172.16.21.87:8080/api/fridge/${userId}`,
+      {
+        serialNum,
+        expirationDate
+      }
+    );
+    console.log("this is data!!!!!!!!!", data);
     dispatch(saveItem(data));
   };
 };
@@ -51,5 +44,9 @@ const itemsReducer = (items = {}, action) => {
     case SAVE_ITEM: {
       return { ...items, item: action.item };
     }
+    default:
+      return items;
   }
 };
+
+export const store = createStore(itemsReducer, applyMiddleware(thunk));

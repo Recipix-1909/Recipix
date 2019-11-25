@@ -1,4 +1,5 @@
 import React from "react";
+import { Provider } from "react-redux";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import { RectButton } from "react-native-gesture-handler";
 import { createAppContainer, NavigationEvents } from "react-navigation";
@@ -8,10 +9,15 @@ import CameraScanner from "./CameraScanner";
 import Fridge from "./Fridge";
 import Recipes from "./Recipes";
 import UserProfile from "./UserProfile";
+import { store } from "../store/items";
 
 export default class App extends React.Component {
   render() {
-    return <AppContainer />;
+    return (
+      <Provider store={store}>
+        <AppContainer />
+      </Provider>
+    );
   }
 }
 
