@@ -2,8 +2,10 @@ import React from "react";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { saveItemThunk } from "../store/items";
+import { connect } from "react-redux";
 
-export default class CameraScanner extends React.Component {
+class CameraScanner extends React.Component {
   state = {
     hasCameraPermission: null,
     scanned: false
@@ -11,6 +13,7 @@ export default class CameraScanner extends React.Component {
 
   async componentDidMount() {
     this.getPermissionsAsync();
+    this.saveItem();
   }
 
   getPermissionsAsync = async () => {
@@ -52,6 +55,22 @@ export default class CameraScanner extends React.Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
+    this.saveItem(data); // how do we grab userID?
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 }
+
+const mapStateToProps = state => {
+  return {
+    item: state.item,
+    fridge_stock: state.fridge_stock
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    saveItem: (userId, item) => dispatch(saveItemThunk(userId, item))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CameraScanner);
