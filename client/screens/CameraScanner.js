@@ -6,6 +6,14 @@ import { saveItemThunk } from "../store/items";
 import { connect } from "react-redux";
 
 class CameraScanner extends React.Component {
+  // constructor() {
+  //   super()
+  //   this.state = {
+  //     hasCameraPermission: null,
+  //     scanned: false
+  //   };
+  //   this.saveItem = this.saveItem.bind(this)
+  // }
   state = {
     hasCameraPermission: null,
     scanned: false
@@ -55,7 +63,7 @@ class CameraScanner extends React.Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
-    this.saveItem(1, data, "01.01.2020"); // how do we grab userID?
+    this.props.saveItem(1, data, "01.01.2020"); // how do we grab userID?
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 }

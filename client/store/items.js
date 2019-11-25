@@ -27,10 +27,14 @@ const saveItem = item => {
 //thunk
 export const saveItemThunk = (userId, serialNum, expirationDate) => {
   return async dispatch => {
-    const { data } = await axios.post(`/api/fridge/${userId}`, {
-      serialNum,
-      expirationDate
-    });
+    const { data } = await axios.post(
+      `http://172.16.21.87:8080/api/fridge/${userId}`,
+      {
+        serialNum,
+        expirationDate
+      }
+    );
+    console.log("this is data!!!!!!!!!", data);
     dispatch(saveItem(data));
   };
 };

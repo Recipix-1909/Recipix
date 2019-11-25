@@ -9,7 +9,7 @@ import CameraScanner from "./CameraScanner";
 import Fridge from "./Fridge";
 import Recipes from "./Recipes";
 import UserProfile from "./UserProfile";
-import store from "../store/items";
+import { store } from "../store/items";
 
 export default class App extends React.Component {
   render() {
