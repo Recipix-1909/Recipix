@@ -13,7 +13,7 @@ class CameraScanner extends React.Component {
 
   async componentDidMount() {
     this.getPermissionsAsync();
-    this.saveItem();
+    // this.saveItem();
   }
 
   getPermissionsAsync = async () => {
@@ -55,7 +55,7 @@ class CameraScanner extends React.Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
-    this.saveItem(data); // how do we grab userID?
+    this.saveItem(1, data, "01.01.2020"); // how do we grab userID?
     alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 }
@@ -69,7 +69,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveItem: (userId, item) => dispatch(saveItemThunk(userId, item))
+    saveItem: (userId, serialNum, expirationDate) =>
+      dispatch(saveItemThunk(userId, serialNum, expirationDate))
   };
 };
 
