@@ -21,8 +21,8 @@ class Recipes extends React.Component {
   }
 
   render(){
-    // console.log(this.props)
-        return (
+    return(
+    this.props.state[0]!==undefined?
           <View style={styles.container}>
             <ScrollView
               style={styles.container}
@@ -30,6 +30,9 @@ class Recipes extends React.Component {
             >
               <View style={styles.getStartedContainer}>
                 <Text style={styles.getStartedText}>
+                  {this.props.state.map(curr=>{
+                    return curr.recipe.label
+                  })}
                   Let's see what you can cook with the items from your fridge!
                 </Text>
               </View>
@@ -49,7 +52,8 @@ class Recipes extends React.Component {
               </View>
             </View>
           </View>
-        );
+        :null
+        )
    }
 }
 
@@ -59,7 +63,7 @@ Recipes.navigationOptions = {
 
 const mapStateToProps = state => {
   return{
-    state:state
+    state:state.recipes
   }
 }
 
