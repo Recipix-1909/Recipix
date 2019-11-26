@@ -15,7 +15,13 @@ import {getRecipesThunk} from '../store/recipes'
 
 class Recipes extends React.Component {
 
+  componentDidMount(){
+
+    this.props.getRecipes(1)
+  }
+
   render(){
+    console.log(this.props.state)
         return (
           <View style={styles.container}>
             <ScrollView
@@ -50,6 +56,32 @@ class Recipes extends React.Component {
 Recipes.navigationOptions = {
   header: null
 };
+
+const mapStateToProps = state => {
+  return{
+    state:state
+  }
+}
+
+const mapDispatchToProps = dispatch =>{
+  return{
+    getRecipes: (id) => dispatch(getRecipesThunk(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Recipes)
+
+
+
+
+
+
+
+
+
+
+
+
 
 // function DevelopmentModeNotice() {
 //   if (__DEV__) {
