@@ -9,43 +9,79 @@ import {
   // TouchableOpacity,
   View
 } from "react-native";
+import { connect } from 'react-redux'
+import {getRecipesThunk} from '../store/recipes'
 
-// import { MonoText } from "../components/StyledText";
 
-export default function Recipes() {
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>
-            Let's see what you can cook with the items from your fridge!
-          </Text>
-        </View>
-      </ScrollView>
+class Recipes extends React.Component {
 
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
+  componentDidMount(){
 
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}
-        >
-          {/* <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText> */}
-        </View>
-      </View>
-    </View>
-  );
+    this.props.getRecipes(1)
+  }
+
+  render(){
+    // console.log(this.props)
+        return (
+          <View style={styles.container}>
+            <ScrollView
+              style={styles.container}
+              contentContainerStyle={styles.contentContainer}
+            >
+              <View style={styles.getStartedContainer}>
+                <Text style={styles.getStartedText}>
+                  Let's see what you can cook with the items from your fridge!
+                </Text>
+              </View>
+            </ScrollView>
+
+            <View style={styles.tabBarInfoContainer}>
+              <Text style={styles.tabBarInfoText}>
+                This is a tab bar. You can edit it in:
+              </Text>
+
+              <View
+                style={[styles.codeHighlightContainer, styles.navigationFilename]}
+              >
+                {/* <MonoText style={styles.codeHighlightText}>
+                  navigation/MainTabNavigator.js
+                </MonoText> */}
+              </View>
+            </View>
+          </View>
+        );
+   }
 }
 
 Recipes.navigationOptions = {
   header: null
 };
+
+const mapStateToProps = state => {
+  return{
+    state:state
+  }
+}
+
+const mapDispatchToProps = dispatch =>{
+  return{
+    getRecipes: (id) => dispatch(getRecipesThunk(id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Recipes)
+
+
+
+
+
+
+
+
+
+
+
+
 
 // function DevelopmentModeNotice() {
 //   if (__DEV__) {
