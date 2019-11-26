@@ -26,11 +26,6 @@ class Fridge extends React.Component {
   }
 
   render() {
-<<<<<<< HEAD
-
-=======
-    console.log("THIS IS THE FRIDGE", this.props.items);
->>>>>>> master
     return (
       <View style={styles.container}>
         <ScrollView
