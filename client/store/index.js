@@ -1,12 +1,15 @@
-// import items from './items'
-// import recipes from './recipes'
-// import {createStore, combineReducers, applyMiddleware} from 'redux'
-// import {createLogger} from 'redux-logger'
-// import {composeWithDevTools} from 'redux-devtools-extension'
-// import thunk from 'redux-thunk'
+import { combineReducers } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunkMiddleware from "redux-thunk";
 
-// const reducer = combineReducers({items, recipes})
-// const middleWare =composeWithDevTools(applyMiddleware(thunk, createLogger({collapsed: true})))
-// const store = createStore(reducer, middleWare)
+import itemsReducer from "./items";
+import fridgeReducer from "./fridge";
+import recipesReducer from './recipes'
 
-// export default store
+const rootReducer = combineReducers({
+  lastItem: itemsReducer,
+  items: fridgeReducer,
+  recipes: recipesReducer
+});
+
+export default createStore(rootReducer, applyMiddleware(thunkMiddleware));

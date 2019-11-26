@@ -33,7 +33,7 @@ export const getRecipesThunk = (userId) => {
 
 //reducer
 
-export const recipes = (recipes = {}, action) =>{
+const recipesReducer = (recipes = {}, action) =>{
     switch(action.type){
         case GET_RECIPES: {
             return action.recipe
@@ -43,4 +43,4 @@ export const recipes = (recipes = {}, action) =>{
     }
 }
 
-export const store = createStore(recipes, applyMiddleware(ReduxThunk));
+export default recipesReducer

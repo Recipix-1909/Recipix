@@ -2,7 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import { saveItemThunk } from "../store/items";
+import { addItemThunk } from "../store/items";
+import { getFridgeItemsThunk } from "../store/fridge";
 import { connect } from "react-redux";
 
 class CameraScanner extends React.Component {
@@ -63,8 +64,10 @@ class CameraScanner extends React.Component {
 
   handleBarCodeScanned = ({ type, data }) => {
     this.setState({ scanned: true });
-    this.props.saveItem(1, data, "01.01.2020"); // how do we grab userID?
-    alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    this.props.addItem(1, data, "01.01.2020"); // how do we grab userID?
+    this.props.getFridgeItems(1);
+    alert("Added item to fridge!");
+    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };
 }
 
@@ -77,8 +80,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    saveItem: (userId, serialNum, expirationDate) =>
-      dispatch(saveItemThunk(userId, serialNum, expirationDate))
+    addItem: (userId, serialNum, expirationDate) =>
+      dispatch(addItemThunk(userId, serialNum, expirationDate)),
+    getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId))
   };
 };
 
