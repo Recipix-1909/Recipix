@@ -23,7 +23,9 @@ export const getRecipesThunk = (userId) => {
 
     return async dispatch => {
         console.log('WE ARE IN THE THUNK')
-        const {data} = await axios.get(`/api/recipes/${userId}`)
+        const{ data} = await axios.get(`http://172.16.23.46:8080/api/recipes/${userId}`)
+        console.log('data at 0', data[0])
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@',data)
         dispatch(getRecipes(data))
 
     }
