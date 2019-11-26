@@ -42,7 +42,7 @@ class Fridge extends React.Component {
             {this.props.items.map(item => {
               return (
                 <View>
-                  <Text>{item.name}</Text>
+                  <Text key={item.id}>{item.name}</Text>
                   {/* <View>
                     <Image
                       source={{ uri: item.imageUrl }}
