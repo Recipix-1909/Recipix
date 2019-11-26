@@ -41,31 +41,22 @@ class Fridge extends React.Component {
           <View>
             {this.props.items.map(item => {
               return (
-                <View>
-                  <Text key={item.id}>{item.name}</Text>
-                  {/* <View>
-                    <Image
-                      source={{ uri: item.imageUrl }}
-                      style={{ width: 400, height: 400 }}
-                      key={item.id}
-                    />
-                    ;
-                  </View> */}
+                <View key={item.id}>
+                  <Image
+                    source={{ uri: `${item.imageUrl}` }}
+                    style={{ width: 50, height: 50 }}
+                    key={item.id}
+                  ></Image>
+                  <Text>{item.name}</Text>
                 </View>
               );
             })}
           </View>
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          ></View>
-        </View>
+        <View
+          style={[styles.codeHighlightContainer, styles.navigationFilename]}
+        ></View>
       </View>
     );
   }
