@@ -6,6 +6,7 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Image,
   // TouchableOpacity,
   View
 } from "react-native";
@@ -35,6 +36,24 @@ class Fridge extends React.Component {
         >
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>This is your Fridge!</Text>
+          </View>
+
+          <View>
+            {this.props.items.map(item => {
+              return (
+                <View>
+                  <Text>{item.name}</Text>
+                  {/* <View>
+                    <Image
+                      source={{ uri: item.imageUrl }}
+                      style={{ width: 400, height: 400 }}
+                      key={item.id}
+                    />
+                    ;
+                  </View> */}
+                </View>
+              );
+            })}
           </View>
         </ScrollView>
 
