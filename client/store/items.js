@@ -1,7 +1,6 @@
 import axios from "axios";
-import { edamamFoodAPIID, edamamFoodAPIKEY } from "../../secrets";
-import { createStore, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
+// import { createStore, applyMiddleware } from "redux";
+// import thunk from "redux-thunk";
 
 //action type
 
@@ -28,7 +27,7 @@ const saveItem = item => {
 export const saveItemThunk = (userId, serialNum, expirationDate) => {
   return async dispatch => {
     const { data } = await axios.post(
-      `http://192.168.1.152:8080/api/fridge/${userId}`,
+      `http://172.16.21.87:8080/api/fridge/${userId}`,
       {
         serialNum,
         expirationDate
@@ -39,7 +38,7 @@ export const saveItemThunk = (userId, serialNum, expirationDate) => {
   };
 };
 
-const itemsReducer = (items = {}, action) => {
+export const itemsReducer = (items = {}, action) => {
   switch (action.type) {
     case SAVE_ITEM: {
       return { ...items, item: action.item };
@@ -49,4 +48,4 @@ const itemsReducer = (items = {}, action) => {
   }
 };
 
-export const store = createStore(itemsReducer, applyMiddleware(thunk));
+// export const store = createStore(itemsReducer, applyMiddleware(thunk));
