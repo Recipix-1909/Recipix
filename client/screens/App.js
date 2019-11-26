@@ -10,6 +10,7 @@ import Fridge from "./Fridge";
 import Recipes from "./Recipes";
 import UserProfile from "./UserProfile";
 import { store } from "../store/items";
+import AppNavigator from "../navigation/AppNavigator";
 
 export default class App extends React.Component {
   render() {
@@ -30,19 +31,20 @@ export class HomeScreen extends React.Component {
         <ScrollView>
           <Text>Testing!</Text>
           <Button title="camera" onPress={() => navigate("Camera")} />
+          <AppNavigator />
         </ScrollView>
       </View>
     );
   }
 }
 
-const AppNavigator = createStackNavigator({
-  Home: HomeScreen,
-  Camera: CameraScanner
-  // Fridge: Fridge,
-  // Recipes: Recipes,
-  // Profile: UserProfile
-});
+// const AppNavigator = createStackNavigator({
+//   Home: HomeScreen,
+//   Camera: CameraScanner,
+//   Fridge: Fridge,
+//   Recipes: Recipes,
+//   Profile: UserProfile
+// });
 const AppContainer = createAppContainer(AppNavigator);
 
 const styles = StyleSheet.create({
