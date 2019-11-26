@@ -1,5 +1,5 @@
 import axios from "axios";
-import { edamamFoodAPIID, edamamFoodAPIKEY } from "../../secrets";
+
 
 //action type
 
@@ -26,7 +26,7 @@ const addItem = item => {
 export const addItemThunk = (userId, serialNum, expirationDate) => {
   return async dispatch => {
     const { data } = await axios.post(
-      `http://172.16.21.87:8080/api/fridge/${userId}`,
+      `http://172.16.23.46:8080/api/fridge/${userId}`,
       {
         serialNum,
         expirationDate

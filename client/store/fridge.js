@@ -19,7 +19,7 @@ export const getFridgeItemsThunk = userId => {
   console.log("INSIDE THE GET FRIDGE THUNK");
   return async dispatch => {
     const { data } = await axios.get(
-      `http://172.16.21.87:8080/api/fridge/${userId}`
+      `http://172.16.23.46:8080/api/fridge/${userId}`
     );
     dispatch(getFridgeItems(data.items));
   };
