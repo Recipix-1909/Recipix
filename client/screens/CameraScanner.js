@@ -62,10 +62,10 @@ class CameraScanner extends React.Component {
     );
   }
 
-  handleBarCodeScanned = ({ type, data }) => {
+  handleBarCodeScanned = async ({ type, data }) => {
     this.setState({ scanned: true });
-    this.props.addItem(1, data, "01.01.2020"); // how do we grab userID?
-    this.props.getFridgeItems(1);
+    await this.props.addItem(1, data, "01.01.2020"); // how do we grab userID?
+    await this.props.getFridgeItems(1);
     alert("Added item to fridge!");
     // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
   };

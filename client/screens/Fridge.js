@@ -7,10 +7,11 @@ import {
   StyleSheet,
   Text,
   Image,
+  Button,
   // TouchableOpacity,
   View
 } from "react-native";
-import { getFridgeItemsThunk } from "../store/fridge";
+import { getFridgeItemsThunk, deleteItemThunk } from "../store/fridge";
 import { connect } from "react-redux";
 
 // import { MonoText } from "../components/StyledText";
@@ -25,7 +26,11 @@ class Fridge extends React.Component {
   }
 
   render() {
+<<<<<<< HEAD
 
+=======
+    console.log("THIS IS THE FRIDGE", this.props.items);
+>>>>>>> master
     return (
       <View style={styles.container}>
         <ScrollView
@@ -46,6 +51,10 @@ class Fridge extends React.Component {
                     key={item.id}
                   ></Image>
                   <Text>{item.name}</Text>
+                  <Button
+                    title={"X"}
+                    onPress={() => this.props.deleteItem(1, item.id)}
+                  />
                 </View>
               );
             })}
@@ -72,7 +81,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId))
+    getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId)),
+    deleteItem: (userId, itemId) => dispatch(deleteItemThunk(userId, itemId))
   };
 };
 
