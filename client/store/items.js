@@ -32,7 +32,6 @@ export const addItemThunk = (userId, serialNum, expirationDate) => {
         expirationDate
       }
     );
-    console.log("this is data!!!!!!!!!", data);
     dispatch(addItem(data));
   };
 };

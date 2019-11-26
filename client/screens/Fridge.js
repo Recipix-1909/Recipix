@@ -21,13 +21,11 @@ class Fridge extends React.Component {
   }
 
   componentDidMount() {
-    console.log("this is this.props in the COMPONENT DID MOUNT", this.props);
     this.props.getFridgeItems(1);
   }
 
   render() {
-    console.log("THIS IS this.props.items!!!!!!", this.props.items);
-
+    console.log("THIS IS THE FRIDGE", this.props.items);
     return (
       <View style={styles.container}>
         <ScrollView
