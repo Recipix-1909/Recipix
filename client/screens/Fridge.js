@@ -9,37 +9,66 @@ import {
   // TouchableOpacity,
   View
 } from "react-native";
+import { getFridgeItemsThunk } from "../store/fridge";
+import { connect } from "react-redux";
 
 // import { MonoText } from "../components/StyledText";
 
-export default function Fridge() {
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>This is your Fridge!</Text>
+class Fridge extends React.Component {
+  constructor() {
+    super();
+  }
+
+  componentDidMount() {
+    console.log("this is this.props in the COMPONENT DID MOUNT", this.props);
+    this.props.getFridgeItems(1);
+  }
+
+  render() {
+    console.log("THIS IS this.props.items!!!!!!", this.props.items);
+
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        >
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>This is your Fridge!</Text>
+          </View>
+        </ScrollView>
+
+        <View style={styles.tabBarInfoContainer}>
+          <Text style={styles.tabBarInfoText}>
+            This is a tab bar. You can edit it in:
+          </Text>
+
+          <View
+            style={[styles.codeHighlightContainer, styles.navigationFilename]}
+          ></View>
         </View>
-      </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}
-        ></View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 Fridge.navigationOptions = {
   header: null
 };
+
+const mapStateToProps = state => {
+  return {
+    items: state.items
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Fridge);
 
 const styles = StyleSheet.create({
   container: {
