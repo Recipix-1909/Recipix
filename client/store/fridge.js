@@ -36,7 +36,7 @@ export const getFridgeItemsThunk = userId => {
 export const deleteItemThunk = (userId, itemId) => {
   return async dispatch => {
     const { data } = await axios.delete(
-      `http://172.16.21.172:8080/api/fridge/${userId}/${itemId}`
+      `http://172.16.21.152:8080/api/fridge/${userId}/${itemId}`
     );
     console.log("this is data from axios delete", data);
     dispatch(deleteItem(data));

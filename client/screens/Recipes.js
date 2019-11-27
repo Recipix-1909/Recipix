@@ -6,35 +6,54 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Image,
   // TouchableOpacity,
   View
 } from "react-native";
 import { connect } from 'react-redux'
 import {getRecipesThunk} from '../store/recipes'
+import Sidebar from 'react-native-sidebar';
 
 
 class Recipes extends React.Component {
+  constructor(){
+    super()
+    this.state={
+
+    }
+  }
 
   componentDidMount(){
-
     this.props.getRecipes(1)
   }
 
   render(){
     return(
     this.props.state[0]!==undefined?
+
           <View style={styles.container}>
+            {/* <Sidebar
+                leftSidebar={ this.renderLeftSidebar() }
+                rightSidebar={ this.renderRightSidebar() }
+                style={{ flex: 1, backgroundColor: 'black' }}>
+            { this.renderContent() }
+          </Sidebar> */}
             <ScrollView
               style={styles.container}
               contentContainerStyle={styles.contentContainer}
             >
               <View style={styles.getStartedContainer}>
-                <Text style={styles.getStartedText}>
-                  {this.props.state.map(curr=>{
-                    return curr.recipe.label
-                  })}
-                  Let's see what you can cook with the items from your fridge!
-                </Text>
+
+                {this.props.state.map(curr=>{
+                  return (
+                  <View>
+                  <Text>
+                  {curr.title}
+                  </Text>
+                  <Image source={{uri: `${curr.image}`}}></Image>
+                  </View>
+                  )
+                })}
               </View>
             </ScrollView>
 
