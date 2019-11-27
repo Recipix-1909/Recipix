@@ -12,6 +12,7 @@ import {
   View
 } from "react-native";
 import { getFridgeItemsThunk, deleteItemThunk } from "../store/fridge";
+import {addItemThunk} from "../store/items"
 import { connect } from "react-redux";
 
 // import { MonoText } from "../components/StyledText";
@@ -20,6 +21,8 @@ class Fridge extends React.Component {
   constructor() {
     super();
   }
+
+
 
   componentDidMount() {
     this.props.getFridgeItems(1);
@@ -53,6 +56,10 @@ class Fridge extends React.Component {
                 </View>
               );
             })}
+            <Button
+            title={"add manually"}
+            onPress={}
+            />
           </View>
         </ScrollView>
 
