@@ -16,7 +16,6 @@ import {getRecipesThunk} from '../store/recipes'
 class Recipes extends React.Component {
 
   componentDidMount(){
-
     this.props.getRecipes(1)
   }
 
@@ -30,9 +29,9 @@ class Recipes extends React.Component {
             >
               <View style={styles.getStartedContainer}>
                 <Text style={styles.getStartedText}>
-                  {this.props.state.map(curr=>{
-                    return curr.recipe.label
-                  })}
+                {this.props.state.recipes.map(curr=>{
+                  return curr.title
+                })}
                   Let's see what you can cook with the items from your fridge!
                 </Text>
               </View>
