@@ -1,4 +1,5 @@
 import axios from "axios";
+import { ip } from "../../secrets";
 
 // action type
 const GET_FRIDGE_ITEMS = "GET_FRIDGE_ITEMS";
@@ -26,9 +27,7 @@ const addItemMan = item => {};
 export const getFridgeItemsThunk = userId => {
   console.log("INSIDE THE GET FRIDGE THUNK");
   return async dispatch => {
-    const { data } = await axios.get(
-      `http://172.16.21.152:8080/api/fridge/${userId}`
-    );
+    const { data } = await axios.get(`http://${ip}:8080/api/fridge/${userId}`);
     dispatch(getFridgeItems(data.items));
   };
 };
@@ -36,7 +35,7 @@ export const getFridgeItemsThunk = userId => {
 export const deleteItemThunk = (userId, itemId) => {
   return async dispatch => {
     const { data } = await axios.delete(
-      `http://172.16.21.152:8080/api/fridge/${userId}/${itemId}`
+      `http://${ip}:8080/api/fridge/${userId}/${itemId}`
     );
     console.log("this is data from axios delete", data);
     dispatch(deleteItem(data));
