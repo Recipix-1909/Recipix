@@ -94,7 +94,7 @@ class CameraScanner extends React.Component {
             <Button
               title={"Back to Fridge"}
               // need to navigate to the fridge here
-              // onPress={() => this.setState({ scanned: false })}
+              onPress={() => this.handleBackToFridge()}
             />
           </Modal>
         )}
@@ -106,7 +106,15 @@ class CameraScanner extends React.Component {
     );
   }
 
+  handleBackToFridge = async () => {
+    this.setState({ isModal: false });
+    this.props.navigation.navigate("Fridge");
+    await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
+    await this.props.getFridgeItems(1);
+  };
+
   handleExpirationDate = async () => {
+    console.log("this is this.props", this.props);
     await this.setState({ isModal: false });
     await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
     await this.props.getFridgeItems(1);
