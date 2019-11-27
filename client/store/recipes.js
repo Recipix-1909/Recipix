@@ -9,24 +9,23 @@ const GET_RECIPES = "GET_RECIPES";
 //action creator
 
 const getRecipes = recipe => {
-    return{
-        type: GET_RECIPES,
-        recipe
-
-    }
-}
+  return {
+    type: GET_RECIPES,
+    recipe
+  };
+};
 
 //thunk
 
-export const getRecipesThunk = (userId) => {
-
-    return async dispatch => {
-        console.log('WE ARE IN THE THUNK')
-        const{data} = await axios.get(`http:172.16.21.152:8080/api/recipes/${userId}`)
-        dispatch(getRecipes(data))
-
-    }
-}
+export const getRecipesThunk = userId => {
+  return async dispatch => {
+    console.log("WE ARE IN THE THUNK");
+    const { data } = await axios.get(
+      `http://172.16.12.140:8080/api/recipes/${userId}`
+    );
+    dispatch(getRecipes(data));
+  };
+};
 
 //reducer
 
@@ -40,4 +39,4 @@ const recipesReducer = (recipes = {}, action) => {
   }
 };
 
-export default recipesReducer
+export default recipesReducer;
