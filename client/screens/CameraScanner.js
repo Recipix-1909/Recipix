@@ -5,7 +5,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { addItemThunk } from "../store/items";
 import { getFridgeItemsThunk } from "../store/fridge";
 import { connect } from "react-redux";
-import DatePickerIOS from "react-native-datepicker";
+import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
 
 class CameraScanner extends React.Component {
@@ -20,7 +20,10 @@ class CameraScanner extends React.Component {
   state = {
     hasCameraPermission: null,
     scanned: false,
-    date: "11-27-2019"
+    date: "11-27-2019",
+    isModal: false,
+    type: "",
+    data: ""
   };
 
   async componentDidMount() {
@@ -56,58 +59,61 @@ class CameraScanner extends React.Component {
         />
 
         {scanned && (
-          <Button
-            title={"Tap to Scan Again"}
-            onPress={() => this.setState({ scanned: false })}
-          />
+          <Modal isVisible={this.state.isModal}>
+            <Text>Set expiration date (optional)</Text>
+            <DatePicker
+              style={{ width: 200 }}
+              date={this.state.date} //initial date from state
+              mode="date" //The enum of date, datetime and time
+              placeholder="select date"
+              format="MM-DD-YYYY"
+              minDate="01-01-2019"
+              maxDate="01-01-2025"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: "absolute",
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+              }}
+              onDateChange={date => {
+                this.setState({ date: date });
+              }}
+              onCloseModal={() => this.handleExpirationDate(this.state.date)}
+            ></DatePicker>
+            <Button
+              title={"Tap to Scan Again"}
+              onPress={() => this.setState({ scanned: false })}
+            />
+            <Button
+              title={"Back to Fridge"}
+              // need to navigate to the fridge here
+              // onPress={() => this.setState({ scanned: false })}
+            />
+          </Modal>
         )}
+        <Button
+          title={"Tap to Scan Again"}
+          onPress={() => this.setState({ scanned: false })}
+        />
       </View>
     );
   }
 
-  expirationDatePopup = () => {
-    alert("In the expiration date popup");
-
-    return (
-      <Modal>
-        <View style={styles.container}>
-          <DatePickerIOS
-            style={{ width: 200 }}
-            date={this.state.date} //initial date from state
-            mode="date" //The enum of date, datetime and time
-            placeholder="select date"
-            format="MM-DD-YYYY"
-            minDate="01-01-2019"
-            maxDate="01-01-2025"
-            confirmBtnText="Confirm"
-            cancelBtnText="Cancel"
-            customStyles={{
-              dateIcon: {
-                position: "absolute",
-                left: 0,
-                top: 4,
-                marginLeft: 0
-              },
-              dateInput: {
-                marginLeft: 36
-              }
-            }}
-            onDateChange={date => {
-              this.setState({ date: date });
-            }}
-          />
-        </View>
-      </Modal>
-    );
+  handleExpirationDate = async () => {
+    await this.setState({ isModal: false });
+    await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
+    await this.props.getFridgeItems(1);
   };
 
   handleBarCodeScanned = async ({ type, data }) => {
-    await this.expirationDatePopup();
-    this.setState({ scanned: true });
-    await this.props.addItem(1, data, "01.01.2020"); // how do we grab userID?
-    await this.props.getFridgeItems(1);
-    alert("Added item to fridge!");
-    // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
+    this.setState({ scanned: true, isModal: true, type: type, data: data });
   };
 }
 

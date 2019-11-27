@@ -21,7 +21,7 @@ export const getRecipesThunk = userId => {
   return async dispatch => {
     console.log("WE ARE IN THE THUNK");
     const { data } = await axios.get(
-      `http://172.16.12.140:8080/api/recipes/${userId}`
+      `http://192.168.1.216:8080/api/recipes/${userId}`
     );
     dispatch(getRecipes(data));
   };

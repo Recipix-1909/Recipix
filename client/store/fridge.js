@@ -27,7 +27,7 @@ export const getFridgeItemsThunk = userId => {
   console.log("INSIDE THE GET FRIDGE THUNK");
   return async dispatch => {
     const { data } = await axios.get(
-      `http://172.16.12.140:8080/api/fridge/${userId}`
+      `http://192.168.1.216:8080/api/fridge/${userId}`
     );
     dispatch(getFridgeItems(data.items));
   };
@@ -36,7 +36,7 @@ export const getFridgeItemsThunk = userId => {
 export const deleteItemThunk = (userId, itemId) => {
   return async dispatch => {
     const { data } = await axios.delete(
-      `http://172.16.12.140:8080/api/fridge/${userId}/${itemId}`
+      `http://192.168.1.216:8080/api/fridge/${userId}/${itemId}`
     );
     console.log("this is data from axios delete", data);
     dispatch(deleteItem(data));
@@ -51,11 +51,8 @@ const fridgeReducer = (items = [], action) => {
     }
     case DELETE_ITEM: {
       let newItems = items.filter(item => {
-        console.log("this is item ======>", item);
-        console.log("this is action.item =====>", action.item);
         return item.id !== Number(action.item.itemId);
       });
-      console.log("deleted items!! new list =======>", newItems);
       return newItems;
     }
     default:
