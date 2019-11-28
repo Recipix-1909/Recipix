@@ -10,6 +10,7 @@ import {
   Button,
   View,
   Modal,
+  Dimensions,
   TouchableHighlight,
   Alert
 } from "react-native";
@@ -56,22 +57,30 @@ class Recipes extends React.Component {
           </View>
 
           <Modal
-            animationType="slide"
-            transparent={false}
+            animationType="fade"
+            transparent={true}
             visible={this.state.modalVisible}
-            onRequestClose={() => {
-              alert("Modal has been closed.");
-            }}
-            style={styles.container}
           >
-            <ScrollView
-              style={styles.container}
-              contentContainerStyle={styles.contentContainer}
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#00000080"
+              }}
             >
-              <View style={{ marginTop: 22 }}>
-                <View>
-                  <Text>Filter By Ingredients:</Text>
-
+              <View
+                style={{
+                  width: Dimensions.get("window").width * 0.85,
+                  height: Dimensions.get("window").height * 0.85,
+                  backgroundColor: "#DABFDE",
+                  padding: 20,
+                  paddingBottom: 100
+                }}
+              >
+                <Text>Filter By Ingredients:</Text>
+                <ScrollView>
                   {this.props.items.map(item => {
                     return (
                       <View key={item.id}>
@@ -79,16 +88,49 @@ class Recipes extends React.Component {
                       </View>
                     );
                   })}
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing</Text>
+                  <Text>testing last item</Text>
+                </ScrollView>
+                <View style={styles.tabBarInfoContainer}>
+                  <Button
+                    title={"Show Filtered Recipes"}
+                    onPress={() => {
+                      this.setModalVisible(false);
+                    }}
+                  />
                 </View>
               </View>
-            </ScrollView>
-            <View style={styles.tabBarInfoContainer}>
-              <Button
-                title={"Show Recipes"}
-                onPress={() => {
-                  this.setModalVisible(false);
-                }}
-              />
             </View>
           </Modal>
         </ScrollView>
@@ -134,14 +176,16 @@ const styles = StyleSheet.create({
 
   modalContainer: {
     flex: 1,
-    backgroundColor: "#FFDAC1",
-    borderRadius: 4,
-    borderWidth: 2,
-    borderColor: "red"
+    backgroundColor: "#DABFDE"
+    // borderRadius: 4,
+    // borderWidth: 1,
+    // borderColor: "#425df5",
+    // width: 300
   },
 
   contentContainer: {
-    paddingTop: 30
+    paddingTop: 30,
+    alignItems: "center"
   },
   welcomeContainer: {
     alignItems: "center",
