@@ -1,7 +1,6 @@
 // import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import {
-  // Image,
   Platform,
   ScrollView,
   StyleSheet,
@@ -11,23 +10,27 @@ import {
   View,
   Modal,
   Dimensions,
+  ImageBackground,
   TouchableHighlight,
   Alert
 } from "react-native";
+import { CheckBox } from "react-native-elements";
 import { connect } from "react-redux";
 import { getRecipesThunk } from "../store/recipes";
+import ItemCheckBox from "../components/ItemCheckBox";
 
 class Recipes extends React.Component {
   constructor() {
     super();
     this.state = {
       isFiltered: false,
-      modalVisible: false
+      modalVisible: false,
+      checked: false
     };
   }
 
   componentDidMount() {
-    this.props.getRecipes(1);
+    this.props.getRecipes(2);
     console.log("Recipes props===>", this.props);
   }
 
@@ -46,11 +49,51 @@ class Recipes extends React.Component {
             {this.props.recipes.map(curr => {
               return (
                 <View key={curr.id}>
-                  <Text>{curr.title}</Text>
+                  {/* <Text>{curr.title}</Text>
                   <Image
+                    style={{
+                      width: Dimensions.get("window").width,
+                      height: 400,
+                      resizeMode: "contain"
+                    }}
                     source={{ uri: `${curr.image}` }}
-                    style={{ width: 400, height: 400 }}
-                  ></Image>
+                    // resizeMode="contain"
+                  ></Image> */}
+                  <ImageBackground
+                    style={{
+                      width: Dimensions.get("window").width,
+                      height: 350,
+
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                    resizeMode="cover"
+                    source={{ uri: `${curr.image}` }}
+                  >
+                    <Text
+                      style={{
+                        fontWeight: "bold",
+                        fontSize: 40,
+                        textAlign: "center",
+
+                        textShadowColor: "#FFFFFF",
+                        textShadowOffset: { width: -2, height: 2 },
+                        textShadowRadius: 3,
+                        backgroundColor: "rgba(52, 52, 52, 0.3)",
+                        width: "100%",
+                        paddingLeft: 50,
+                        paddingRight: 50
+                      }}
+                    >
+                      <Text
+                        style={{
+                          backgroundColor: "transparent"
+                        }}
+                      >
+                        {curr.title}
+                      </Text>
+                    </Text>
+                  </ImageBackground>
                 </View>
               );
             })}
@@ -70,6 +113,7 @@ class Recipes extends React.Component {
                 backgroundColor: "#00000080"
               }}
             >
+              {/* View for Inner Box */}
               <View
                 style={{
                   width: Dimensions.get("window").width * 0.85,
@@ -79,52 +123,133 @@ class Recipes extends React.Component {
                   paddingBottom: 100
                 }}
               >
-                <Text>Filter By Ingredients:</Text>
-                <ScrollView>
+                <Text
+                  style={{
+                    fontWeight: "bold",
+                    fontSize: 20,
+                    textAlign: "center",
+
+                    width: "100%",
+                    paddingLeft: 50,
+                    paddingRight: 50,
+                    paddingBottom: 10
+                  }}
+                >
+                  Filter By Ingredients
+                </Text>
+                <Button
+                  title={"Close"}
+                  onPress={() => {
+                    this.setModalVisible(false);
+                  }}
+                />
+                <ScrollView
+                  style={{ flex: 1, flexDirection: "column" }}
+                  contentContainerStyle={{
+                    justifyContent: "space-evenly",
+                    alignItems: "center"
+                  }}
+                >
                   {this.props.items.map(item => {
+                    const expirationDate = item.fridge_stock.expirationDate;
+
+                    let titleName = item.name;
+                    if (expirationDate) {
+                      titleName += ` (expires: ${expirationDate.slice(0, 10)})`;
+                    }
                     return (
-                      <View key={item.id}>
-                        <Text>{item.name}</Text>
+                      <View key={item.id} style={{}}>
+                        <CheckBox
+                          title={titleName}
+                          checkedColor="green"
+                          checked={!this.state.checked}
+                          onPress={() => {
+                            this.setState({ checked: !this.state.checked });
+                            console.log(
+                              `you just checked off id: ${item.id}, name: ${item.name}`
+                            );
+                          }}
+                          containerStyle={{
+                            width: Dimensions.get("window").width * 0.85 - 65,
+                            backgroundColor: "transparent"
+                          }}
+                        ></CheckBox>
                       </View>
                     );
                   })}
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing</Text>
-                  <Text>testing last item</Text>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing</Text>
+                  </View>
+                  <View>
+                    <Text>testing last item</Text>
+                  </View>
                 </ScrollView>
                 <View style={styles.tabBarInfoContainer}>
                   <Button
-                    title={"Show Filtered Recipes"}
+                    title={"Submit Filter"}
                     onPress={() => {
                       this.setModalVisible(false);
                     }}
@@ -155,7 +280,7 @@ Recipes.navigationOptions = {
 const mapStateToProps = state => {
   return {
     recipes: state.recipes,
-    filteredItems: state.items,
+    filteredItems: state.filteredItems,
     items: state.items
   };
 };
@@ -203,17 +328,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 50
   },
-  homeScreenFilename: {
-    marginVertical: 7
-  },
-  codeHighlightText: {
-    color: "rgba(96,100,109, 0.8)"
-  },
-  codeHighlightContainer: {
-    backgroundColor: "rgba(0,0,0,0.05)",
-    borderRadius: 3,
-    paddingHorizontal: 4
-  },
+  // homeScreenFilename: {
+  //   marginVertical: 7
+  // },
+  // codeHighlightText: {
+  //   color: "rgba(96,100,109, 0.8)"
+  // },
+  // codeHighlightContainer: {
+  //   backgroundColor: "rgba(0,0,0,0.05)",
+  //   borderRadius: 3,
+  //   paddingHorizontal: 4
+  // },
   getStartedText: {
     fontSize: 17,
     color: "rgba(96,100,109, 1)",
