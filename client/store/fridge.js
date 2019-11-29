@@ -25,7 +25,7 @@ const addItemMan = item => {};
 // thunk
 
 export const getFridgeItemsThunk = userId => {
-  console.log("INSIDE THE GET FRIDGE THUNK");
+  // console.log("INSIDE THE GET FRIDGE THUNK");
   return async dispatch => {
     const { data } = await axios.get(`http://${ip}:8080/api/fridge/${userId}`);
     dispatch(getFridgeItems(data.items));

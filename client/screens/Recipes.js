@@ -16,22 +16,23 @@ import {
 } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { connect } from "react-redux";
-import { getRecipesThunk } from "../store/recipes";
+import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
+import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
 
 class Recipes extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      isFiltered: false,
       modalVisible: false,
-      checked: false
+      loaded: false
     };
   }
 
   componentDidMount() {
-    this.props.getRecipes(2);
-    console.log("Recipes props===>", this.props);
+    this.props.getRecipes(1);
+    // console.log("Recipes props===>", this.props);
+    this.setState({ loaded: true });
   }
 
   setModalVisible(visible) {
@@ -39,65 +40,69 @@ class Recipes extends React.Component {
   }
 
   render() {
-    return this.props.recipes[0] !== undefined ? (
+    // console.log("this.props.filteredItems ====>", this.props.filteredItems);
+    return (
       <View style={styles.container}>
         <ScrollView
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <View style={styles.getStartedContainer}>
-            {this.props.recipes.map(curr => {
-              return (
-                <View key={curr.id}>
-                  {/* <Text>{curr.title}</Text>
-                  <Image
-                    style={{
-                      width: Dimensions.get("window").width,
-                      height: 400,
-                      resizeMode: "contain"
-                    }}
-                    source={{ uri: `${curr.image}` }}
-                    // resizeMode="contain"
-                  ></Image> */}
-                  <ImageBackground
-                    style={{
-                      width: Dimensions.get("window").width,
-                      height: 350,
-
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                    resizeMode="cover"
-                    source={{ uri: `${curr.image}` }}
-                  >
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        fontSize: 40,
-                        textAlign: "center",
-
-                        textShadowColor: "#FFFFFF",
-                        textShadowOffset: { width: -2, height: 2 },
-                        textShadowRadius: 3,
-                        backgroundColor: "rgba(52, 52, 52, 0.3)",
-                        width: "100%",
-                        paddingLeft: 50,
-                        paddingRight: 50
-                      }}
-                    >
-                      <Text
+          {!this.state.loaded ? (
+            <View>
+              <Text style={{ fontSize: 40 }}>Loading Recipes...</Text>
+            </View>
+          ) : this.state.loaded && this.props.recipes[0] === undefined ? (
+            <View>
+              <Text>No recipes to show...</Text>
+            </View>
+          ) : (
+            <View style={styles.getStartedContainer}>
+              {this.props.recipes[0] !== undefined &&
+                this.props.recipes.map(curr => {
+                  return (
+                    <View key={curr.id}>
+                      <ImageBackground
                         style={{
-                          backgroundColor: "transparent"
+                          width: Dimensions.get("window").width,
+                          height: 350,
+
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}
+                        resizeMode="cover"
+                        source={{
+                          uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
                         }}
                       >
-                        {curr.title}
-                      </Text>
-                    </Text>
-                  </ImageBackground>
-                </View>
-              );
-            })}
-          </View>
+                        <Text
+                          style={{
+                            fontWeight: "bold",
+                            fontSize: 40,
+                            textAlign: "center",
+
+                            textShadowColor: "#FFFFFF",
+                            textShadowOffset: { width: -2, height: 2 },
+                            textShadowRadius: 3,
+                            backgroundColor: "rgba(52, 52, 52, 0.3)",
+                            width: "100%",
+                            paddingLeft: 50,
+                            paddingRight: 50
+                          }}
+                        >
+                          <Text
+                            style={{
+                              backgroundColor: "transparent"
+                            }}
+                          >
+                            {curr.title}
+                          </Text>
+                        </Text>
+                      </ImageBackground>
+                    </View>
+                  );
+                })}
+            </View>
+          )}
 
           <Modal
             animationType="fade"
@@ -151,107 +156,26 @@ class Recipes extends React.Component {
                   }}
                 >
                   {this.props.items.map(item => {
-                    const expirationDate = item.fridge_stock.expirationDate;
-
-                    let titleName = item.name;
-                    if (expirationDate) {
-                      titleName += ` (expires: ${expirationDate.slice(0, 10)})`;
-                    }
                     return (
                       <View key={item.id} style={{}}>
-                        <CheckBox
-                          title={titleName}
-                          checkedColor="green"
-                          checked={!this.state.checked}
-                          onPress={() => {
-                            this.setState({ checked: !this.state.checked });
-                            console.log(
-                              `you just checked off id: ${item.id}, name: ${item.name}`
-                            );
-                          }}
-                          containerStyle={{
-                            width: Dimensions.get("window").width * 0.85 - 65,
-                            backgroundColor: "transparent"
-                          }}
-                        ></CheckBox>
+                        <ItemCheckBox item={item} />
                       </View>
                     );
                   })}
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing</Text>
-                  </View>
-                  <View>
-                    <Text>testing last item</Text>
-                  </View>
                 </ScrollView>
                 <View style={styles.tabBarInfoContainer}>
                   <Button
                     title={"Submit Filter"}
                     onPress={() => {
+                      // console.log(
+                      //   "filtered items list ====>",
+                      //   this.props.filteredItems
+                      // );
                       this.setModalVisible(false);
+                      this.props.getFilteredRecipes(this.props.filteredItems);
+                      // this.setState({
+                      //   filteredItems: this.props.filteredItems
+                      // });
                     }}
                   />
                 </View>
@@ -265,11 +189,12 @@ class Recipes extends React.Component {
             title={"Filter Recipes"}
             onPress={() => {
               this.setModalVisible(true);
+              this.props.resetFilter();
             }}
           />
         </View>
       </View>
-    ) : null;
+    );
   }
 }
 
@@ -287,7 +212,10 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    getRecipes: id => dispatch(getRecipesThunk(id))
+    getRecipes: id => dispatch(getRecipesThunk(id)),
+    getFilteredRecipes: filteredItems =>
+      dispatch(getFilteredRecipesThunk(filteredItems)),
+    resetFilter: () => dispatch(resetFilter())
   };
 };
 

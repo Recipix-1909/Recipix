@@ -22,7 +22,7 @@ class Fridge extends React.Component {
   }
 
   componentDidMount() {
-    this.props.getFridgeItems(2);
+    this.props.getFridgeItems(1);
   }
 
   render() {
