@@ -50,11 +50,8 @@ const fridgeReducer = (items = [], action) => {
     }
     case DELETE_ITEM: {
       let newItems = items.filter(item => {
-        console.log("this is item ======>", item);
-        console.log("this is action.item =====>", action.item);
         return item.id !== Number(action.item.itemId);
       });
-      console.log("deleted items!! new list =======>", newItems);
       return newItems;
     }
     default:
