@@ -3,6 +3,7 @@ import axios from "axios";
 // action type
 const GET_FRIDGE_ITEMS = "GET_FRIDGE_ITEMS";
 const DELETE_ITEM = "DELETE_ITEM";
+const ADD_ITEM_MANUALLY  = "ADD_ITEM_MANUALLY";
 
 // action creator
 const getFridgeItems = items => {
@@ -19,7 +20,12 @@ const deleteItem = item => {
   };
 };
 
-const addItemMan = item => {};
+const addItemMan = item => {
+  return{
+    type: ADD_ITEM_MANUALLY,
+    item
+  }
+};
 
 // thunk
 
@@ -27,20 +33,28 @@ export const getFridgeItemsThunk = userId => {
   console.log("INSIDE THE GET FRIDGE THUNK");
   return async dispatch => {
     const { data } = await axios.get(
-      `http://192.168.1.216:8080/api/fridge/${userId}`
+      `http://192.168.0.106:8080/api/fridge/${userId}`
     );
     dispatch(getFridgeItems(data.items));
   };
 };
 
+export const getFridgeItemsManualThunk = (userId, itemName, expirationDate)=>{
+  console.log(itemName)
+  return async dispatch=>{
+    await axios.post(`http://192.168.0.106:8080/api/fridge/${userId}/manual`,{userId, name: itemName, expirationDate})
+    const { data } = await axios.get(
+      `http://192.168.0.106:8080/api/fridge/${userId}`
+    )
+    console.log(data)
+    dispatch(addItemMan(data.items))
+  }
+}
+
 export const deleteItemThunk = (userId, itemId) => {
   return async dispatch => {
     const { data } = await axios.delete(
-<<<<<<< HEAD
-      `http://172.16.21.152:8080/api/fridge/${userId}/${itemId}`
-=======
-      `http://192.168.1.216:8080/api/fridge/${userId}/${itemId}`
->>>>>>> 3160d7aa6dad4963f77b10348e44cd9f59a9ec96
+      `http://192.168.0.106:8080/api/fridge/${userId}/${itemId}`
     );
     console.log("this is data from axios delete", data);
     dispatch(deleteItem(data));
@@ -58,6 +72,9 @@ const fridgeReducer = (items = [], action) => {
         return item.id !== Number(action.item.itemId);
       });
       return newItems;
+    }
+    case ADD_ITEM_MANUALLY:{
+      return action.item
     }
     default:
       return items;

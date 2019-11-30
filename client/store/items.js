@@ -25,7 +25,7 @@ const addItem = item => {
 export const addItemThunk = (userId, serialNum, expirationDate) => {
   return async dispatch => {
     const { data } = await axios.post(
-      `http://192.168.1.216:8080/api/fridge/${userId}`,
+      `http://192.168.0.106:8080/api/fridge/${userId}`,
       {
         serialNum,
         expirationDate
