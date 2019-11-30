@@ -27,11 +27,12 @@ class ItemCheckBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      checked: false
+      checked: this.props.isChecked
     };
   }
   render() {
     // console.log("props inside ItemCheckBox component", this.props);
+
     const item = this.props.item;
     const expirationDate = item.fridge_stock.expirationDate;
     let titleName = item.name;
@@ -45,14 +46,14 @@ class ItemCheckBox extends React.Component {
         checked={this.state.checked}
         onPress={() => {
           if (!this.state.checked) {
-            // console.log(
-            //   `you just added to filter id: ${item.id}, name: ${item.name}`
-            // );
+            console.log(
+              `you just added to filter id: ${item.id}, name: ${item.name}`
+            );
             this.props.addToFilter(item);
           } else {
-            // console.log(
-            //   `you just removed from filter id: ${item.id}, name: ${item.name}`
-            // );
+            console.log(
+              `you just removed from filter id: ${item.id}, name: ${item.name}`
+            );
             this.props.deleteFromFilter(item);
           }
           this.setState({ checked: !this.state.checked });

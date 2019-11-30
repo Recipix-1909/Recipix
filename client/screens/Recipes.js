@@ -27,6 +27,7 @@ class Recipes extends React.Component {
       modalVisible: false,
       loaded: false
     };
+    this.isItemInFilter = this.isItemInFilter.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +39,23 @@ class Recipes extends React.Component {
   setModalVisible(visible) {
     this.setState({ modalVisible: visible });
   }
-
+  // function to determine if item is in filter
+  isItemInFilter(item) {
+    let filteredItems = this.props.filteredItems;
+    // console.log("isItemInFilter function; filteredItems ===>", filteredItems);
+    // console.log("item to check in filter ==>", item.name);
+    let isFound = false;
+    for (let i = 0; i < filteredItems.length; i++) {
+      let currFilterItem = filteredItems[i];
+      // console.log("currFilterItem ===>", currFilterItem.name);
+      if (currFilterItem.id === item.id) {
+        isFound = true;
+        break;
+      }
+    }
+    // console.log("isFound ===>", isFound);
+    return isFound;
+  }
   render() {
     // console.log("this.props.filteredItems ====>", this.props.filteredItems);
     return (
@@ -158,7 +175,10 @@ class Recipes extends React.Component {
                   {this.props.items.map(item => {
                     return (
                       <View key={item.id} style={{}}>
-                        <ItemCheckBox item={item} />
+                        <ItemCheckBox
+                          item={item}
+                          isChecked={this.isItemInFilter(item)}
+                        />
                       </View>
                     );
                   })}
@@ -167,10 +187,10 @@ class Recipes extends React.Component {
                   <Button
                     title={"Submit Filter"}
                     onPress={() => {
-                      // console.log(
-                      //   "filtered items list ====>",
-                      //   this.props.filteredItems
-                      // );
+                      console.log(
+                        "filtered items list ====>",
+                        this.props.filteredItems
+                      );
                       this.setModalVisible(false);
                       this.props.getFilteredRecipes(this.props.filteredItems);
                       // this.setState({
@@ -189,7 +209,7 @@ class Recipes extends React.Component {
             title={"Filter Recipes"}
             onPress={() => {
               this.setModalVisible(true);
-              this.props.resetFilter();
+              // this.props.resetFilter();
             }}
           />
         </View>
