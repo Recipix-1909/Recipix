@@ -1,6 +1,5 @@
 import axios from "axios";
-import { createStore, applyMiddleware } from "redux";
-import ReduxThunk from "redux-thunk";
+
 
 //action type
 
@@ -22,7 +21,7 @@ export const getRecipesThunk = (userId) => {
 
     return async dispatch => {
         console.log('WE ARE IN THE THUNK')
-        const{data} = await axios.get(`http:172.16.21.152:8080/api/recipes/${userId}`)
+        const{data} = await axios.get(`http:192.168.1.8:8080/api/recipes/${userId}`)
         dispatch(getRecipes(data))
 
     }

@@ -12,6 +12,7 @@ import UserProfile from "./UserProfile";
 import store from "../store";
 import AppNavigator from "../navigation/AppNavigator";
 
+
 export default class App extends React.Component {
   render() {
     return (

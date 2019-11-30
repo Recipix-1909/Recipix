@@ -12,6 +12,7 @@ import Fridge from "../screens/Fridge";
 import Recipes from "../screens/Recipes";
 import UserProfile from "../screens/UserProfile";
 import CameraScanner from "../screens/CameraScanner";
+import Auth from '../screens/Auth'
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -97,6 +98,7 @@ UserProfileStack.navigationOptions = {
 UserProfileStack.path = "";
 
 const tabNavigator = createBottomTabNavigator({
+  Auth,
   FridgeStack,
   CameraStack,
   RecipesStack,
