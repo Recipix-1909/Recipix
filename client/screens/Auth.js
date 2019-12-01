@@ -1,8 +1,9 @@
 import React from 'react'
-import {StyleSheet, ScrollView, View, Button, KeyboardAvoidingView, TextInput, Alert} from 'react-native'
-import {LinearGradient} from 'expo-linear-gradient'
+import {Provider} from 'react-redux'
+import {StyleSheet, ScrollView, View, Button, Alert, TextInput} from 'react-native'
 import {connect} from 'react-redux'
 import {getUserThunk, createUserThunk} from '../store/users'
+import store from '../store'
 
 class Auth extends React.Component {
     constructor(props){
@@ -13,28 +14,41 @@ class Auth extends React.Component {
         lastName: '',
         email: '',
         password: '',
-        form: false
+        form: false,
+        error: false
       }
       this.loginSubmit=this.loginSubmit.bind(this)
       this.signUpSubmit=this.signUpSubmit.bind(this)
       this.changeForm=this.changeForm.bind(this)
     }
 
-    loginSubmit(){
+    loginSubmit = async () => {
         console.log('hit!!!!!')
         const email = this.state.email
         const password = this.state.password
         let user = {email, password}
+        try {
+            await this.props.getUser(user)
+            this.props.navigation.navigate('Main')
+        } catch (error) {
+            alert('Wrong email or password, please try again')
+        }
         this.props.getUser(user)
     }
 
-    signUpSubmit(){
+    signUpSubmit = async () => {
         const firstName = this.state.firstName
         const lastName = this.state.lastName
         const email = this.state.email
         const password = this.state.password
         let newUser = { firstName, lastName, email, password}
-        this.props.createUser(newUser)
+        try {
+            await this.props.createUser(newUser)
+        } catch (error) {
+            alert('Something went wrong')
+        }
+        
+   
     }
 
     changeForm(){
@@ -46,6 +60,7 @@ class Auth extends React.Component {
 
    render(){
     return(
+        <Provider store={store}>
             <View style={styles.screen}>
                     {!this.state.form ? (
                 <View style={styles.screen}>
@@ -53,12 +68,15 @@ class Auth extends React.Component {
                         <TextInput 
                          placeholder='email'
                          onChangeText={(input) => this.setState({email:input})}
+                         errorText='Please enter valid email'
+                         
                       />
                         <TextInput 
                          placeholder='password'
                          onChangeText={(input) => this.setState({password:input})}
                          secureTextEntry
                         />
+            
                         
                         <Button title='Log in' onPress={()=>this.loginSubmit()} />
                         <Button title='Sign Up' onPress={()=>this.changeForm()} />
@@ -90,6 +108,7 @@ class Auth extends React.Component {
                 </View>       
                     )}
                 </View>
+        </Provider>
     )
     }
 }
