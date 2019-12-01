@@ -37,7 +37,7 @@ export const deleteItemThunk = (userId, itemId) => {
     const { data } = await axios.delete(
       `http://${ip}:8080/api/fridge/${userId}/${itemId}`
     );
-    console.log("this is data from axios delete", data);
+    // console.log("this is data from axios delete", data);
     dispatch(deleteItem(data));
   };
 };

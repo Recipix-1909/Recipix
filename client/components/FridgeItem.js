@@ -12,7 +12,7 @@ class FridgeItem extends React.Component {
 
   render() {
     let expirationDate = this.props.expirationDate;
-    console.log("type of expdate", typeof expirationDate);
+    // console.log("type of expdate", typeof expirationDate);
     if (expirationDate) {
       expirationDate = `(expires: ${expirationDate.slice(0, 10)})`;
     }
