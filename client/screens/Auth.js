@@ -1,9 +1,8 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {StyleSheet, KeyboardAvoidingView, Image, ScrollView, View, Button, ActivityIndicator, TextInput} from 'react-native'
+import {StyleSheet, KeyboardAvoidingView, Image, ScrollView, View, Button, ActivityIndicator, TextInput, Text} from 'react-native'
 import {connect} from 'react-redux'
 import {getUserThunk, createUserThunk} from '../store/users'
-import store from '../store'
 import Card from '../other/Card'
 import Color from '../other/Color'
 import {LinearGradient} from 'expo-linear-gradient'
@@ -19,8 +18,7 @@ class Auth extends React.Component {
         lastName: '',
         email: '',
         password: '',
-        form: false,
-        isLoading:false
+        form: false
       }
       this.loginSubmit=this.loginSubmit.bind(this)
       this.signUpSubmit=this.signUpSubmit.bind(this)
@@ -39,7 +37,6 @@ class Auth extends React.Component {
         } catch (error) {
             alert('Wrong email or password, please try again')
         }
-        this.setState({isLoading:false})
     }
 
     signUpSubmit = async () => {
@@ -67,7 +64,8 @@ class Auth extends React.Component {
    render(){
     return(
         <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
-            <LinearGradient colors={['#00ffcc', '#ffffcc']} style={styles.gradient}>
+            <LinearGradient colors={['#00ffcc', '#00ffcc']} style={styles.gradient}>
+            <Image source={require('../other/logo.png')} style={{width: 225, height: 225}}/>
                     {!this.state.form ? (
                 <Card style={styles.authContainer}>
                     <ScrollView>
@@ -129,9 +127,9 @@ class Auth extends React.Component {
 }
 
 Auth.navigationOptions = {
-    headerTitle: 'Welcome to Recipix!',
+    headerTitle: 'Welcome',
     headerStyle:{
-
+        color: '#00ffcc'
     }
   };
 
@@ -158,6 +156,13 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         borderBottomColor: '#ccc',
         borderBottomWidth: 2
+      },
+      image:{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent:'center',
+         
+
       }
 })
 
