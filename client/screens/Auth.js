@@ -1,9 +1,14 @@
 import React from 'react'
 import {Provider} from 'react-redux'
-import {StyleSheet, ScrollView, View, Button, Alert, TextInput} from 'react-native'
+import {StyleSheet, KeyboardAvoidingView, Image, ScrollView, View, Button, ActivityIndicator, TextInput} from 'react-native'
 import {connect} from 'react-redux'
 import {getUserThunk, createUserThunk} from '../store/users'
 import store from '../store'
+import Card from '../other/Card'
+import Color from '../other/Color'
+import {LinearGradient} from 'expo-linear-gradient'
+
+
 
 class Auth extends React.Component {
     constructor(props){
@@ -15,7 +20,7 @@ class Auth extends React.Component {
         email: '',
         password: '',
         form: false,
-        error: false
+        isLoading:false
       }
       this.loginSubmit=this.loginSubmit.bind(this)
       this.signUpSubmit=this.signUpSubmit.bind(this)
@@ -27,13 +32,14 @@ class Auth extends React.Component {
         const email = this.state.email
         const password = this.state.password
         let user = {email, password}
+        this.setState({isLoading: true})
         try {
             await this.props.getUser(user)
             this.props.navigation.navigate('Main')
         } catch (error) {
             alert('Wrong email or password, please try again')
         }
-        this.props.getUser(user)
+        this.setState({isLoading:false})
     }
 
     signUpSubmit = async () => {
@@ -55,75 +61,104 @@ class Auth extends React.Component {
         this.setState({
             form: !this.state.form
         })
-    }
+    } 
 
 
    render(){
     return(
-        <Provider store={store}>
-            <View style={styles.screen}>
+        <KeyboardAvoidingView behavior='padding' keyboardVerticalOffset={50} style={styles.screen}>
+            <LinearGradient colors={['#00ffcc', '#ffffcc']} style={styles.gradient}>
                     {!this.state.form ? (
-                <View style={styles.screen}>
-                    <ScrollView contentContainerStyle={styles.container}>
+                <Card style={styles.authContainer}>
+                    <ScrollView>
                         <TextInput 
+                         style={styles.input}
                          placeholder='email'
                          onChangeText={(input) => this.setState({email:input})}
                          errorText='Please enter valid email'
                          
                       />
                         <TextInput 
+                         style={styles.input}
                          placeholder='password'
                          onChangeText={(input) => this.setState({password:input})}
                          secureTextEntry
                         />
             
-                        
-                        <Button title='Log in' onPress={()=>this.loginSubmit()} />
-                        <Button title='Sign Up' onPress={()=>this.changeForm()} />
+                      <View style={styles.buttonContainer}>
+                        <Button title='Log in'   color={Color.primary} onPress={()=>this.loginSubmit()} />
+                        <Button title='Sign Up' color={Color.accent} onPress={()=>this.changeForm()} />
+                      </View>
                     </ScrollView>
-                </View>
+                </Card>
                      ) : (
-                <View style={styles.screen}>
-                    <ScrollView contentContainerStyle={styles.container}>
+                <Card style={styles.authContainer}>
+                    <ScrollView>
                         <TextInput
+                        style={styles.input}
                         placeholder='First Name'
                         onChangeText={(input) => this.setState({firstName:input})}
                         />
                         <TextInput
+                        style={styles.input}
                         placeholder='Last Name'
                         onChangeText={(input) => this.setState({lastName:input})}
                         />
                         <TextInput
+                        style={styles.input}
                         placeholder='email'
                         onChangeText={(input) => this.setState({email:input})}
                         />
                          <TextInput
+                        style={styles.input}
                         placeholder='password'
                         onChangeText={(input) => this.setState({passsword:input})}
                         secureTextEntry
                         />
-                        <Button title='Log in' onPress={()=>this.changeForm()} />
-                        <Button title='Sign Up' onPress={()=>this.signUpSubmit()} />
+                     <View style={styles.buttonContainer}>
+                        <Button title='Log in' color={Color.accent} onPress={()=>this.changeForm()} />
+                        <Button title='Sign Up' color={Color.primary} onPress={()=>this.signUpSubmit()} />
+                     </View>
                     </ScrollView>
-                </View>       
+                </Card>       
                     )}
-                </View>
-        </Provider>
+                </LinearGradient>
+        </KeyboardAvoidingView>
     )
     }
 }
 
+Auth.navigationOptions = {
+    headerTitle: 'Welcome to Recipix!',
+    headerStyle:{
+
+    }
+  };
+
 const styles = StyleSheet.create({
-    screen:{
+    screen: {
+        flex: 1
+      },
+      gradient: {
         flex: 1,
-    },
-    container:{
-        width: '100%',
-        height: '100%',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-   
+      },
+      authContainer: {
+        width: '80%',
+        maxWidth: 400,
+        maxHeight: 400,
+        padding: 20,
+      },
+      buttonContainer: {
+        marginTop: 10
+      },
+      input:{
+        paddingHorizontal: 2,
+        paddingVertical: 5,
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 2
+      }
 })
 
 
