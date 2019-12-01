@@ -6,7 +6,7 @@ import { ip } from "../../secrets";
 const ADD_ITEM = "ADD_ITEM";
 const GET_ITEM = "GET_ITEM";
 
-//action creator
+//action creators
 
 const getItem = item => {
   return {

@@ -8,6 +8,7 @@ import Recipes from "../screens/Recipes";
 import UserProfile from "../screens/UserProfile";
 import CameraScanner from "../screens/CameraScanner";
 import { Svg, Path } from "react-native-svg";
+import Auth from "../screens/Auth";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
