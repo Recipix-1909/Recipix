@@ -3,7 +3,7 @@ import { ip } from "../../secrets";
 
 // action type
 const GET_FRIDGE_ITEMS = "GET_FRIDGE_ITEMS";
-const DELETE_ITEM = "DELETE_ITEM";
+export const DELETE_ITEM = "DELETE_ITEM";
 
 // action creator
 const getFridgeItems = items => {
@@ -13,7 +13,7 @@ const getFridgeItems = items => {
   };
 };
 
-const deleteItem = item => {
+export const deleteItem = item => {
   return {
     type: DELETE_ITEM,
     item

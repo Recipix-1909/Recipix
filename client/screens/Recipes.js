@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Text,
   Image,
-  Button,
+  // Button,
   View,
   Modal,
   Dimensions,
@@ -14,11 +14,12 @@ import {
   TouchableHighlight,
   Alert
 } from "react-native";
-import { CheckBox } from "react-native-elements";
+import { CheckBox, Icon, Button } from "react-native-elements";
 import { connect } from "react-redux";
 import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
+import { Svg, Path } from "react-native-svg";
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class Recipes extends React.Component {
             <View>
               <Text style={{ fontSize: 40 }}>Loading Recipes...</Text>
             </View>
-          ) : this.state.loaded && this.props.recipes[0] === undefined ? (
+          ) : this.state.loaded && this.props.recipes.length === 0 ? (
             <View>
               <Text>No recipes to show...</Text>
             </View>
@@ -142,31 +143,16 @@ class Recipes extends React.Component {
                   height: Dimensions.get("window").height * 0.85,
                   backgroundColor: "#DABFDE",
                   padding: 20,
-                  paddingBottom: 100
+                  paddingBottom: 75,
+                  borderRadius: 15
                 }}
               >
-                <Text
-                  style={{
-                    fontWeight: "bold",
-                    fontSize: 20,
-                    textAlign: "center",
-
-                    width: "100%",
-                    paddingLeft: 50,
-                    paddingRight: 50,
-                    paddingBottom: 10
-                  }}
-                >
-                  Filter By Ingredients
-                </Text>
-                <Button
-                  title={"Close"}
-                  onPress={() => {
-                    this.setModalVisible(false);
-                  }}
-                />
                 <ScrollView
-                  style={{ flex: 1, flexDirection: "column" }}
+                  style={{
+                    flex: 1,
+                    flexDirection: "column",
+                    marginTop: 40
+                  }}
                   contentContainerStyle={{
                     justifyContent: "space-evenly",
                     alignItems: "center"
@@ -183,8 +169,47 @@ class Recipes extends React.Component {
                     );
                   })}
                 </ScrollView>
+
+                <View style={styles.filterHeaderContainer}>
+                  <View
+                    style={{
+                      width: 40,
+                      height: 40
+                    }}
+                  ></View>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      paddingVertical: 10
+                    }}
+                  >
+                    Filter By Ingredients
+                  </Text>
+                  <Button
+                    icon={
+                      <Icon
+                        name="close-box"
+                        type="material-community"
+                        color="red"
+                      />
+                    }
+                    type="clear"
+                    buttonStyle={{
+                      width: 40,
+                      height: 40,
+                      flexDirection: "column-reverse",
+                      marginTop: 2
+                    }}
+                    onPress={() => {
+                      this.setModalVisible(false);
+                    }}
+                  />
+                </View>
+
                 <View style={styles.tabBarInfoContainer}>
                   <Button
+                    raised
+                    type="outline"
                     title={"Submit Filter"}
                     onPress={() => {
                       console.log(
@@ -204,12 +229,45 @@ class Recipes extends React.Component {
           </Modal>
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
+        <View style={styles.topBarContainer}>
+          <View
+            style={{
+              width: 50,
+              height: 40
+            }}
+          ></View>
+          <Text
+            style={{
+              fontSize: 20,
+              paddingTop: 5
+            }}
+          >
+            Recipes
+          </Text>
           <Button
-            title={"Filter Recipes"}
+            title="Filter"
+            icon={
+              <Svg
+                width="24"
+                height="24"
+                viewBox="0 0 512 512"
+                fill="#517fa4"
+                stroke="#517fa4"
+              >
+                <Path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" />
+              </Svg>
+            }
+            type="clear"
+            buttonStyle={{
+              width: 50,
+              height: 40,
+              flexDirection: "column-reverse"
+            }}
+            titleStyle={{
+              fontSize: 13
+            }}
             onPress={() => {
               this.setModalVisible(true);
-              // this.props.resetFilter();
             }}
           />
         </View>
@@ -257,7 +315,7 @@ const styles = StyleSheet.create({
   },
 
   contentContainer: {
-    paddingTop: 30,
+    paddingTop: 65,
     alignItems: "center"
   },
   welcomeContainer: {
@@ -276,17 +334,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 50
   },
-  // homeScreenFilename: {
-  //   marginVertical: 7
-  // },
-  // codeHighlightText: {
-  //   color: "rgba(96,100,109, 0.8)"
-  // },
-  // codeHighlightContainer: {
-  //   backgroundColor: "rgba(0,0,0,0.05)",
-  //   borderRadius: 3,
-  //   paddingHorizontal: 4
-  // },
+
   getStartedText: {
     fontSize: 17,
     color: "rgba(96,100,109, 1)",
@@ -310,9 +358,62 @@ const styles = StyleSheet.create({
       }
     }),
     alignItems: "center",
-    backgroundColor: "#fbfbfb",
-    paddingVertical: 20
+    // backgroundColor: "#fbfbfb",
+    backgroundColor: "transparent",
+    // paddingVertical: 20,
+    height: 65,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15
   },
+  topBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      android: {
+        elevation: 20
+      }
+    }),
+
+    backgroundColor: "#fbfbfb",
+    paddingTop: 20,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: 65
+  },
+
+  filterHeaderContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      android: {
+        elevation: 20
+      }
+    }),
+    backgroundColor: "#fbfbfb",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
+  },
+
   tabBarInfoText: {
     fontSize: 17,
     color: "rgba(96,100,109, 1)",

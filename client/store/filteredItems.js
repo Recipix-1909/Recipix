@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ip } from "../../secrets";
+import { DELETE_ITEM } from "./fridge";
 
 // action type
 const GET_FILTER = "GET_FILTER";
@@ -46,6 +47,13 @@ const filteredItemsReducer = (filteredItems = [], action) => {
     case DELETE_FROM_FILTER: {
       const newFilter = filteredItems.filter(item => {
         return item.id !== action.item.id;
+      });
+
+      return newFilter;
+    }
+    case DELETE_ITEM: {
+      const newFilter = filteredItems.filter(item => {
+        return item.id !== Number(action.item.itemId);
       });
 
       return newFilter;

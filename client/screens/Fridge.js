@@ -1,20 +1,17 @@
-// import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import {
-  // Image,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   Image,
-  Button,
-  // TouchableOpacity,
   View
 } from "react-native";
 import { getFridgeItemsThunk, deleteItemThunk } from "../store/fridge";
 import { connect } from "react-redux";
-
-// import { MonoText } from "../components/StyledText";
+import { Icon, Button } from "react-native-elements";
+import { Svg, Path } from "react-native-svg";
+import FridgeItem from "../components/FridgeItem";
 
 class Fridge extends React.Component {
   constructor() {
@@ -32,33 +29,55 @@ class Fridge extends React.Component {
           style={styles.container}
           contentContainerStyle={styles.contentContainer}
         >
-          <View style={styles.getStartedContainer}>
-            <Text style={styles.getStartedText}>This is your Fridge!</Text>
-          </View>
-
           <View>
             {this.props.items.map(item => {
               return (
                 <View key={item.id}>
-                  <Image
+                  <FridgeItem
+                    id={item.id}
+                    name={item.name}
+                    imageUrl={item.imageUrl}
+                    expirationDate={item.fridge_stock.expirationDate}
+                  />
+                  {/* <Image
                     source={{ uri: `${item.imageUrl}` }}
-                    style={{ width: 50, height: 50 }}
+                    style={{ width: 50, height: 50, borderRadius: 25 }}
                     key={item.id}
                   ></Image>
                   <Text>{item.name}</Text>
                   <Button
-                    title={"X"}
+                    icon={
+                      <Icon
+                        name="trash-can-outline"
+                        type="material-community"
+                        color="red"
+                      />
+                    }
+                    type="clear"
+                    buttonStyle={{
+                      borderWidth: 1,
+                      borderColor: "red",
+                      width: 40,
+                      height: 40
+                    }}
                     onPress={() => this.props.deleteItem(1, item.id)}
-                  />
+                  /> */}
                 </View>
               );
             })}
           </View>
         </ScrollView>
 
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}
-        ></View>
+        <View style={styles.topBarContainer}>
+          <Text
+            style={{
+              fontSize: 20,
+              paddingTop: 5
+            }}
+          >
+            Fridge
+          </Text>
+        </View>
       </View>
     );
   }
@@ -88,15 +107,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#E0FEFE"
   },
-  // developmentModeText: {
-  //   marginBottom: 20,
-  //   color: "rgba(0,0,0,0.4)",
-  //   fontSize: 14,
-  //   lineHeight: 19,
-  //   textAlign: "center"
-  // },
   contentContainer: {
-    paddingTop: 30
+    paddingTop: 65
   },
   welcomeContainer: {
     alignItems: "center",
@@ -150,6 +162,30 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fbfbfb",
     paddingVertical: 20
+  },
+  topBarContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      android: {
+        elevation: 20
+      }
+    }),
+
+    backgroundColor: "#fbfbfb",
+    paddingTop: 20,
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    height: 65
   },
   tabBarInfoText: {
     fontSize: 17,

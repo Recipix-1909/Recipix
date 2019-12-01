@@ -2,16 +2,12 @@ import React from "react";
 import { Platform } from "react-native";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from "react-navigation-tabs";
-
-// import TabBarIcon from '../components/TabBarIcon'
-// import HomeScreen from '../screens/HomeScreen'
-// import LinksScreen from '../screens/LinksScreen'
-// import SettingsScreen from '../screens/SettingsScreen'
-
+import { Icon } from "react-native-elements";
 import Fridge from "../screens/Fridge";
 import Recipes from "../screens/Recipes";
 import UserProfile from "../screens/UserProfile";
 import CameraScanner from "../screens/CameraScanner";
+import { Svg, Path } from "react-native-svg";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -26,17 +22,10 @@ const CameraStack = createStackNavigator(
 );
 
 CameraStack.navigationOptions = {
-  tabBarLabel: "Camera"
-  // tabBarIcon: ({focused}) => (
-  //   <TabBarIcon
-  //     focused={focused}
-  //     name={
-  //       Platform.OS === 'ios'
-  //         ? `ios-information-circle${focused ? '' : '-outline'}`
-  //         : 'md-information-circle'
-  //     }
-  //   />
-  // )
+  tabBarLabel: "Camera",
+  tabBarIcon: (
+    <Icon name="barcode-scan" type="material-community" color="#517fa4" />
+  )
 };
 
 CameraStack.path = "";
@@ -49,10 +38,8 @@ const FridgeStack = createStackNavigator(
 );
 
 FridgeStack.navigationOptions = {
-  tabBarLabel: "Fridge"
-  // tabBarIcon: ({ focused }) => (
-  //   <TabBarIcon focused={focused} name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'} />
-  // ),
+  tabBarLabel: "Fridge",
+  tabBarIcon: <Icon name="fridge" type="material-community" color="#517fa4" />
 };
 
 FridgeStack.path = "";
@@ -65,13 +52,19 @@ const RecipesStack = createStackNavigator(
 );
 
 RecipesStack.navigationOptions = {
-  tabBarLabel: "Recipes"
-  // tabBarIcon: ({focused}) => (
-  //   <TabBarIcon
-  //     focused={focused}
-  //     name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-  //   />
-  // )
+  tabBarLabel: "Recipes",
+  // tabBarIcon: <Icon name="food" type="material-community" color="#517fa4" />,
+  tabBarIcon: (
+    <Svg
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="white"
+      stroke="#517fa4"
+    >
+      <Path d="M22 3L10 4.41V6H22V7H10V12H22C22 13.81 21.43 15.46 20.32 16.95S17.77 19.53 16 20.25V22H8V20.25C6.24 19.53 4.79 18.43 3.68 16.95S2 13.81 2 12H5V4L22 2V3M6 4.88V6H7V4.78L6 4.88M6 7V12H7V7H6M9 12V7H8V12H9M9 6V4.55L8 4.64V6H9Z" />
+    </Svg>
+  )
 };
 
 RecipesStack.path = "";
@@ -85,13 +78,10 @@ const UserProfileStack = createStackNavigator(
 );
 
 UserProfileStack.navigationOptions = {
-  tabBarLabel: "Profile"
-  // tabBarIcon: ({focused}) => (
-  //   <TabBarIcon
-  //     focused={focused}
-  //     name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
-  //   />
-  // )
+  tabBarLabel: "Profile",
+  tabBarIcon: (
+    <Icon name="account-circle" type="material-community" color="#517fa4" />
+  )
 };
 
 UserProfileStack.path = "";
