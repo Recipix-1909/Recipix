@@ -32,7 +32,7 @@ class Recipes extends React.Component {
   }
 
   async componentDidMount() {
-    await this.props.getRecipes(1);
+    await this.props.getRecipes(this.props.userId);
     // console.log("Recipes props===>", this.props);
     this.setState({ loaded: true });
   }
@@ -284,7 +284,8 @@ const mapStateToProps = state => {
   return {
     recipes: state.recipes,
     filteredItems: state.filteredItems,
-    items: state.items
+    items: state.items,
+    userId: state.user.id
   };
 };
 

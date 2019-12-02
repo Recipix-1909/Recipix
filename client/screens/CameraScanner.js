@@ -33,7 +33,7 @@ class CameraScanner extends React.Component {
   }
 
   handleManualInput = (target) => {
-    this.props.getFridgeItemsManual(1,target.nativeEvent.text,this.state.date)
+    this.props.getFridgeItemsManual(this.props.userId,target.nativeEvent.text,this.state.date)
     this.manualInput()
   }
 
@@ -163,16 +163,16 @@ class CameraScanner extends React.Component {
   handleBackToFridge = async () => {
     this.setState({ isModal: false });
     this.props.navigation.navigate("Fridge");
-    await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
-    await this.props.getFridgeItems(1);
+    await this.props.addItem(this.props.userId, this.state.data, this.state.date); // how do we grab userID?
+    await this.props.getFridgeItems(this.props.userId);
 
   };
 
   handleExpirationDate = async () => {
     console.log("this is this.props", this.props);
     await this.setState({ isModal: false });
-    await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
-    await this.props.getFridgeItems(1);
+    await this.props.addItem(this.props.userId, this.state.data, this.state.date); // how do we grab userID?
+    await this.props.getFridgeItems(this.props.userId);
   };
 
   handleBarCodeScanned = async ({ type, data }) => {
@@ -183,7 +183,8 @@ class CameraScanner extends React.Component {
 const mapStateToProps = state => {
   return {
     item: state.item,
-    fridge_stock: state.fridge_stock
+    fridge_stock: state.fridge_stock,
+    userId: state.user.id
   };
 };
 

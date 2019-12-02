@@ -13,6 +13,7 @@ import { Icon, Button } from "react-native-elements";
 import { Svg, Path } from "react-native-svg";
 import FridgeItem from "../components/FridgeItem";
 
+
 class Fridge extends React.Component {
   constructor() {
     super();
@@ -21,7 +22,7 @@ class Fridge extends React.Component {
 
 
   componentDidMount() {
-    this.props.getFridgeItems(1);
+    this.props.getFridgeItems(this.props.userId);
   }
 
   render() {
@@ -93,7 +94,8 @@ Fridge.navigationOptions = {
 
 const mapStateToProps = state => {
   return {
-    items: state.items
+    items: state.items,
+    userId: state.user.id
   };
 };
 

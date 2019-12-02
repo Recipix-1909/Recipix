@@ -14,8 +14,6 @@ const createUser = newUser => ({ type: CREATE_USER, newUser });
 //thunk
 
 export const getUserThunk = user => async dispatch => {
-  let { email, password } = user;
-  console.log("HIT THINK!!!!!!!!!!!!!!");
   const { data } = await axios.post(`http://${ip}:8080/auth/login`, user);
   dispatch(getUser(data));
 };
