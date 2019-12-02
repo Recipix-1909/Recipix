@@ -42,14 +42,13 @@ export const getFridgeItemsThunk = userId => {
 export const getFridgeItemsManualThunk = (userId, itemName, expirationDate) => {
   console.log(itemName);
   return async dispatch => {
-    await axios.post(`http://192.168.0.106:8080/api/fridge/${userId}/manual`, {
+    await axios.post(`http://${ip}:8080/api/fridge/${userId}/manual`, {
       userId,
       name: itemName,
       expirationDate
     });
-    const { data } = await axios.get(
-      `http://192.168.0.106:8080/api/fridge/${userId}`
-    );
+    //fix so its only 1 request
+    const { data } = await axios.get(`http://${ip}:8080/api/fridge/${userId}`);
     console.log(data);
     dispatch(addItemMan(data.items));
   };
