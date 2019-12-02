@@ -31,8 +31,8 @@ class Recipes extends React.Component {
     this.isItemInFilter = this.isItemInFilter.bind(this);
   }
 
-  componentDidMount() {
-    this.props.getRecipes(1);
+  async componentDidMount() {
+    await this.props.getRecipes(1);
     // console.log("Recipes props===>", this.props);
     this.setState({ loaded: true });
   }
