@@ -10,10 +10,25 @@ import {
   // TouchableOpacity,
   View
 } from "react-native";
+import { Button } from "react-native-elements";
+import Modal from "react-native-modal";
 
 // import { MonoText } from "../components/StyledText";
 
 class UserProfile extends Component {
+  constructor(){
+    super()
+    this.state={
+      intolerance: false
+    }
+  }
+
+  intoleranceTrigger(){
+    this.setState({
+      intolerance: !this.state.intolerance
+    })
+  }
+
   render(){
     console.log('LOOK AT ME!!!',this.props.user)
   return (
@@ -24,7 +39,15 @@ class UserProfile extends Component {
       >
         <View style={styles.getStartedContainer}>
           <Text style={styles.getStartedText}>{this.props.user.firstName} {this.props.user.lastName}</Text>
-
+          <Button
+          title={"Allergies"}
+          onPress={()=> this.intoleranceTrigger()}
+          />
+          {<Modal isVisible={this.state.intolerance}>
+            <Text>Allergies</Text>
+            {allergies}
+            <Button title={"Save"} onPress={()=> this.intoleranceTrigger()}/>
+          </Modal>}
         </View>
       </ScrollView>
 
