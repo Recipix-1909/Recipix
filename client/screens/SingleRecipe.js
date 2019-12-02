@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import {
   Platform,
   ScrollView,
@@ -18,20 +18,44 @@ import {
 import { connect } from "react-redux";
 import { getSingleRecipeThunk } from "../store/recipes";
 
+class SingleRecipe extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      instructions: []
+    };
+  }
 
-const SingleRecipe = props =>    {
-        console.log('SINGLE RECIPE COMPONENT PROPS', props.navigation.state.params.recipe)
-        const recipe = props.navigation.state.params.recipe
-        return(
-            <View>
-            <Button title='go back' onPress={()=>props.navigation.actions.goBack()}/>
-            <Text>HELLO THIS IS A TEST</Text>
-            </View>
-        )
-            
-        
-    }
+  async componentDidMount() {
+    const recipe = this.props.navigation.state.params.recipe;
+    await this.props.getSingleRecipe(recipe.id);
+    this.setState({ instructions: this.props.recipe });
 
-const style = StyleSheet.create({})
+    console.log("this this.state!!!!!!!!!!!!!!!!!", this.state);
+  }
 
-export default SingleRecipe
+  render() {
+    // console.log("this is this.props", this.props);
+    return (
+      <View>
+        <Text>HELLO THIS IS A ERTL:NSA:FKSNDG</Text>
+      </View>
+    );
+  }
+}
+
+const style = StyleSheet.create({});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getSingleRecipe: id => dispatch(getSingleRecipeThunk(id))
+  };
+};
+
+const mapStateToProps = state => {
+  return {
+    recipe: state.recipe
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SingleRecipe);

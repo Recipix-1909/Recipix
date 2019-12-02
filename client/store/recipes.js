@@ -2,20 +2,19 @@ import axios from "axios";
 import { createStore, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import { ip } from "../../secrets";
-import { ActionSheetIOS } from "react-native";
 
 //action type
 
 const GET_RECIPES = "GET_RECIPES";
 const GET_FILTERED_RECIPES = "GET_FILTERED_RECIPES";
-const GET_SINGLE_RECIPE = 'GET_SINGLE_RECIPE'
+const GET_SINGLE_RECIPE = "GET_SINGLE_RECIPE";
 
 //action creator
 
-const getRecipes = recipe => {
+const getRecipes = recipes => {
   return {
     type: GET_RECIPES,
-    recipe
+    recipes
   };
 };
 
@@ -27,9 +26,11 @@ const getFilteredRecipes = recipes => {
 };
 
 const getSingleRecipe = recipe => {
-  type: GET_SINGLE_RECIPE,
-  recipe
-}
+  return {
+    type: GET_SINGLE_RECIPE,
+    recipe
+  };
+};
 
 //thunk
 
@@ -56,22 +57,35 @@ export const getFilteredRecipesThunk = filteredItems => {
   };
 };
 
-export const getSingleRecipeThunk = (recipeId) => {
+export const getSingleRecipeThunk = recipeId => {
   return async dispatch => {
     try {
-      const {data} = await axios.get(`http://${ip}:8080/api/recipes/singleRecipe/${recipeId}`)
-      dispatch(getSingleRecipe(data))
-    } catch (error) {
-    }
-  }
-}
+      const { data } = await axios.get(
+        `http://${ip}:8080/api/recipes/singleRecipe/${recipeId}`
+      );
+      // console.log("this is data!!!!!!!!!!!!!!", data);
+      dispatch(getSingleRecipe(data));
+    } catch (error) {}
+  };
+};
 
 //reducer
+
+const singleRecipeReducer = (recipe = [], action) => {
+  // console.log("DO I GO INTO THE GET SINGLE RECIPE CASE IN REDUCER!!!!");
+  switch (action.type) {
+    case GET_SINGLE_RECIPE: {
+      return action.recipe;
+    }
+    default:
+      return recipe;
+  }
+};
 
 const recipesReducer = (recipes = [], action) => {
   switch (action.type) {
     case GET_RECIPES: {
-      return action.recipe;
+      return action.recipes;
     }
     case GET_FILTERED_RECIPES: {
       return action.recipes;
@@ -81,5 +95,4 @@ const recipesReducer = (recipes = [], action) => {
   }
 };
 
-
-export default recipesReducer;
+export { recipesReducer, singleRecipeReducer };
