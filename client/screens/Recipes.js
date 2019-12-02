@@ -6,55 +6,57 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Image,
   // TouchableOpacity,
   View
 } from "react-native";
-import { connect } from 'react-redux'
-import {getRecipesThunk} from '../store/recipes'
-
+import { connect } from "react-redux";
+import { getRecipesThunk } from "../store/recipes";
 
 class Recipes extends React.Component {
-
-  componentDidMount(){
-
-    this.props.getRecipes(1)
+  constructor() {
+    super();
+    this.state = {};
   }
 
-  render(){
-    return(
-    this.props.state[0]!==undefined?
-          <View style={styles.container}>
-            <ScrollView
-              style={styles.container}
-              contentContainerStyle={styles.contentContainer}
-            >
-              <View style={styles.getStartedContainer}>
-                <Text style={styles.getStartedText}>
-                  {this.props.state.map(curr=>{
-                    return curr.recipe.label
-                  })}
-                  Let's see what you can cook with the items from your fridge!
-                </Text>
-              </View>
-            </ScrollView>
+  componentDidMount() {
+    this.props.getRecipes(1);
+  }
 
-            <View style={styles.tabBarInfoContainer}>
-              <Text style={styles.tabBarInfoText}>
-                This is a tab bar. You can edit it in:
-              </Text>
-
-              <View
-                style={[styles.codeHighlightContainer, styles.navigationFilename]}
-              >
-                {/* <MonoText style={styles.codeHighlightText}>
-                  navigation/MainTabNavigator.js
-                </MonoText> */}
-              </View>
-            </View>
+  render() {
+    return this.props.recipes[0] !== undefined ? (
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
+        >
+          <View style={styles.getStartedContainer}>
+            {this.props.recipes.map(curr => {
+              return (
+                <View key={curr.id}>
+                  <Text>{curr.title}</Text>
+                  <Image
+                    source={{ uri: `${curr.image}` }}
+                    style={{ width: 400, height: 400 }}
+                  ></Image>
+                </View>
+              );
+            })}
           </View>
-        :null
-        )
-   }
+        </ScrollView>
+
+        <View style={styles.tabBarInfoContainer}>
+          <Text style={styles.tabBarInfoText}>
+            This is a tab bar. You can edit it in:
+          </Text>
+
+          <View
+            style={[styles.codeHighlightContainer, styles.navigationFilename]}
+          ></View>
+        </View>
+      </View>
+    ) : null;
+  }
 }
 
 Recipes.navigationOptions = {
@@ -62,78 +64,25 @@ Recipes.navigationOptions = {
 };
 
 const mapStateToProps = state => {
-  return{
-    state:state.recipes
-  }
-}
+  return {
+    recipes: state.recipes
+  };
+};
 
-const mapDispatchToProps = dispatch =>{
-  return{
-    getRecipes: (id) => dispatch(getRecipesThunk(id))
-  }
-}
+const mapDispatchToProps = dispatch => {
+  return {
+    getRecipes: id => dispatch(getRecipesThunk(id))
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Recipes)
-
-
-
-
-
-
-
-
-
-
-
-
-
-// function DevelopmentModeNotice() {
-//   if (__DEV__) {
-//     const learnMoreButton = (
-//       <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-//         Learn more
-//       </Text>
-//     );
-
-//     return (
-//       <Text style={styles.developmentModeText}>
-//         Development mode is enabled: your app will be slower but you can use
-//         useful development tools. {learnMoreButton}
-//       </Text>
-//     );
-//   } else {
-//     return (
-//       <Text style={styles.developmentModeText}>
-//         You are not in development mode: your app will run at full speed.
-//       </Text>
-//     );
-//   }
-// }
-
-// function handleLearnMorePress() {
-//   WebBrowser.openBrowserAsync(
-//     "https://docs.expo.io/versions/latest/workflow/development-mode/"
-//   );
-// }
-
-// function handleHelpPress() {
-//   WebBrowser.openBrowserAsync(
-//     "https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes"
-//   );
-// }
+export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFDAC1"
   },
-  // developmentModeText: {
-  //   marginBottom: 20,
-  //   color: "rgba(0,0,0,0.4)",
-  //   fontSize: 14,
-  //   lineHeight: 19,
-  //   textAlign: "center"
-  // },
+
   contentContainer: {
     paddingTop: 30
   },
