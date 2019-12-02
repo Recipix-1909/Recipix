@@ -2,11 +2,13 @@ import axios from "axios";
 import { createStore, applyMiddleware } from "redux";
 import ReduxThunk from "redux-thunk";
 import { ip } from "../../secrets";
+import { ActionSheetIOS } from "react-native";
 
 //action type
 
 const GET_RECIPES = "GET_RECIPES";
 const GET_FILTERED_RECIPES = "GET_FILTERED_RECIPES";
+const GET_SINGLE_RECIPE = 'GET_SINGLE_RECIPE'
 
 //action creator
 
@@ -23,6 +25,11 @@ const getFilteredRecipes = recipes => {
     recipes
   };
 };
+
+const getSingleRecipe = recipe => {
+  type: GET_SINGLE_RECIPE,
+  recipe
+}
 
 //thunk
 
@@ -49,6 +56,16 @@ export const getFilteredRecipesThunk = filteredItems => {
   };
 };
 
+export const getSingleRecipeThunk = (recipeId) => {
+  return async dispatch => {
+    try {
+      const {data} = await axios.get(`http://${ip}:8080/api/recipes/singleRecipe/${recipeId}`)
+      dispatch(getSingleRecipe(data))
+    } catch (error) {
+    }
+  }
+}
+
 //reducer
 
 const recipesReducer = (recipes = [], action) => {
@@ -63,5 +80,6 @@ const recipesReducer = (recipes = [], action) => {
       return recipes;
   }
 };
+
 
 export default recipesReducer;

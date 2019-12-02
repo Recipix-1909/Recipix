@@ -20,6 +20,7 @@ import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
 import { Svg, Path } from "react-native-svg";
+import SingleRecipe from './SingleRecipe'
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -87,6 +88,7 @@ class Recipes extends React.Component {
                           justifyContent: "center",
                           alignItems: "center"
                         }}
+                        
                         resizeMode="cover"
                         source={{
                           uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
@@ -106,12 +108,16 @@ class Recipes extends React.Component {
                             paddingLeft: 50,
                             paddingRight: 50
                           }}
+                          onPress={()=> this.props.navigation.navigate('SingleRecipe', {recipe: curr})}
+                          
                         >
                           <Text
                             style={{
                               backgroundColor: "transparent"
                             }}
+                            
                           >
+                         
                             {curr.title}
                           </Text>
                         </Text>

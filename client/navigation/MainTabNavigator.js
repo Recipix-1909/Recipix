@@ -9,6 +9,7 @@ import UserProfile from "../screens/UserProfile";
 import CameraScanner from "../screens/CameraScanner";
 import { Svg, Path } from "react-native-svg";
 import Auth from "../screens/Auth";
+import SingleRecipe from '../screens/SingleRecipe'
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -45,12 +46,28 @@ FridgeStack.navigationOptions = {
 
 FridgeStack.path = "";
 
+// const SingleRecipeStack = createStackNavigator(
+//   {
+//    SingleRecipe: SingleRecipe
+//   },
+//   config
+// );
+
+// SingleRecipeStack.navigationOptions = {
+//   t
+// };
+
+// SingleRecipeStack.path = "";
+
 const RecipesStack = createStackNavigator(
   {
-    Recipes: Recipes
+    Recipes: Recipes,
+    SingleRecipe: SingleRecipe
   },
   config
 );
+
+
 
 RecipesStack.navigationOptions = {
   tabBarLabel: "Recipes",
@@ -91,8 +108,9 @@ const tabNavigator = createBottomTabNavigator({
   FridgeStack,
   CameraStack,
   RecipesStack,
-  UserProfileStack
+  UserProfileStack,
 });
+
 
 tabNavigator.path = "";
 
