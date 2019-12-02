@@ -98,13 +98,9 @@ class CameraScanner extends React.Component {
               }}
             ></DatePicker>
             <Button
-              title={"Tap to Scan Again"}
-              onPress={() => this.setState({ scanned: false })}
-            />
-            <Button
-              title={"Back to Fridge"}
+              title={"Back to Scanner"}
               // need to navigate to the fridge here
-              onPress={() => this.handleBackToFridge()}
+              onPress={() => this.manualInput()}
             />
             <TextInput
             style={{height: 200, borderColor: 'gray',borderWidth: 1}}
@@ -169,6 +165,7 @@ class CameraScanner extends React.Component {
     this.props.navigation.navigate("Fridge");
     await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
     await this.props.getFridgeItems(1);
+
   };
 
   handleExpirationDate = async () => {
