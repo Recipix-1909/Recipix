@@ -18,11 +18,14 @@ class Fridge extends React.Component {
     super();
   }
 
+
+
   componentDidMount() {
     this.props.getFridgeItems(1);
   }
 
   render() {
+    if(this.props.items)
     return (
       <View style={styles.container}>
         <ScrollView
@@ -80,6 +83,7 @@ class Fridge extends React.Component {
         </View>
       </View>
     );
+    else return null
   }
 }
 

@@ -5,6 +5,8 @@ import { ip } from "../../secrets";
 const GET_FRIDGE_ITEMS = "GET_FRIDGE_ITEMS";
 export const DELETE_ITEM = "DELETE_ITEM";
 
+const ADD_ITEM_MANUALLY = "ADD_ITEM_MANUALLY";
+
 // action creator
 const getFridgeItems = items => {
   return {
@@ -20,7 +22,12 @@ export const deleteItem = item => {
   };
 };
 
-const addItemMan = item => {};
+const addItemMan = item => {
+  return {
+    type: ADD_ITEM_MANUALLY,
+    item
+  };
+};
 
 // thunk
 
@@ -29,6 +36,22 @@ export const getFridgeItemsThunk = userId => {
   return async dispatch => {
     const { data } = await axios.get(`http://${ip}:8080/api/fridge/${userId}`);
     dispatch(getFridgeItems(data.items));
+  };
+};
+
+export const getFridgeItemsManualThunk = (userId, itemName, expirationDate) => {
+  console.log(itemName);
+  return async dispatch => {
+    await axios.post(`http://192.168.0.106:8080/api/fridge/${userId}/manual`, {
+      userId,
+      name: itemName,
+      expirationDate
+    });
+    const { data } = await axios.get(
+      `http://192.168.0.106:8080/api/fridge/${userId}`
+    );
+    console.log(data);
+    dispatch(addItemMan(data.items));
   };
 };
 
@@ -53,6 +76,9 @@ const fridgeReducer = (items = [], action) => {
         return item.id !== Number(action.item.itemId);
       });
       return newItems;
+    }
+    case ADD_ITEM_MANUALLY: {
+      return action.item;
     }
     default:
       return items;

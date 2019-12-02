@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Button, ScrollView, TextInput } from "react-native";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { addItemThunk } from "../store/items";
-import { getFridgeItemsThunk } from "../store/fridge";
+import { getFridgeItemsThunk, getFridgeItemsManualThunk } from "../store/fridge";
 import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
@@ -23,12 +23,24 @@ class CameraScanner extends React.Component {
     date: "11-27-2019",
     isModal: false,
     type: "",
-    data: ""
+    data: "",
+    toggle: false
   };
 
   async componentDidMount() {
     this.getPermissionsAsync();
     // this.saveItem();
+  }
+
+  handleManualInput = (target) => {
+    this.props.getFridgeItemsManual(1,target.nativeEvent.text,this.state.date)
+    this.manualInput()
+  }
+
+  manualInput(){
+    this.setState({
+      toggle: !this.state.toggle
+    })
   }
 
   getPermissionsAsync = async () => {
@@ -57,6 +69,48 @@ class CameraScanner extends React.Component {
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
+
+        {<Modal isVisible={this.state.toggle}>
+        <Text>Set expiration date (optional)</Text>
+            <DatePicker
+              style={{ width: 200 }}
+              date={this.state.date} //initial date from state
+              mode="date" //The enum of date, datetime and time
+              placeholder="select date"
+              format="MM-DD-YYYY"
+              minDate="01-01-2019"
+              maxDate="01-01-2025"
+              confirmBtnText="Confirm"
+              cancelBtnText="Cancel"
+              customStyles={{
+                dateIcon: {
+                  position: "absolute",
+                  left: 0,
+                  top: 4,
+                  marginLeft: 0
+                },
+                dateInput: {
+                  marginLeft: 36
+                }
+              }}
+              onDateChange={date => {
+                this.setState({ date: date });
+              }}
+            ></DatePicker>
+            <Button
+              title={"Tap to Scan Again"}
+              onPress={() => this.setState({ scanned: false })}
+            />
+            <Button
+              title={"Back to Fridge"}
+              // need to navigate to the fridge here
+              onPress={() => this.handleBackToFridge()}
+            />
+            <TextInput
+            style={{height: 200, borderColor: 'gray',borderWidth: 1}}
+            onSubmitEditing={text=>this.handleManualInput(text)}
+            />
+        </Modal>}
 
         {scanned && (
           <Modal isVisible={this.state.isModal}>
@@ -102,6 +156,10 @@ class CameraScanner extends React.Component {
           title={"Tap to Scan Again"}
           onPress={() => this.setState({ scanned: false })}
         />
+        <Button
+        title={"Add Manually"}
+        onPress={()=> this.manualInput()}
+        />
       </View>
     );
   }
@@ -135,8 +193,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addItem: (userId, serialNum, expirationDate) =>
-      dispatch(addItemThunk(userId, serialNum, expirationDate)),
-    getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId))
+    dispatch(addItemThunk(userId, serialNum, expirationDate)),
+    getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId)),
+    getFridgeItemsManual: (userId, itemName, expirationDate) => dispatch(getFridgeItemsManualThunk(userId,itemName, expirationDate))
   };
 };
 
