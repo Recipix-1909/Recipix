@@ -40,7 +40,7 @@ export const getFridgeItemsThunk = userId => {
 };
 
 export const getFridgeItemsManualThunk = (userId, itemName, expirationDate) => {
-  console.log(itemName);
+  console.log(ip);
   return async dispatch => {
     await axios.post(`http://${ip}:8080/api/fridge/${userId}/manual`, {
       userId,
