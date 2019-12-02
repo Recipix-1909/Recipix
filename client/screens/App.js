@@ -11,6 +11,8 @@ import Recipes from "./Recipes";
 import UserProfile from "./UserProfile";
 import store from "../store";
 import AppNavigator from "../navigation/AppNavigator";
+import Auth from "./Auth";
+
 
 export default class App extends React.Component {
   render() {
@@ -31,6 +33,7 @@ export class HomeScreen extends React.Component {
         <ScrollView>
           <Text>Testing!</Text>
           <Button title="camera" onPress={() => navigate("Camera")} />
+          <Auth />
           <AppNavigator />
         </ScrollView>
       </View>

@@ -1,11 +1,12 @@
 import axios from "axios";
+import { ip } from "../../secrets";
 
 //action type
 
 const ADD_ITEM = "ADD_ITEM";
 const GET_ITEM = "GET_ITEM";
 
-//action creator
+//action creators
 
 const getItem = item => {
   return {
@@ -25,7 +26,7 @@ const addItem = item => {
 export const addItemThunk = (userId, serialNum, expirationDate) => {
   return async dispatch => {
     const { data } = await axios.post(
-      `http://192.168.0.106:8080/api/fridge/${userId}`,
+      `http://${ip}:8080/api/fridge/${userId}`,
       {
         serialNum,
         expirationDate
