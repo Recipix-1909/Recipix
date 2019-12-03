@@ -1,12 +1,27 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, ScrollView, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ScrollView,
+  TextInput
+} from "react-native";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { addItemThunk } from "../store/items";
-import { getFridgeItemsThunk, getFridgeItemsManualThunk } from "../store/fridge";
+import {
+  getFridgeItemsThunk,
+  getFridgeItemsManualThunk
+} from "../store/fridge";
 import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
+import { Appearance } from "react-native-appearance";
+
+// To determine what mode (light, dark) user is using on iOS/Android.
+// The user's mode will later dictate what color scheme will be chosen for the date picker
+const colorScheme = Appearance.getColorScheme();
 
 class CameraScanner extends React.Component {
   // constructor() {
@@ -32,15 +47,19 @@ class CameraScanner extends React.Component {
     // this.saveItem();
   }
 
-  handleManualInput = (target) => {
-    this.props.getFridgeItemsManual(this.props.userId,target.nativeEvent.text,this.state.date)
-    this.manualInput()
-  }
+  handleManualInput = target => {
+    this.props.getFridgeItemsManual(
+      this.props.userId,
+      target.nativeEvent.text,
+      this.state.date
+    );
+    this.manualInput();
+  };
 
-  manualInput(){
+  manualInput() {
     this.setState({
       toggle: !this.state.toggle
-    })
+    });
   }
 
   getPermissionsAsync = async () => {
@@ -70,8 +89,9 @@ class CameraScanner extends React.Component {
           style={StyleSheet.absoluteFillObject}
         />
 
-        {<Modal isVisible={this.state.toggle}>
-        <Text>Set expiration date (optional)</Text>
+        {
+          <Modal isVisible={this.state.toggle}>
+            <Text>Set expiration date (optional)</Text>
             <DatePicker
               style={{ width: 200 }}
               date={this.state.date} //initial date from state
@@ -91,6 +111,12 @@ class CameraScanner extends React.Component {
                 },
                 dateInput: {
                   marginLeft: 36
+                },
+                datePicker: {
+                  backgroundColor: colorScheme === "dark" ? "#222" : "white"
+                },
+                datePickerCon: {
+                  backgroundColor: colorScheme === "dark" ? "#333" : "white"
                 }
               }}
               onDateChange={date => {
@@ -103,10 +129,11 @@ class CameraScanner extends React.Component {
               onPress={() => this.manualInput()}
             />
             <TextInput
-            style={{height: 200, borderColor: 'gray',borderWidth: 1}}
-            onSubmitEditing={text=>this.handleManualInput(text)}
+              style={{ height: 200, borderColor: "gray", borderWidth: 1 }}
+              onSubmitEditing={text => this.handleManualInput(text)}
             />
-        </Modal>}
+          </Modal>
+        }
 
         {scanned && (
           <Modal isVisible={this.state.isModal}>
@@ -152,10 +179,7 @@ class CameraScanner extends React.Component {
           title={"Tap to Scan Again"}
           onPress={() => this.setState({ scanned: false })}
         />
-        <Button
-        title={"Add Manually"}
-        onPress={()=> this.manualInput()}
-        />
+        <Button title={"Add Manually"} onPress={() => this.manualInput()} />
       </View>
     );
   }
@@ -163,15 +187,22 @@ class CameraScanner extends React.Component {
   handleBackToFridge = async () => {
     this.setState({ isModal: false });
     this.props.navigation.navigate("Fridge");
-    await this.props.addItem(this.props.userId, this.state.data, this.state.date); // how do we grab userID?
+    await this.props.addItem(
+      this.props.userId,
+      this.state.data,
+      this.state.date
+    ); // how do we grab userID?
     await this.props.getFridgeItems(this.props.userId);
-
   };
 
   handleExpirationDate = async () => {
     console.log("this is this.props", this.props);
     await this.setState({ isModal: false });
-    await this.props.addItem(this.props.userId, this.state.data, this.state.date); // how do we grab userID?
+    await this.props.addItem(
+      this.props.userId,
+      this.state.data,
+      this.state.date
+    ); // how do we grab userID?
     await this.props.getFridgeItems(this.props.userId);
   };
 
@@ -191,9 +222,10 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     addItem: (userId, serialNum, expirationDate) =>
-    dispatch(addItemThunk(userId, serialNum, expirationDate)),
+      dispatch(addItemThunk(userId, serialNum, expirationDate)),
     getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId)),
-    getFridgeItemsManual: (userId, itemName, expirationDate) => dispatch(getFridgeItemsManualThunk(userId,itemName, expirationDate))
+    getFridgeItemsManual: (userId, itemName, expirationDate) =>
+      dispatch(getFridgeItemsManualThunk(userId, itemName, expirationDate))
   };
 };
 
