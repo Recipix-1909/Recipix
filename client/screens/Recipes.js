@@ -20,6 +20,7 @@ import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
 import { Svg, Path } from "react-native-svg";
+import * as Progress from "react-native-progress";
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -33,7 +34,6 @@ class Recipes extends React.Component {
 
   async componentDidMount() {
     await this.props.getRecipes(this.props.userId);
-    // console.log("Recipes props===>", this.props);
     this.setState({ loaded: true });
   }
 
@@ -61,173 +61,185 @@ class Recipes extends React.Component {
     // console.log("this.props.filteredItems ====>", this.props.filteredItems);
     return (
       <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          {!this.state.loaded ? (
-            <View>
-              <Text style={{ fontSize: 40 }}>Loading Recipes...</Text>
+        {!this.state.loaded ? (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "column",
+              justifyContent: "center"
+            }}
+          >
+            <View
+              style={{
+                flexDirection: "column",
+                alignItems: "center"
+              }}
+            >
+              <Progress.CircleSnail size={70} color={["white"]} thickness={5} />
+              <Text style={{ fontSize: 20 }}>Cookin' up some recipes</Text>
             </View>
-          ) : this.state.loaded && this.props.recipes.length === 0 ? (
-            <View>
-              <Text>No recipes to show...</Text>
-            </View>
-          ) : (
-            <View style={styles.getStartedContainer}>
-              {this.props.recipes[0] !== undefined &&
-                this.props.recipes.map(curr => {
-                  return (
-                    <View key={curr.id}>
-                      <ImageBackground
-                        style={{
-                          width: Dimensions.get("window").width,
-                          height: 350,
-
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}
-                        resizeMode="cover"
-                        source={{
-                          uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
-                        }}
-                      >
-                        <Text
+          </View>
+        ) : (
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={{
+              paddingTop: 65,
+              alignItems: "center"
+            }}
+          >
+            {this.props.recipes.length === 0 ? (
+              <View>
+                <Text>No recipes to show...</Text>
+              </View>
+            ) : (
+              <View style={styles.getStartedContainer}>
+                {this.props.recipes[0] !== undefined &&
+                  this.props.recipes.map(curr => {
+                    return (
+                      <View key={curr.id}>
+                        <ImageBackground
                           style={{
-                            fontWeight: "bold",
-                            fontSize: 40,
-                            textAlign: "center",
+                            width: Dimensions.get("window").width,
+                            height: 350,
 
-                            textShadowColor: "#FFFFFF",
-                            textShadowOffset: { width: -2, height: 2 },
-                            textShadowRadius: 3,
-                            backgroundColor: "rgba(52, 52, 52, 0.3)",
-                            width: "100%",
-                            paddingLeft: 50,
-                            paddingRight: 50
+                            justifyContent: "center",
+                            alignItems: "center"
+                          }}
+                          resizeMode="cover"
+                          source={{
+                            uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
                           }}
                         >
                           <Text
                             style={{
-                              backgroundColor: "transparent"
+                              fontWeight: "bold",
+                              fontSize: 40,
+                              textAlign: "center",
+
+                              textShadowColor: "#FFFFFF",
+                              textShadowOffset: { width: -2, height: 2 },
+                              textShadowRadius: 3,
+                              backgroundColor: "rgba(52, 52, 52, 0.3)",
+                              width: "100%",
+                              paddingLeft: 50,
+                              paddingRight: 50
                             }}
                           >
-                            {curr.title}
+                            <Text
+                              style={{
+                                backgroundColor: "transparent"
+                              }}
+                            >
+                              {curr.title}
+                            </Text>
                           </Text>
-                        </Text>
-                      </ImageBackground>
-                    </View>
-                  );
-                })}
-            </View>
-          )}
-
-          <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
-          >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#00000080"
-              }}
-            >
-              {/* View for Inner Box */}
-              <View
-                style={{
-                  width: Dimensions.get("window").width * 0.85,
-                  height: Dimensions.get("window").height * 0.85,
-                  backgroundColor: "#DABFDE",
-                  padding: 20,
-                  paddingBottom: 75,
-                  borderRadius: 15
-                }}
-              >
-                <ScrollView
-                  style={{
-                    flex: 1,
-                    flexDirection: "column",
-                    marginTop: 40
-                  }}
-                  contentContainerStyle={{
-                    justifyContent: "space-evenly",
-                    alignItems: "center"
-                  }}
-                >
-                  {this.props.items.map(item => {
-                    return (
-                      <View key={item.id} style={{}}>
-                        <ItemCheckBox
-                          item={item}
-                          isChecked={this.isItemInFilter(item)}
-                        />
+                        </ImageBackground>
                       </View>
                     );
                   })}
-                </ScrollView>
+              </View>
+            )}
 
-                <View style={styles.filterHeaderContainer}>
-                  <View
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={this.state.modalVisible}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#00000080"
+                }}
+              >
+                {/* View for Inner Box */}
+                <View
+                  style={{
+                    width: Dimensions.get("window").width * 0.85,
+                    height: Dimensions.get("window").height * 0.85,
+                    backgroundColor: "#DABFDE",
+                    padding: 20,
+                    paddingBottom: 75,
+                    borderRadius: 15
+                  }}
+                >
+                  <ScrollView
                     style={{
-                      width: 40,
-                      height: 40
+                      flex: 1,
+                      flexDirection: "column",
+                      marginTop: 40
                     }}
-                  ></View>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      paddingVertical: 10
+                    contentContainerStyle={{
+                      justifyContent: "space-evenly",
+                      alignItems: "center"
                     }}
                   >
-                    Filter By Ingredients
-                  </Text>
-                  <Button
-                    icon={
-                      <Icon
-                        name="close-box"
-                        type="material-community"
-                        color="red"
-                      />
-                    }
-                    type="clear"
-                    buttonStyle={{
-                      width: 40,
-                      height: 40,
-                      flexDirection: "column-reverse",
-                      marginTop: 2
-                    }}
-                    onPress={() => {
-                      this.setModalVisible(false);
-                    }}
-                  />
-                </View>
-
-                <View style={styles.tabBarInfoContainer}>
-                  <Button
-                    raised
-                    type="outline"
-                    title={"Submit Filter"}
-                    onPress={() => {
-                      console.log(
-                        "filtered items list ====>",
-                        this.props.filteredItems
+                    {this.props.items.map(item => {
+                      return (
+                        <View key={item.id} style={{}}>
+                          <ItemCheckBox
+                            item={item}
+                            isChecked={this.isItemInFilter(item)}
+                          />
+                        </View>
                       );
-                      this.setModalVisible(false);
-                      this.props.getFilteredRecipes(this.props.filteredItems);
-                      // this.setState({
-                      //   filteredItems: this.props.filteredItems
-                      // });
-                    }}
-                  />
+                    })}
+                  </ScrollView>
+
+                  <View style={styles.filterHeaderContainer}>
+                    <View
+                      style={{
+                        width: 40,
+                        height: 40
+                      }}
+                    ></View>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        paddingVertical: 10
+                      }}
+                    >
+                      Filter By Ingredients
+                    </Text>
+                    <Button
+                      icon={
+                        <Icon
+                          name="close-box"
+                          type="material-community"
+                          color="red"
+                        />
+                      }
+                      type="clear"
+                      buttonStyle={{
+                        width: 40,
+                        height: 40,
+                        flexDirection: "column-reverse",
+                        marginTop: 2
+                      }}
+                      onPress={() => {
+                        this.setModalVisible(false);
+                      }}
+                    />
+                  </View>
+
+                  <View style={styles.tabBarInfoContainer}>
+                    <Button
+                      raised
+                      type="outline"
+                      title={"Submit Filter"}
+                      onPress={() => {
+                        this.setModalVisible(false);
+                        this.props.getFilteredRecipes(this.props.filteredItems);
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </Modal>
-        </ScrollView>
+            </Modal>
+          </ScrollView>
+        )}
 
         <View style={styles.topBarContainer}>
           <View

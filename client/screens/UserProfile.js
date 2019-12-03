@@ -1,79 +1,62 @@
 // import * as WebBrowser from "expo-web-browser";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  // Image,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  // TouchableOpacity,
-  View
-} from "react-native";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import Modal from "react-native-modal";
 
-// import { MonoText } from "../components/StyledText";
-
 class UserProfile extends Component {
-  constructor(){
-    super()
-    this.state={
+  constructor() {
+    super();
+    this.state = {
       intolerance: false
-    }
+    };
   }
 
-  intoleranceTrigger(){
+  intoleranceTrigger() {
     this.setState({
       intolerance: !this.state.intolerance
-    })
+    });
   }
 
-  render(){
-    console.log('LOOK AT ME!!!',this.props.user)
-  return (
-    <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}
-      >
-        <View style={styles.getStartedContainer}>
-          <Text style={styles.getStartedText}>{this.props.user.firstName} {this.props.user.lastName}</Text>
-          <Button
-          title={"Allergies"}
-          onPress={()=> this.intoleranceTrigger()}
-          />
-          {<Modal isVisible={this.state.intolerance}>
-            <Text>Allergies</Text>
-            {allergies}
-            <Button title={"Save"} onPress={()=> this.intoleranceTrigger()}/>
-          </Modal>}
-        </View>
-      </ScrollView>
-
-      <View style={styles.tabBarInfoContainer}>
-        <Text style={styles.tabBarInfoText}>
-          This is a tab bar. You can edit it in:
-        </Text>
-
-        <View
-          style={[styles.codeHighlightContainer, styles.navigationFilename]}
+  render() {
+    console.log("LOOK AT ME!!!", this.props.user);
+    return (
+      <View style={styles.container}>
+        <ScrollView
+          style={styles.container}
+          contentContainerStyle={styles.contentContainer}
         >
-          {/* <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText> */}
-        </View>
+          <View style={styles.getStartedContainer}>
+            <Text style={styles.getStartedText}>
+              {this.props.user.firstName} {this.props.user.lastName}
+            </Text>
+            <Button
+              title={"Allergies"}
+              onPress={() => this.intoleranceTrigger()}
+            />
+            {
+              <Modal isVisible={this.state.intolerance}>
+                <Text>Allergies</Text>
+                {/* {allergies} */}
+                <Button
+                  title={"Save"}
+                  onPress={() => this.intoleranceTrigger()}
+                />
+              </Modal>
+            }
+          </View>
+        </ScrollView>
       </View>
-    </View>
-  );
+    );
   }
 }
 
-const mapStateToProps = state =>({
+const mapStateToProps = state => ({
   user: state.user
-})
+});
 
-export default connect(mapStateToProps)(UserProfile)
+export default connect(mapStateToProps)(UserProfile);
 
 UserProfile.navigationOptions = {
   header: null
