@@ -29,16 +29,11 @@ class SingleRecipe extends React.Component {
   async componentDidMount() {
     const recipe = this.props.navigation.state.params.recipe;
     await this.props.getSingleRecipe(recipe.id);
-    this.setState({ instructions: this.props.recipe });
-
-    console.log("this this.state!!!!!!!!!!!!!!!!!", this.state);
-    console.log("PROOPS", recipe.image);
+    this.setState({ instructions: this.props.recipe[0].steps });
   }
 
   render() {
-    // console.log("this is this.props", this.props);
     const recipe = this.props.navigation.state.params.recipe;
-    console.log("PROOPS", recipe);
     return (
       <ScrollView>
         <Image
@@ -52,8 +47,8 @@ class SingleRecipe extends React.Component {
           }}
         />
         <Text>{recipe.title}</Text>
-        <Text>Used ingredients</Text>
-        <ScrollView
+
+        <View
           style={{
             flex: 1,
             flexDirection: "column",
@@ -64,6 +59,7 @@ class SingleRecipe extends React.Component {
             alignItems: "center"
           }}
         >
+          <Text>Used ingredients</Text>
           {recipe.usedIngredients.map(ingred => {
             return (
               <View key={ingred.id} style={{}}>
@@ -71,15 +67,27 @@ class SingleRecipe extends React.Component {
               </View>
             );
           })}
-        </ScrollView>
-        <Text>Missing ingredients</Text>
-        {recipe.missedIngredients.map(ingred => {
-          return (
-            <View key={ingred.id} style={{}}>
-              <Text>{ingred.original}</Text>
-            </View>
-          );
-        })}
+        </View>
+        <View>
+          <Text>Missing ingredients</Text>
+          {recipe.missedIngredients.map(ingred => {
+            return (
+              <View key={ingred.id} style={{}}>
+                <Text>{ingred.original}</Text>
+              </View>
+            );
+          })}
+        </View>
+        <View>
+          <Text>Step by step instructions:</Text>
+          {this.state.instructions.map(step => {
+            return (
+              <View key={step.id} style={{}}>
+                <Text>{step.step}</Text>
+              </View>
+            );
+          })}
+        </View>
       </ScrollView>
     );
   }
