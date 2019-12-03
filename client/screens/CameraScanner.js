@@ -17,11 +17,11 @@ import {
 import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
-import { Appearance } from "react-native-appearance";
+// import { Appearance } from "react-native-appearance";
 
 // To determine what mode (light, dark) user is using on iOS/Android.
 // The user's mode will later dictate what color scheme will be chosen for the date picker
-const colorScheme = Appearance.getColorScheme();
+// const colorScheme = Appearance.getColorScheme();
 
 class CameraScanner extends React.Component {
   // constructor() {
@@ -111,13 +111,13 @@ class CameraScanner extends React.Component {
                 },
                 dateInput: {
                   marginLeft: 36
-                },
-                datePicker: {
-                  backgroundColor: colorScheme === "dark" ? "#222" : "white"
-                },
-                datePickerCon: {
-                  backgroundColor: colorScheme === "dark" ? "#333" : "white"
                 }
+                // datePicker: {
+                //   backgroundColor: colorScheme === "dark" ? "#222" : "white"
+                // },
+                // datePickerCon: {
+                //   backgroundColor: colorScheme === "dark" ? "#333" : "white"
+                // }
               }}
               onDateChange={date => {
                 this.setState({ date: date });
