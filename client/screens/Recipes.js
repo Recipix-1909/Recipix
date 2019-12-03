@@ -21,7 +21,6 @@ import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
 import { Svg, Path } from "react-native-svg";
 import * as Progress from "react-native-progress";
-import SingleRecipe from "./SingleRecipe";
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -110,11 +109,6 @@ class Recipes extends React.Component {
                           source={{
                             uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
                           }}
-                          onPress={() =>
-                            this.props.navigation.navigate("SingleRecipe", {
-                              recipe: curr
-                            })
-                          }
                         >
                           <Text
                             style={{

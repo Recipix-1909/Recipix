@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 import { Button } from "react-native-elements";
 import Modal from "react-native-modal";
+import { getAllergyThunk } from "../store/allergy";
 
 class UserProfile extends Component {
   constructor() {
@@ -11,6 +12,10 @@ class UserProfile extends Component {
     this.state = {
       intolerance: false
     };
+  }
+
+  componentDidMount() {
+    this.props.getAllergy(this.props.user.id);
   }
 
   intoleranceTrigger() {
@@ -53,10 +58,14 @@ class UserProfile extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state.user
+  user: state
 });
 
-export default connect(mapStateToProps)(UserProfile);
+const mapDispatch = dispatch => ({
+  getAllergy: userId => dispatch(getAllergyThunk(userId))
+});
+
+export default connect(mapStateToProps, mapDispatch)(UserProfile);
 
 UserProfile.navigationOptions = {
   header: null
