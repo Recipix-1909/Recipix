@@ -14,8 +14,13 @@ class UserProfile extends Component {
     };
   }
 
-  componentDidMount() {
-    this.props.getAllergy(this.props.user.id);
+  async componentDidMount() {
+    // console.log(
+    //   "component mounted in UserProfile. this.props.user ===>",
+    //   this.props.user
+    // );
+    await this.props.getAllergy(this.props.user.id);
+    console.log("USER ALLERGIES ==>", this.props.allergies);
   }
 
   intoleranceTrigger() {
@@ -25,7 +30,7 @@ class UserProfile extends Component {
   }
 
   render() {
-    console.log("LOOK AT ME!!!", this.props.user);
+    // console.log("LOOK AT ME!!!", this.props.user);
     return (
       <View style={styles.container}>
         <ScrollView
@@ -43,7 +48,7 @@ class UserProfile extends Component {
             {
               <Modal isVisible={this.state.intolerance}>
                 <Text>Allergies</Text>
-                {/* {allergies} */}
+
                 <Button
                   title={"Save"}
                   onPress={() => this.intoleranceTrigger()}
@@ -58,7 +63,8 @@ class UserProfile extends Component {
 }
 
 const mapStateToProps = state => ({
-  user: state
+  user: state.user,
+  allergies: state.allergies
 });
 
 const mapDispatch = dispatch => ({

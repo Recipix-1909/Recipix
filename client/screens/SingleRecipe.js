@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import { getSingleRecipeThunk } from "../store/recipes";
+import { getSingleRecipeThunk, getRecipesThunk } from "../store/recipes";
 
 class SingleRecipe extends React.Component {
   constructor(props) {
@@ -29,22 +29,87 @@ class SingleRecipe extends React.Component {
   async componentDidMount() {
     const recipe = this.props.navigation.state.params.recipe;
     await this.props.getSingleRecipe(recipe.id);
-    this.setState({ instructions: this.props.recipe });
-
-    console.log("this this.state!!!!!!!!!!!!!!!!!", this.state);
+    this.setState({ instructions: this.props.recipe[0].steps });
   }
 
   render() {
-    // console.log("this is this.props", this.props);
+    const recipe = this.props.navigation.state.params.recipe;
     return (
-      <View>
-        <Text>HELLO THIS IS A ERTL:NSA:FKSNDG</Text>
-      </View>
+      <ScrollView>
+        <Image
+          style={{
+            width: Dimensions.get("window").width,
+            height: 350,
+            justifyContent: "center"
+          }}
+          source={{
+            uri: `https://spoonacular.com/recipeImages/${recipe.id}-312x231.${recipe.imageType}`
+          }}
+        />
+        <Text style={styles.title}>{recipe.title}</Text>
+        <Text></Text>
+
+        <View style={styles.allIngredients}>
+          <Text style={styles.header}>INGREDIENTS</Text>
+          {recipe.usedIngredients.map(ingred => {
+            return (
+              <View key={ingred.id} style={styles.usedIngredients}>
+                <Text style={styles.usedIngredients}>○{ingred.original}</Text>
+              </View>
+            );
+          })}
+          <View style={styles.missedIngredients}>
+            {recipe.missedIngredients.map(ingred => {
+              return (
+                <View key={ingred.id} style={styles.missedIngredients}>
+                  <Text style={styles.missedIngredients}>
+                    ○{ingred.original}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+          <Text></Text>
+          <View style={styles.header}>
+            <Text style={styles.header}>PREPARATION</Text>
+            {this.state.instructions.map((step, idx) => {
+              return (
+                <View key={step.id} style={{}}>
+                  <Text style={{ fontWeight: "bold" }}>Step {idx + 1}</Text>
+                  <Text>{step.step}</Text>
+                  <Text> </Text>
+                </View>
+              );
+            })}
+          </View>
+        </View>
+      </ScrollView>
     );
   }
 }
 
-const style = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: "row",
+    padding: 12
+  },
+  usedIngredients: {
+    color: "#33FF61"
+  },
+  missedIngredients: {
+    color: "#FF5733"
+  },
+  instructions: {},
+  header: {
+    fontSize: 20,
+    textAlign: "center"
+  },
+  title: {
+    fontSize: 25,
+    textAlign: "center"
+  }
+});
 
 const mapDispatchToProps = dispatch => {
   return {
