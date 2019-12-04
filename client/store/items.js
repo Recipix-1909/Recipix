@@ -32,10 +32,7 @@ export const addItemThunk = (userId, serialNum, expirationDate) => {
         expirationDate
       }
     );
-    console.log("this is data", data);
-    console.log("this is data.length", data.length);
     if (data.length === 0) {
-      console.log("DO I GO INTO THIS IF STATEMENT");
       let errData = { item: { name: "error" } };
       dispatch(addItem(errData));
     } else dispatch(addItem(data));
