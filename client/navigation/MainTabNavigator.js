@@ -95,7 +95,7 @@ const tabNavigator = createBottomTabNavigator(
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state
-        let focusedColor = focused ? '#1d2e3b' : '#8fafc8'
+        let focusedColor = focused ? '#00ffcc' : '#8fafc8'
         if (routeName === 'CameraStack') {
           return (
             <Icon
