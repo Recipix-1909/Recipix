@@ -199,7 +199,7 @@ class CameraScanner extends React.Component {
         <Modal isVisible={this.state.failureScanModal}>
           <Text
             style={{
-              size: 16,
+              fontSize: 16,
               textAlign: "center",
               backgroundColor: "#ffffff",
               color: "#000000"
@@ -222,7 +222,7 @@ class CameraScanner extends React.Component {
         </Modal>
         <Text
           style={{
-            size: 16,
+            fontSize: 16,
             textAlign: "center",
             backgroundColor: "#ffffff",
             color: "#000000"
