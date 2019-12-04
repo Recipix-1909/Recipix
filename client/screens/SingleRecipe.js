@@ -15,6 +15,8 @@ import {
   Button
 } from "react-native";
 
+import { CheckBox } from "react-native-elements";
+
 import { connect } from "react-redux";
 import { getSingleRecipeThunk, getRecipesThunk } from "../store/recipes";
 
@@ -54,7 +56,13 @@ class SingleRecipe extends React.Component {
           {recipe.usedIngredients.map(ingred => {
             return (
               <View key={ingred.id} style={styles.usedIngredients}>
-                <Text style={styles.usedIngredients}>○{ingred.original}</Text>
+                {/* <Text style={styles.usedIngredients}>○{ingred.original}</Text> */}
+                <CheckBox
+                  title={ingred.original}
+                  checkedIcon="dot-circle-o"
+                  uncheckedIcon="circle-o"
+                  checked={false}
+                />
               </View>
             );
           })}
@@ -62,9 +70,15 @@ class SingleRecipe extends React.Component {
             {recipe.missedIngredients.map(ingred => {
               return (
                 <View key={ingred.id} style={styles.missedIngredients}>
-                  <Text style={styles.missedIngredients}>
+                  {/* <Text style={styles.missedIngredients}>
                     ○{ingred.original}
-                  </Text>
+                  </Text> */}
+                  <CheckBox
+                    title={ingred.original}
+                    checkedIcon="dot-circle-o"
+                    uncheckedIcon="circle-o"
+                    checked={false}
+                  />
                 </View>
               );
             })}
