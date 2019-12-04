@@ -32,14 +32,21 @@ export const addItemThunk = (userId, serialNum, expirationDate) => {
         expirationDate
       }
     );
-    dispatch(addItem(data));
+    console.log("this is data", data);
+    console.log("this is data.length", data.length);
+    if (data.length === 0) {
+      console.log("DO I GO INTO THIS IF STATEMENT");
+      let errData = { item: { name: "error" } };
+      dispatch(addItem(errData));
+    } else dispatch(addItem(data));
   };
 };
 
-const itemsReducer = (lastItem = {}, action) => {
+const itemsReducer = (lastItem = "", action) => {
   switch (action.type) {
     case ADD_ITEM: {
-      return action.item;
+      console.log("this is action.item.item.name", action.item.item.name);
+      return action.item.item.name;
     }
     default:
       return lastItem;
