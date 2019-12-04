@@ -9,7 +9,7 @@ import UserProfile from "../screens/UserProfile";
 import CameraScanner from "../screens/CameraScanner";
 import { Svg, Path } from "react-native-svg";
 import Auth from "../screens/Auth";
-import SingleRecipe from '../screens/SingleRecipe'
+import SingleRecipe from "../screens/SingleRecipe";
 
 const config = Platform.select({
   web: { headerMode: "screen" },
@@ -24,10 +24,10 @@ const CameraStack = createStackNavigator(
 );
 
 CameraStack.navigationOptions = {
-  tabBarLabel: "Camera",
-  tabBarIcon: (
-    <Icon name="barcode-scan" type="material-community" color="#517fa4" />
-  )
+  tabBarLabel: "Camera"
+  // tabBarIcon: (
+  //   <Icon name="barcode-scan" type="material-community" color="#00ffcc" />
+  // )
 };
 
 CameraStack.path = "";
@@ -40,8 +40,8 @@ const FridgeStack = createStackNavigator(
 );
 
 FridgeStack.navigationOptions = {
-  tabBarLabel: "Fridge",
-  tabBarIcon: <Icon name="fridge" type="material-community" color="#517fa4" />
+  tabBarLabel: "Fridge"
+  // tabBarIcon: <Icon name="fridge" type="material-community" color="#00ffcc" />
 };
 
 FridgeStack.path = "";
@@ -67,22 +67,19 @@ const RecipesStack = createStackNavigator(
   config
 );
 
-
-
 RecipesStack.navigationOptions = {
-  tabBarLabel: "Recipes",
-  // tabBarIcon: <Icon name="food" type="material-community" color="#517fa4" />,
-  tabBarIcon: (
-    <Svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="white"
-      stroke="#517fa4"
-    >
-      <Path d="M22 3L10 4.41V6H22V7H10V12H22C22 13.81 21.43 15.46 20.32 16.95S17.77 19.53 16 20.25V22H8V20.25C6.24 19.53 4.79 18.43 3.68 16.95S2 13.81 2 12H5V4L22 2V3M6 4.88V6H7V4.78L6 4.88M6 7V12H7V7H6M9 12V7H8V12H9M9 6V4.55L8 4.64V6H9Z" />
-    </Svg>
-  )
+  tabBarLabel: "Recipes"
+  // tabBarIcon: (
+  //   <Svg
+  //     width="24"
+  //     height="24"
+  //     viewBox="0 0 24 24"
+  //     fill="white"
+  //     stroke="#00ffcc"
+  //   >
+  //     <Path d="M22 3L10 4.41V6H22V7H10V12H22C22 13.81 21.43 15.46 20.32 16.95S17.77 19.53 16 20.25V22H8V20.25C6.24 19.53 4.79 18.43 3.68 16.95S2 13.81 2 12H5V4L22 2V3M6 4.88V6H7V4.78L6 4.88M6 7V12H7V7H6M9 12V7H8V12H9M9 6V4.55L8 4.64V6H9Z" />
+  //   </Svg>
+  // )
 };
 
 RecipesStack.path = "";
@@ -96,21 +93,77 @@ const UserProfileStack = createStackNavigator(
 );
 
 UserProfileStack.navigationOptions = {
-  tabBarLabel: "Profile",
-  tabBarIcon: (
-    <Icon name="account-circle" type="material-community" color="#517fa4" />
-  )
+  tabBarLabel: "Profile"
+  // tabBarIcon: (
+  //   <Icon name="account-circle" type="material-community" color="#00ffcc" />
+  // )
 };
 
 UserProfileStack.path = "";
 
-const tabNavigator = createBottomTabNavigator({
-  FridgeStack,
-  CameraStack,
-  RecipesStack,
-  UserProfileStack,
-});
+const tabNavigator = createBottomTabNavigator(
+  {
+    FridgeStack,
+    CameraStack,
+    RecipesStack,
+    UserProfileStack
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused }) => {
+        const { routeName } = navigation.state;
+        let focusedColor = focused ? "black" : "#00ffcc";
+        if (routeName === "CameraStack") {
+          return (
+            <Icon
+              name="barcode-scan"
+              type="material-community"
+              color={focusedColor}
+            />
+          );
+        } else if (routeName === "FridgeStack") {
+          return (
+            <Icon
+              name="fridge"
+              type="material-community"
+              color={focusedColor}
+            />
+          );
+        } else if (routeName === "RecipesStack") {
+          return (
+            <Svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="white"
+              stroke={focusedColor}
+            >
+              <Path d="M22 3L10 4.41V6H22V7H10V12H22C22 13.81 21.43 15.46 20.32 16.95S17.77 19.53 16 20.25V22H8V20.25C6.24 19.53 4.79 18.43 3.68 16.95S2 13.81 2 12H5V4L22 2V3M6 4.88V6H7V4.78L6 4.88M6 7V12H7V7H6M9 12V7H8V12H9M9 6V4.55L8 4.64V6H9Z" />
+            </Svg>
+          );
+        } else if (routeName === "UserProfileStack") {
+          return (
+            <Icon
+              name="account-circle"
+              type="material-community"
+              color={focusedColor}
+            />
+          );
+        }
+      }
+    }),
 
+    tabBarOptions: {
+      activeTintColor: "black",
+      activeBackgroundColor: "#00ffcc",
+      inactiveTintColor: "gray",
+      style: {
+        backgroundColor: "white",
+        borderTopWidth: 0
+      }
+    }
+  }
+);
 
 tabNavigator.path = "";
 

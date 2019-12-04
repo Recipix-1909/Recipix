@@ -156,7 +156,8 @@ class Auth extends React.Component {
 Auth.navigationOptions = {
   headerTitle: "Welcome",
   headerStyle: {
-    color: "#00ffcc"
+    color: "#00ffcc",
+    backgroundColor: "white"
   }
 };
 

@@ -13,7 +13,6 @@ import store from "../store";
 import AppNavigator from "../navigation/AppNavigator";
 import Auth from "./Auth";
 
-
 export default class App extends React.Component {
   render() {
     return (

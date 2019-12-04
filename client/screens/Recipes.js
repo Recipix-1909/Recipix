@@ -231,7 +231,17 @@ class Recipes extends React.Component {
                       title={"Submit Filter"}
                       onPress={() => {
                         this.setModalVisible(false);
-                        this.props.getFilteredRecipes(this.props.filteredItems);
+
+                        // if user did not filter for any ingredients, show default recipes containing any ingredients from fridge
+                        if (this.props.filteredItems.length === 0) {
+                          this.props.getRecipes(this.props.userId);
+                        }
+                        // else get recipes based on filtered ingredients
+                        else {
+                          this.props.getFilteredRecipes(
+                            this.props.filteredItems
+                          );
+                        }
                       }}
                     />
                   </View>
@@ -257,7 +267,7 @@ class Recipes extends React.Component {
             Recipes
           </Text>
           <Button
-            title="Filter"
+            title="Filter  "
             icon={
               <Svg
                 width="24"
@@ -271,12 +281,12 @@ class Recipes extends React.Component {
             }
             type="clear"
             buttonStyle={{
-              width: 50,
+              width: 70,
               height: 40,
-              flexDirection: "column-reverse"
+              flexDirection: "row-reverse"
             }}
             titleStyle={{
-              fontSize: 13
+              fontSize: 12
             }}
             onPress={() => {
               this.setModalVisible(true);
@@ -315,7 +325,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFDAC1"
+    backgroundColor: "#00ffcc"
   },
 
   modalContainer: {
@@ -395,8 +405,8 @@ const styles = StyleSheet.create({
       }
     }),
 
-    backgroundColor: "#fbfbfb",
-    paddingTop: 20,
+    backgroundColor: "white",
+    paddingTop: 30,
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",

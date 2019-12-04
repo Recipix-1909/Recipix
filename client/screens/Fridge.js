@@ -13,37 +13,34 @@ import { Icon, Button } from "react-native-elements";
 import { Svg, Path } from "react-native-svg";
 import FridgeItem from "../components/FridgeItem";
 
-
 class Fridge extends React.Component {
   constructor() {
     super();
   }
-
-
 
   componentDidMount() {
     this.props.getFridgeItems(this.props.userId);
   }
 
   render() {
-    if(this.props.items)
-    return (
-      <View style={styles.container}>
-        <ScrollView
-          style={styles.container}
-          contentContainerStyle={styles.contentContainer}
-        >
-          <View>
-            {this.props.items.map(item => {
-              return (
-                <View key={item.id}>
-                  <FridgeItem
-                    id={item.id}
-                    name={item.name}
-                    imageUrl={item.imageUrl}
-                    expirationDate={item.fridge_stock.expirationDate}
-                  />
-                  {/* <Image
+    if (this.props.items)
+      return (
+        <View style={styles.container}>
+          <ScrollView
+            style={styles.container}
+            contentContainerStyle={styles.contentContainer}
+          >
+            <View>
+              {this.props.items.map(item => {
+                return (
+                  <View key={item.id}>
+                    <FridgeItem
+                      id={item.id}
+                      name={item.name}
+                      imageUrl={item.imageUrl}
+                      expirationDate={item.fridge_stock.expirationDate}
+                    />
+                    {/* <Image
                     source={{ uri: `${item.imageUrl}` }}
                     style={{ width: 50, height: 50, borderRadius: 25 }}
                     key={item.id}
@@ -66,25 +63,25 @@ class Fridge extends React.Component {
                     }}
                     onPress={() => this.props.deleteItem(1, item.id)}
                   /> */}
-                </View>
-              );
-            })}
-          </View>
-        </ScrollView>
+                  </View>
+                );
+              })}
+            </View>
+          </ScrollView>
 
-        <View style={styles.topBarContainer}>
-          <Text
-            style={{
-              fontSize: 20,
-              paddingTop: 5
-            }}
-          >
-            Fridge
-          </Text>
+          <View style={styles.topBarContainer}>
+            <Text
+              style={{
+                fontSize: 20,
+                paddingTop: 5
+              }}
+            >
+              Fridge
+            </Text>
+          </View>
         </View>
-      </View>
-    );
-    else return null
+      );
+    else return null;
   }
 }
 
@@ -111,7 +108,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Fridge);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E0FEFE"
+    backgroundColor: "#00ffcc"
   },
   contentContainer: {
     paddingTop: 65
@@ -186,8 +183,8 @@ const styles = StyleSheet.create({
       }
     }),
 
-    backgroundColor: "#fbfbfb",
-    paddingTop: 20,
+    backgroundColor: "white",
+    paddingTop: 30,
     flex: 1,
     flexDirection: "row",
     justifyContent: "center",

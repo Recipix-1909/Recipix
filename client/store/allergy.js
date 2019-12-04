@@ -32,8 +32,40 @@ const addAllergy = allergy => {
 
 export const getAllergyThunk = userId => {
   return async dispatch => {
-    const { data } = await axios.get(`http://${ip}:8080/api/allergy/${userId}`);
-    dispatch(getAllergy(data));
+    try {
+      const { data } = await axios.get(
+        `http://${ip}:8080/api/allergy/${userId}`
+      );
+      dispatch(getAllergy(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const addAllergyThunk = (userId, allergyId) => {
+  return async dispatch => {
+    try {
+      const { data } = axios.post(`http://${ip}:8080/api/allergy/${userId}`, {
+        allergyId: allergyId
+      });
+      dispatch(addAllergy(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const deleteAllergyThunk = (userId, allergyId) => {
+  return async dispatch => {
+    try {
+      const { data } = axios.delete(
+        `http://${ip}:8080/api/allergy/${userId}/${allergyId}`
+      );
+      dispatch(deleteAllergy(data));
+    } catch (error) {
+      console.error(error);
+    }
   };
 };
 
@@ -42,6 +74,22 @@ export default allergyReducer = (allergies = [], action) => {
   switch (action.type) {
     case GET_ALLERGY: {
       return action.allergies;
+    }
+    case ADD_ALLERGY: {
+      const allergyExists = allergies.some(
+        allergy => allergy.id === action.allergy.id
+      );
+      if (allergyExists) {
+        return allergies;
+      } else {
+        return [...allergies].push(action.allergy);
+      }
+    }
+    case DELETE_ALLERGY: {
+      const newAllergyList = allergies.filter(allergy => {
+        return allergy.id !== action.allergy.id;
+      });
+      return newAllergyList;
     }
     default:
       return allergies;

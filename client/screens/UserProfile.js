@@ -82,7 +82,7 @@ UserProfile.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#B5EAD7"
+    backgroundColor: "#00ffcc"
   },
   contentContainer: {
     paddingTop: 30
