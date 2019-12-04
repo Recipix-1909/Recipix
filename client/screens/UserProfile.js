@@ -10,27 +10,28 @@ class UserProfile extends Component {
   constructor() {
     super();
     this.state = {
-      intolerance: false
+      allergiesModalVisible: false,
+      dietsModalVisible: false
     };
   }
 
   async componentDidMount() {
-    // console.log(
-    //   "component mounted in UserProfile. this.props.user ===>",
-    //   this.props.user
-    // );
     await this.props.getAllergy(this.props.user.id);
-    console.log("USER ALLERGIES ==>", this.props.allergies);
   }
 
-  intoleranceTrigger() {
+  allergiesModalTrigger() {
     this.setState({
-      intolerance: !this.state.intolerance
+      allergiesModalVisible: !this.state.allergiesModalVisible
+    });
+  }
+
+  dietsModalTrigger() {
+    this.setState({
+      dietsModalVisible: !this.state.dietsModalVisible
     });
   }
 
   render() {
-    // console.log("LOOK AT ME!!!", this.props.user);
     return (
       <View style={styles.container}>
         <ScrollView
@@ -43,15 +44,16 @@ class UserProfile extends Component {
             </Text>
             <Button
               title={"Allergies"}
-              onPress={() => this.intoleranceTrigger()}
+              onPress={() => this.allergiesModalTrigger()}
             />
+            <Button title={"Diets"} onPress={() => this.dietsTrigger()} />
             {
-              <Modal isVisible={this.state.intolerance}>
+              <Modal isVisible={this.state.allergiesModalVisible}>
                 <Text>Allergies</Text>
 
                 <Button
                   title={"Save"}
-                  onPress={() => this.intoleranceTrigger()}
+                  onPress={() => this.allergiesModalTrigger()}
                 />
               </Modal>
             }
