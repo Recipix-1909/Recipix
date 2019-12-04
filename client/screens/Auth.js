@@ -52,6 +52,7 @@ class Auth extends React.Component {
     const lastName = this.state.lastName
     const email = this.state.email
     const password = this.state.password
+    console.log('password ====>', password)
     let newUser = { firstName, lastName, email, password }
     try {
       await this.props.createUser(newUser)
@@ -68,6 +69,7 @@ class Auth extends React.Component {
   }
 
   render() {
+    console.log('tertgretretretre', this.state.password)
     return (
       <KeyboardAvoidingView
         behavior="padding"
@@ -91,7 +93,9 @@ class Auth extends React.Component {
                 <TextInput
                   style={styles.input}
                   placeholder="password"
-                  onChangeText={input => this.setState({ password: input })}
+                  onChangeText={input => {
+                    this.setState({ password: input })
+                  }}
                   secureTextEntry
                 />
 
@@ -130,7 +134,7 @@ class Auth extends React.Component {
                 <TextInput
                   style={styles.input}
                   placeholder="password"
-                  onChangeText={input => this.setState({ passsword: input })}
+                  onChangeText={input => this.setState({ password: input })}
                   secureTextEntry
                 />
                 <View style={styles.buttonContainer}>
