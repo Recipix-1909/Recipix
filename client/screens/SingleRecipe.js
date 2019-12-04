@@ -59,9 +59,8 @@ class SingleRecipe extends React.Component {
                 {/* <Text style={styles.usedIngredients}>○{ingred.original}</Text> */}
                 <CheckBox
                   title={ingred.original}
-                  checkedIcon="dot-circle-o"
-                  uncheckedIcon="circle-o"
-                  checked={false}
+                  checked={true}
+                  checkedColor="green"
                 />
               </View>
             );
@@ -75,9 +74,8 @@ class SingleRecipe extends React.Component {
                   </Text> */}
                   <CheckBox
                     title={ingred.original}
-                    checkedIcon="dot-circle-o"
-                    uncheckedIcon="circle-o"
                     checked={false}
+                    checkedColor="green"
                   />
                 </View>
               );
