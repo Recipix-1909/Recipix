@@ -20,7 +20,7 @@ import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
 import { Svg, Path } from "react-native-svg";
-import SingleRecipe from './SingleRecipe'
+import SingleRecipe from "./SingleRecipe";
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class Recipes extends React.Component {
   }
 
   async componentDidMount() {
-    await this.props.getRecipes(1);
+    await this.props.getRecipes(this.props.user.id);
     // console.log("Recipes props===>", this.props);
     this.setState({ loaded: true });
   }
@@ -88,7 +88,6 @@ class Recipes extends React.Component {
                           justifyContent: "center",
                           alignItems: "center"
                         }}
-                        
                         resizeMode="cover"
                         source={{
                           uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
@@ -108,16 +107,17 @@ class Recipes extends React.Component {
                             paddingLeft: 50,
                             paddingRight: 50
                           }}
-                          onPress={()=> this.props.navigation.navigate('SingleRecipe', {recipe: curr})}
-                          
+                          onPress={() =>
+                            this.props.navigation.navigate("SingleRecipe", {
+                              recipe: curr
+                            })
+                          }
                         >
                           <Text
                             style={{
                               backgroundColor: "transparent"
                             }}
-                            
                           >
-                         
                             {curr.title}
                           </Text>
                         </Text>
@@ -290,7 +290,8 @@ const mapStateToProps = state => {
   return {
     recipes: state.recipes,
     filteredItems: state.filteredItems,
-    items: state.items
+    items: state.items,
+    user: state.user
   };
 };
 

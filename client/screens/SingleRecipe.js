@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 import { connect } from "react-redux";
-import { getSingleRecipeThunk } from "../store/recipes";
+import { getSingleRecipeThunk, getRecipesThunk } from "../store/recipes";
 
 class SingleRecipe extends React.Component {
   constructor(props) {
@@ -46,47 +46,42 @@ class SingleRecipe extends React.Component {
             uri: `https://spoonacular.com/recipeImages/${recipe.id}-312x231.${recipe.imageType}`
           }}
         />
-        <Text>{recipe.title}</Text>
+        <Text style={styles.title}>{recipe.title}</Text>
+        <Text></Text>
 
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "column",
-            marginTop: 40
-          }}
-          contentContainerStyle={{
-            justifyContent: "space-evenly",
-            alignItems: "center"
-          }}
-        >
-          <Text>Used ingredients</Text>
+        <View style={styles.allIngredients}>
+          <Text style={styles.header}>INGREDIENTS</Text>
           {recipe.usedIngredients.map(ingred => {
             return (
-              <View key={ingred.id} style={{}}>
-                <Text>{ingred.original}</Text>
+              <View key={ingred.id} style={styles.usedIngredients}>
+                <Text style={styles.usedIngredients}>○{ingred.original}</Text>
               </View>
             );
           })}
-        </View>
-        <View>
-          <Text>Missing ingredients</Text>
-          {recipe.missedIngredients.map(ingred => {
-            return (
-              <View key={ingred.id} style={{}}>
-                <Text>{ingred.original}</Text>
-              </View>
-            );
-          })}
-        </View>
-        <View>
-          <Text>Step by step instructions:</Text>
-          {this.state.instructions.map(step => {
-            return (
-              <View key={step.id} style={{}}>
-                <Text>{step.step}</Text>
-              </View>
-            );
-          })}
+          <View style={styles.missedIngredients}>
+            {recipe.missedIngredients.map(ingred => {
+              return (
+                <View key={ingred.id} style={styles.missedIngredients}>
+                  <Text style={styles.missedIngredients}>
+                    ○{ingred.original}
+                  </Text>
+                </View>
+              );
+            })}
+          </View>
+          <Text></Text>
+          <View style={styles.header}>
+            <Text style={styles.header}>PREPARATION</Text>
+            {this.state.instructions.map((step, idx) => {
+              return (
+                <View key={step.id} style={{}}>
+                  <Text style={{ fontWeight: "bold" }}>Step {idx + 1}</Text>
+                  <Text>{step.step}</Text>
+                  <Text> </Text>
+                </View>
+              );
+            })}
+          </View>
         </View>
       </ScrollView>
     );
@@ -98,6 +93,21 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     padding: 12
+  },
+  usedIngredients: {
+    color: "#33FF61"
+  },
+  missedIngredients: {
+    color: "#FF5733"
+  },
+  instructions: {},
+  header: {
+    fontSize: 20,
+    textAlign: "center"
+  },
+  title: {
+    fontSize: 25,
+    textAlign: "center"
   }
 });
 
