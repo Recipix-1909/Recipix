@@ -36,10 +36,10 @@ export const addItemThunk = (userId, serialNum, expirationDate) => {
   };
 };
 
-const itemsReducer = (lastItem = {}, action) => {
+const itemsReducer = (lastItem = "", action) => {
   switch (action.type) {
     case ADD_ITEM: {
-      return action.item;
+      return action.item.item.name;
     }
     default:
       return lastItem;

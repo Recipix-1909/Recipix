@@ -1,46 +1,41 @@
 import React from "react";
-import { StyleSheet, Text, View, Button, ScrollView, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  ScrollView,
+  TextInput,
+  TouchableHighlight
+} from "react-native";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { addItemThunk } from "../store/items";
-import { getFridgeItemsThunk, getFridgeItemsManualThunk } from "../store/fridge";
+import {
+  getFridgeItemsThunk,
+  getFridgeItemsManualThunk
+} from "../store/fridge";
 import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
+import getDate from "./utils";
 
 class CameraScanner extends React.Component {
-  // constructor() {
-  //   super()
-  //   this.state = {
-  //     hasCameraPermission: null,
-  //     scanned: false
-  //   };
-  //   this.saveItem = this.saveItem.bind(this)
-  // }
   state = {
     hasCameraPermission: null,
     scanned: false,
-    date: "11-27-2019",
-    isModal: false,
-    type: "",
-    data: "",
-    toggle: false
+    date: getDate(),
+    type: null,
+    data: null,
+    manualName: null,
+    scannedName: null,
+    successScanModal: false,
+    manualAddModal: false,
+    failureScanModal: false
   };
 
   async componentDidMount() {
     this.getPermissionsAsync();
-    // this.saveItem();
-  }
-
-  handleManualInput = (target) => {
-    this.props.getFridgeItemsManual(1,target.nativeEvent.text,this.state.date)
-    this.manualInput()
-  }
-
-  manualInput(){
-    this.setState({
-      toggle: !this.state.toggle
-    })
   }
 
   getPermissionsAsync = async () => {
@@ -62,16 +57,20 @@ class CameraScanner extends React.Component {
         style={{
           flex: 1,
           flexDirection: "column",
-          justifyContent: "flex-end"
+          justifyContent: "flex-end",
+          alignItems: "center"
         }}
       >
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
-
-        {<Modal isVisible={this.state.toggle}>
-        <Text>Set expiration date (optional)</Text>
+        {
+          // MANUAL ADD START
+          <Modal isVisible={this.state.manualAddModal} transparent={false}>
+            <Text style={{ color: "#ffffff", textAlign: "center" }}>
+              Set expiration date (optional)
+            </Text>
             <DatePicker
               style={{ width: 200 }}
               date={this.state.date} //initial date from state
@@ -97,24 +96,43 @@ class CameraScanner extends React.Component {
                 this.setState({ date: date });
               }}
             ></DatePicker>
-            <Button
-              title={"Tap to Scan Again"}
-              onPress={() => this.setState({ scanned: false })}
-            />
-            <Button
-              title={"Back to Fridge"}
-              // need to navigate to the fridge here
-              onPress={() => this.handleBackToFridge()}
-            />
             <TextInput
-            style={{height: 200, borderColor: 'gray',borderWidth: 1}}
-            onSubmitEditing={text=>this.handleManualInput(text)}
+              style={{ height: 50, borderColor: "gray", borderWidth: 1 }}
+              onChangeText={text => this.setState({ manualName: text })}
             />
-        </Modal>}
-
+            <TouchableHighlight
+              onPress={() => this.handleManualInput()}
+              style={{
+                alignItems: "center",
+                backgroundColor: "#DDDDDD",
+                padding: 10
+              }}
+            >
+              <Text>Add</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              onPress={() => this.setState({ manualAddModal: false })}
+              style={{
+                alignItems: "center",
+                backgroundColor: "#DDDDDD",
+                padding: 10
+              }}
+            >
+              <Text>Cancel</Text>
+            </TouchableHighlight>
+          </Modal>
+          // END OF MANUAL START
+        }
         {scanned && (
-          <Modal isVisible={this.state.isModal}>
-            <Text>Set expiration date (optional)</Text>
+          // START OF SUCCESSFUL SCAN
+          <Modal isVisible={this.state.successScanModal} transparent={false}>
+            <Text style={{ color: "#ffffff", textAlign: "center" }}>
+              {" "}
+              Item Scanned!
+            </Text>
+            <Text style={{ color: "#ffffff", textAlign: "center" }}>
+              Set expiration date below (optional)
+            </Text>
             <DatePicker
               style={{ width: 200 }}
               date={this.state.date} //initial date from state
@@ -139,63 +157,132 @@ class CameraScanner extends React.Component {
               onDateChange={date => {
                 this.setState({ date: date });
               }}
-              onCloseModal={() => this.handleExpirationDate(this.state.date)}
             ></DatePicker>
-            <Button
-              title={"Tap to Scan Again"}
+            <TouchableHighlight
+              onPress={() => this.handleScanAdd()}
+              style={{
+                alignItems: "center",
+                backgroundColor: "#DDDDDD",
+                padding: 10
+              }}
+            >
+              <Text>Add to Fridge</Text>
+            </TouchableHighlight>
+            <Text></Text>
+            <TouchableHighlight
               onPress={() => this.setState({ scanned: false })}
-            />
-            <Button
-              title={"Back to Fridge"}
-              // need to navigate to the fridge here
+              style={{
+                alignItems: "center",
+                backgroundColor: "#DDDDDD",
+                padding: 10
+              }}
+            >
+              <Text>Tap to Scan Again</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
               onPress={() => this.handleBackToFridge()}
-            />
+              style={{
+                alignItems: "center",
+                backgroundColor: "#DDDDDD",
+                padding: 10
+              }}
+            >
+              <Text>Back to Fridge</Text>
+            </TouchableHighlight>
           </Modal>
         )}
-        <Button
-          title={"Tap to Scan Again"}
-          onPress={() => this.setState({ scanned: false })}
-        />
-        <Button
-        title={"Add Manually"}
-        onPress={()=> this.manualInput()}
-        />
+        <Text
+          style={{
+            size: 16,
+            textAlign: "center",
+            backgroundColor: "#ffffff",
+            color: "#000000"
+          }}
+        >
+          Hold camera over barcode to scan an item or manually add an item
+          below.
+        </Text>
+        <View>
+          <TouchableHighlight
+            style={{
+              alignItems: "center",
+              backgroundColor: "#DDDDDD",
+              padding: 10
+            }}
+            onPress={() => this.setState({ manualAddModal: true })}
+          >
+            <Text>Add Manually</Text>
+          </TouchableHighlight>
+        </View>
       </View>
     );
   }
 
   handleBackToFridge = async () => {
-    this.setState({ isModal: false });
+    this.setState({
+      successScanModal: false,
+      manualAddModal: false,
+      failureScanModal: false,
+      scanned: false,
+      date: getDate()
+    });
+    await this.props.getFridgeItems(1);
     this.props.navigation.navigate("Fridge");
-    await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
+  };
+
+  handleScanAdd = async () => {
+    if (this.state.date === getDate()) {
+      await this.props.addItem(1, this.state.data);
+    } else await this.props.addItem(1, this.state.data, this.state.date);
+
+    // this next part doesn't get run when the UPC is valid but not present in the Edamam DB
+    this.setState({ scannedName: this.props.lastItem });
+    if (!this.state.scannedName) {
+      alert(`Sorry! We couldn't find that item, try adding manually.`);
+      this.setState({ successScanModal: false, scanned: false });
+    }
+    this.setState({ scanned: false, scannedName: null, date: getDate() });
     await this.props.getFridgeItems(1);
   };
 
-  handleExpirationDate = async () => {
-    console.log("this is this.props", this.props);
-    await this.setState({ isModal: false });
-    await this.props.addItem(1, this.state.data, this.state.date); // how do we grab userID?
-    await this.props.getFridgeItems(1);
+  handleManualInput = async () => {
+    console.log("this is this.state.manualNAME!!!!!", this.state.manualName);
+    if (this.state.date === getDate()) {
+      await this.props.getFridgeItemsManual(1, this.state.manualName);
+    } else
+      await this.props.getFridgeItemsManual(
+        1,
+        this.state.manualName,
+        this.state.date
+      );
+
+    this.setState({ manualAddModal: false, manualName: null, date: getDate() });
   };
 
   handleBarCodeScanned = async ({ type, data }) => {
-    this.setState({ scanned: true, isModal: true, type: type, data: data });
+    this.setState({
+      scanned: true,
+      successScanModal: true,
+      type: type,
+      data: data
+    });
   };
 }
 
 const mapStateToProps = state => {
   return {
-    item: state.item,
-    fridge_stock: state.fridge_stock
+    lastItem: state.lastItem
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     addItem: (userId, serialNum, expirationDate) =>
-    dispatch(addItemThunk(userId, serialNum, expirationDate)),
+      dispatch(addItemThunk(userId, serialNum, expirationDate)),
     getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId)),
-    getFridgeItemsManual: (userId, itemName, expirationDate) => dispatch(getFridgeItemsManualThunk(userId,itemName, expirationDate))
+    getFridgeItemsManual: (userId, itemName, expirationDate) =>
+      dispatch(getFridgeItemsManualThunk(userId, itemName, expirationDate))
   };
 };
 
