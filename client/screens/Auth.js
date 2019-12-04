@@ -1,5 +1,5 @@
-import React from "react";
-import { Provider } from "react-redux";
+import React from 'react'
+import { Provider } from 'react-redux'
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -10,60 +10,61 @@ import {
   ActivityIndicator,
   TextInput,
   Text
-} from "react-native";
-import { connect } from "react-redux";
-import { getUserThunk, createUserThunk } from "../store/users";
-import Card from "../other/Card";
-import Color from "../other/Color";
-import { LinearGradient } from "expo-linear-gradient";
+} from 'react-native'
+import { connect } from 'react-redux'
+import { getUserThunk, createUserThunk } from '../store/users'
+import Card from '../other/Card'
+import Color from '../other/Color'
+import { LinearGradient } from 'expo-linear-gradient'
 
 class Auth extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
       form: false
-    };
-    this.loginSubmit = this.loginSubmit.bind(this);
-    this.signUpSubmit = this.signUpSubmit.bind(this);
-    this.changeForm = this.changeForm.bind(this);
+    }
+    this.loginSubmit = this.loginSubmit.bind(this)
+    this.signUpSubmit = this.signUpSubmit.bind(this)
+    this.changeForm = this.changeForm.bind(this)
   }
 
   loginSubmit = async () => {
-    console.log("hit!!!!!");
-    const email = this.state.email;
-    const password = this.state.password;
-    let user = { email, password };
-    this.setState({ isLoading: true });
+    console.log('hit!!!!!')
+    const email = this.state.email
+    const password = this.state.password
+    let user = { email, password }
+    this.setState({ isLoading: true })
     try {
-      await this.props.getUser(user);
-      this.props.navigation.navigate("Main");
+      await this.props.getUser(user)
+      this.props.navigation.navigate('Main')
     } catch (error) {
-      alert("Wrong email or password, please try again");
+      alert('Wrong email or password, please try again')
     }
-  };
+  }
 
   signUpSubmit = async () => {
-    const firstName = this.state.firstName;
-    const lastName = this.state.lastName;
-    const email = this.state.email;
-    const password = this.state.password;
-    let newUser = { firstName, lastName, email, password };
+    const firstName = this.state.firstName
+    const lastName = this.state.lastName
+    const email = this.state.email
+    const password = this.state.password
+    let newUser = { firstName, lastName, email, password }
     try {
-      await this.props.createUser(newUser);
+      await this.props.createUser(newUser)
+      this.loginSubmit()
     } catch (error) {
-      alert("Something went wrong");
+      alert('Something went wrong')
     }
-  };
+  }
 
   changeForm() {
     this.setState({
       form: !this.state.form
-    });
+    })
   }
 
   render() {
@@ -73,9 +74,9 @@ class Auth extends React.Component {
         keyboardVerticalOffset={50}
         style={styles.screen}
       >
-        <LinearGradient colors={["#00ffcc", "#00ffcc"]} style={styles.gradient}>
+        <LinearGradient colors={['#00ffcc', '#00ffcc']} style={styles.gradient}>
           <Image
-            source={require("../other/flogo.png")}
+            source={require('../other/flogo.png')}
             style={{ width: 225, height: 225 }}
           />
           {!this.state.form ? (
@@ -149,16 +150,16 @@ class Auth extends React.Component {
           )}
         </LinearGradient>
       </KeyboardAvoidingView>
-    );
+    )
   }
 }
 
 Auth.navigationOptions = {
-  headerTitle: "Welcome",
+  headerTitle: 'Welcome',
   headerStyle: {
-    color: "#00ffcc"
+    color: '#00ffcc'
   }
-};
+}
 
 const styles = StyleSheet.create({
   screen: {
@@ -166,11 +167,11 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   authContainer: {
-    width: "80%",
+    width: '80%',
     maxWidth: 400,
     maxHeight: 400,
     padding: 20
@@ -181,27 +182,27 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ccc',
     borderBottomWidth: 2
   },
   image: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center'
   }
-});
+})
 
 const mapStateToProps = state => {
   return {
     user: state.user
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     getUser: user => dispatch(getUserThunk(user)),
     createUser: newUser => dispatch(createUserThunk(newUser))
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth)
