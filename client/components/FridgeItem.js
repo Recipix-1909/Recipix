@@ -40,7 +40,9 @@ class FridgeItem extends React.Component {
               width: 40,
               height: 40
             }}
-            onPress={() => this.props.deleteItem(1, this.props.id)}
+            onPress={() =>
+              this.props.deleteItem(this.props.user.id, this.props.id)
+            }
           />
         }
         containerStyle={
@@ -55,7 +57,8 @@ class FridgeItem extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    items: state.items
+    items: state.items,
+    user: state.user
   };
 };
 
