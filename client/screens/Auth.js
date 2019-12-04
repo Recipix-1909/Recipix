@@ -55,6 +55,7 @@ class Auth extends React.Component {
     let newUser = { firstName, lastName, email, password }
     try {
       await this.props.createUser(newUser)
+      this.props.navigation.navigate('Main')
     } catch (error) {
       alert('Something went wrong')
     }
