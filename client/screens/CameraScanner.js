@@ -19,6 +19,7 @@ import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
 import getDate from "./utils";
+import { getUserThunk } from "../store/users";
 
 class CameraScanner extends React.Component {
   state = {
@@ -44,6 +45,9 @@ class CameraScanner extends React.Component {
   };
 
   render() {
+    console.log("THIS IS THIS>PROPS!!!!!!!!!", this.props);
+    console.log("THIS IS THIS>PROPS>USER!!!!!!!!!", this.props.user);
+
     const { hasCameraPermission, scanned } = this.state;
 
     if (hasCameraPermission === null) {
@@ -177,7 +181,7 @@ class CameraScanner extends React.Component {
                 padding: 10
               }}
             >
-              <Text>Tap to Scan Again</Text>
+              <Text>Cancel</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
@@ -192,6 +196,30 @@ class CameraScanner extends React.Component {
             </TouchableHighlight>
           </Modal>
         )}
+        <Modal isVisible={this.state.failureScanModal}>
+          <Text
+            style={{
+              size: 16,
+              textAlign: "center",
+              backgroundColor: "#ffffff",
+              color: "#000000"
+            }}
+          >
+            Sorry! We couldn't find details for that item. Trying adding it
+            manually.
+          </Text>
+
+          <TouchableHighlight
+            onPress={() => this.setState({ failureScanModal: false })}
+            style={{
+              alignItems: "center",
+              backgroundColor: "#DDDDDD",
+              padding: 10
+            }}
+          >
+            <Text>Dismiss</Text>
+          </TouchableHighlight>
+        </Modal>
         <Text
           style={{
             size: 16,
@@ -227,32 +255,46 @@ class CameraScanner extends React.Component {
       scanned: false,
       date: getDate()
     });
-    await this.props.getFridgeItems(1);
+    await this.props.getFridgeItems(this.props.user.id);
     this.props.navigation.navigate("Fridge");
   };
 
   handleScanAdd = async () => {
     if (this.state.date === getDate()) {
-      await this.props.addItem(1, this.state.data);
-    } else await this.props.addItem(1, this.state.data, this.state.date);
+      await this.props.addItem(this.props.user.id, this.state.data);
+    } else
+      await this.props.addItem(
+        this.props.user.id,
+        this.state.data,
+        this.state.date
+      );
 
     // this next part doesn't get run when the UPC is valid but not present in the Edamam DB
     this.setState({ scannedName: this.props.lastItem });
-    if (!this.state.scannedName) {
-      alert(`Sorry! We couldn't find that item, try adding manually.`);
-      this.setState({ successScanModal: false, scanned: false });
+
+    if (this.state.scannedName === "error") {
+      this.setState({
+        successScanModal: false,
+        scanned: false,
+        date: getDate(),
+        failureScanModal: true
+      });
+    } else {
+      this.setState({ scanned: false, scannedName: null, date: getDate() });
+      await this.props.getFridgeItems(this.props.user.id);
     }
-    this.setState({ scanned: false, scannedName: null, date: getDate() });
-    await this.props.getFridgeItems(1);
   };
 
   handleManualInput = async () => {
     console.log("this is this.state.manualNAME!!!!!", this.state.manualName);
     if (this.state.date === getDate()) {
-      await this.props.getFridgeItemsManual(1, this.state.manualName);
+      await this.props.getFridgeItemsManual(
+        this.props.user.id,
+        this.state.manualName
+      );
     } else
       await this.props.getFridgeItemsManual(
-        1,
+        this.props.user.id,
         this.state.manualName,
         this.state.date
       );
@@ -272,7 +314,8 @@ class CameraScanner extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    lastItem: state.lastItem
+    lastItem: state.lastItem,
+    user: state.user
   };
 };
 
