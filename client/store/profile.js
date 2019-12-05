@@ -29,13 +29,13 @@ export const getDietThunk = userId => {
   }
 }
 
-export const newDiet = (userId, diet) => {
+export const addDietThunk = (userId, diet) => {
   return async dispatch => {
     const { data } = await axios.post(
       `http://${ip}:8080/api/diet/${userId}`,
       diet
     )
-    dispatch(getDiet(data))
+    dispatch(addDiet(data))
   }
 }
 

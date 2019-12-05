@@ -6,12 +6,17 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  Modal,
+  Dimensions,
   // TouchableOpacity,
   View
 } from 'react-native'
+import { Icon, Button } from 'react-native-elements'
 import { getDietThunk } from '../store/profile'
 import { connect } from 'react-redux'
 import { removeUserThunk } from '../store/users'
+import { addDietThunk } from '../store/profile'
+import DietCheckbox from '../components/DietCheckbox'
 
 // import { MonoText } from "../components/StyledText";
 
@@ -19,12 +24,30 @@ class UserProfile extends React.Component {
   constructor(props) {
     super(props)
 
-    this.state ={
+    this.state = {
       isDietVisible: false,
-      isAllergyVisible: false`
+      isAllergyVisible: false
     }
 
     this.logOutSubmit = this.logOutSubmit.bind(this)
+    this.setAllergyVisible = this.setAllergyVisible.bind(this)
+    this.setDietVisible = this.setDietVisible.bind(this)
+  }
+
+  isChecked(current, all) {
+    return all.some(diet => current === diet.name)
+  }
+
+  setDietVisible() {
+    this.setState({ isDietVisible: !this.state.isDietVisible })
+  }
+
+  setAllergyVisible() {
+    this.setState({ isAllergyVisible: !this.state.isAllergyVisible })
+  }
+
+  submitHandleDiet(diet) {
+    this.addDiet(this.props.user.id, diet)
   }
 
   componentDidMount() {
@@ -37,7 +60,7 @@ class UserProfile extends React.Component {
   }
 
   render() {
-    console.log('YO MAMAAAAAA', this.props.state)
+    console.log(this.props.diet)
     const dietOptions = [
       'Ketogenic',
       'Gluten Free',
@@ -50,6 +73,7 @@ class UserProfile extends React.Component {
       'Primal',
       'Whole30'
     ]
+
     return (
       <View style={styles.container}>
         <ScrollView
@@ -60,129 +84,116 @@ class UserProfile extends React.Component {
             <Text style={styles.getStartedText}>User Profile</Text>
 
             <Modal
-            animationType="fade"
-            transparent={true}
-            visible={this.state.modalVisible}
-          >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#00000080"
-              }}
+              animationType="fade"
+              transparent={true}
+              // visible={this.state.isDietVisible}
+
+              visible={true}
             >
-              {/* View for Inner Box */}
               <View
                 style={{
-                  width: Dimensions.get("window").width * 0.85,
-                  height: Dimensions.get("window").height * 0.85,
-                  backgroundColor: "#DABFDE",
-                  padding: 20,
-                  paddingBottom: 75,
-                  borderRadius: 15
+                  flex: 1,
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#00000080'
                 }}
               >
-                <ScrollView
+                {/* View for Inner Box */}
+                <View
                   style={{
-                    flex: 1,
-                    flexDirection: "column",
-                    marginTop: 40
-                  }}
-                  contentContainerStyle={{
-                    justifyContent: "space-evenly",
-                    alignItems: "center"
+                    width: Dimensions.get('window').width * 0.85,
+                    height: Dimensions.get('window').height * 0.85,
+                    backgroundColor: '#DABFDE',
+                    padding: 20,
+                    paddingBottom: 75,
+                    borderRadius: 15
                   }}
                 >
-                  {this.props.diet(curr => {
-                    return (
-                      <View key={curr.id} style={{}}>
-                        <ItemCheckBox
-                          item={curr}
-                          isChecked={true}
-                        />
-                      </View>
-                    );
-                  })}
-                </ScrollView>
-
-                <View style={styles.filterHeaderContainer}>
-                  <View
+                  <ScrollView
                     style={{
-                      width: 40,
-                      height: 40
+                      flex: 1,
+                      flexDirection: 'column',
+                      marginTop: 40
                     }}
-                  ></View>
-                  <Text
-                    style={{
-                      fontSize: 20,
-                      paddingVertical: 10
+                    contentContainerStyle={{
+                      justifyContent: 'space-evenly',
+                      alignItems: 'center'
                     }}
                   >
-                    Filter By Ingredients
-                  </Text>
-                  <Button
-                    icon={
-                      <Icon
-                        name="close-box"
-                        type="material-community"
-                        color="red"
-                      />
-                    }
-                    type="clear"
-                    buttonStyle={{
-                      width: 40,
-                      height: 40,
-                      flexDirection: "column-reverse",
-                      marginTop: 2
-                    }}
-                    onPress={() => {
-                      this.setModalVisible(false);
-                    }}
-                  />
-                </View>
+                    {dietOptions.map(curr => {
+                      return (
+                        <View key={curr.id} style={{}}>
+                          <DietCheckbox
+                            key={curr}
+                            isChecked={this.isChecked(curr, this.props.diet)}
+                            name={curr.name}
+                          />
+                        </View>
+                      )
+                    })}
+                  </ScrollView>
 
-                <View style={styles.tabBarInfoContainer}>
-                  <Button
-                    raised
-                    type="outline"
-                    title={"Submit Filter"}
-                    onPress={() => {
-                      console.log(
-                        "filtered items list ====>",
-                        // this.props.filteredItems
-                        //change method
-                      );
-                      this.setModalVisible(false);
-                      this.props.getFilteredRecipes(this.props.filteredItems);
-                      // this.setState({
-                      //   filteredItems: this.props.filteredItems
-                      // });
-                    }}
-                  />
+                  <View style={styles.filterHeaderContainer}>
+                    <View
+                      style={{
+                        width: 40,
+                        height: 40
+                      }}
+                    ></View>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        paddingVertical: 10
+                      }}
+                    >
+                      Diet
+                    </Text>
+                    <Button
+                      icon={
+                        <Icon
+                          name="close-box"
+                          type="material-community"
+                          color="red"
+                        />
+                      }
+                      type="clear"
+                      buttonStyle={{
+                        width: 40,
+                        height: 40,
+                        flexDirection: 'column-reverse',
+                        marginTop: 2
+                      }}
+                      onPress={() => {
+                        this.setDietvisible()
+                      }}
+                    />
+                  </View>
+
+                  <View style={styles.tabBarInfoContainer}>
+                    <Button
+                      raised
+                      type="outline"
+                      title="Submit Diet"
+                      onPress={() => {
+                        console.log('yo')
+                        this.setModalVisible(false)
+                        this.props.getFilteredRecipes(this.props.filteredItems)
+                        // this.setState({
+                        //   filteredItems: this.props.filteredItems
+                        // });
+                      }}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </Modal>
-
+            </Modal>
 
             <Text style={styles.logOut} onPress={() => this.logOutSubmit()}>
               Log out
             </Text>
           </View>
         </ScrollView>
-
-       
-
-          <View
-            style={[styles.codeHighlightContainer, styles.navigationFilename]}
-          >
-            {/* <MonoText style={styles.codeHighlightText}>
-            navigation/MainTabNavigator.js
-          </MonoText> */}
-          </View>
-        </View>
       </View>
     )
   }
@@ -202,57 +213,16 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     removeUser: () => dispatch(removeUserThunk()),
-    getDiet: (userId) => dispatch(getDietThunk(userId))
+    getDiet: userId => dispatch(getDietThunk(userId)),
+    addDiet: (userId, diet) => dispatch(addDietThunk(userId, diet))
   }
 }
-
-// function DevelopmentModeNotice() {
-//   if (__DEV__) {
-//     const learnMoreButton = (
-//       <Text onPress={handleLearnMorePress} style={styles.helpLinkText}>
-//         Learn more
-//       </Text>
-//     );
-
-//     return (
-//       <Text style={styles.developmentModeText}>
-//         Development mode is enabled: your app will be slower but you can use
-//         useful development tools. {learnMoreButton}
-//       </Text>
-//     );
-//   } else {
-//     return (
-//       <Text style={styles.developmentModeText}>
-//         You are not in development mode: your app will run at full speed.
-//       </Text>
-//     );
-//   }
-// }
-
-// function handleLearnMorePress() {
-//   WebBrowser.openBrowserAsync(
-//     "https://docs.expo.io/versions/latest/workflow/development-mode/"
-//   );
-// }
-
-// function handleHelpPress() {
-//   WebBrowser.openBrowserAsync(
-//     "https://docs.expo.io/versions/latest/workflow/up-and-running/#cant-see-your-changes"
-//   );
-// }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#B5EAD7'
   },
-  // developmentModeText: {
-  //   marginBottom: 20,
-  //   color: "rgba(0,0,0,0.4)",
-  //   fontSize: 14,
-  //   lineHeight: 19,
-  //   textAlign: "center"
-  // },
   contentContainer: {
     paddingTop: 30
   },
