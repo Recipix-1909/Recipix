@@ -34,7 +34,7 @@ const addItemMan = item => {
 export const getFridgeItemsThunk = userId => {
   // console.log("INSIDE THE GET FRIDGE THUNK");
   return async dispatch => {
-    const { data } = await axios.get(`http://${ip}:8080/api/fridge/${userId}`);
+    const { data } = await axios.get(`${ip}/api/fridge/${userId}`);
     dispatch(getFridgeItems(data.items));
   };
 };
@@ -42,13 +42,13 @@ export const getFridgeItemsThunk = userId => {
 export const getFridgeItemsManualThunk = (userId, itemName, expirationDate) => {
   console.log(itemName);
   return async dispatch => {
-    await axios.post(`http://${ip}:8080/api/fridge/${userId}/manual`, {
+    await axios.post(`${ip}/api/fridge/${userId}/manual`, {
       userId,
       name: itemName,
       expirationDate
     });
     //fix so its only 1 request
-    const { data } = await axios.get(`http://${ip}:8080/api/fridge/${userId}`);
+    const { data } = await axios.get(`${ip}/api/fridge/${userId}`);
     console.log(data);
     dispatch(addItemMan(data.items));
   };
@@ -56,9 +56,7 @@ export const getFridgeItemsManualThunk = (userId, itemName, expirationDate) => {
 
 export const deleteItemThunk = (userId, itemId) => {
   return async dispatch => {
-    const { data } = await axios.delete(
-      `http://${ip}:8080/api/fridge/${userId}/${itemId}`
-    );
+    const { data } = await axios.delete(`${ip}/api/fridge/${userId}/${itemId}`);
     // console.log("this is data from axios delete", data);
     dispatch(deleteItem(data));
   };

@@ -25,13 +25,10 @@ const addItem = item => {
 //thunk
 export const addItemThunk = (userId, serialNum, expirationDate) => {
   return async dispatch => {
-    const { data } = await axios.post(
-      `http://${ip}:8080/api/fridge/${userId}`,
-      {
-        serialNum,
-        expirationDate
-      }
-    );
+    const { data } = await axios.post(`${ip}/api/fridge/${userId}`, {
+      serialNum,
+      expirationDate
+    });
     if (data.length === 0) {
       let errData = { item: { name: "error" } };
       dispatch(addItem(errData));

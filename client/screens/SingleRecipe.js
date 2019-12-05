@@ -86,7 +86,7 @@ class SingleRecipe extends React.Component {
             <Text style={styles.header}>PREPARATION</Text>
             {this.state.instructions.map((step, idx) => {
               return (
-                <View key={step.id} style={{}}>
+                <View key={step.step} style={{}}>
                   <Text style={{ fontWeight: "bold" }}>Step {idx + 1}</Text>
                   <Text>{step.step}</Text>
                   <Text> </Text>
