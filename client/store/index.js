@@ -1,12 +1,13 @@
-import { combineReducers } from "redux";
-import { createStore, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
+import { combineReducers } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 
-import itemsReducer from "./items";
-import fridgeReducer from "./fridge";
-import { recipesReducer, singleRecipeReducer } from "./recipes";
-import filteredItemsReducer from "./filteredItems";
-import userReducer from "./users";
+import itemsReducer from './items'
+import fridgeReducer from './fridge'
+import { recipesReducer, singleRecipeReducer } from './recipes'
+import filteredItemsReducer from './filteredItems'
+import userReducer from './users'
+import { dietReducer } from './profile'
 
 const rootReducer = combineReducers({
   lastItem: itemsReducer,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   filteredItems: filteredItemsReducer,
   recipes: recipesReducer,
   recipe: singleRecipeReducer,
-  user: userReducer
-});
+  user: userReducer,
+  diet: dietReducer
+})
 
-export default createStore(rootReducer, applyMiddleware(thunkMiddleware));
+export default createStore(rootReducer, applyMiddleware(thunkMiddleware))

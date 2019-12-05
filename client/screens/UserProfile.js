@@ -9,6 +9,7 @@ import {
   // TouchableOpacity,
   View
 } from 'react-native'
+import { getDietThunk } from '../store/profile'
 import { connect } from 'react-redux'
 import { removeUserThunk } from '../store/users'
 
@@ -18,7 +19,16 @@ class UserProfile extends React.Component {
   constructor(props) {
     super(props)
 
+    this.state ={
+      isDietVisible: false,
+      isAllergyVisible: false`
+    }
+
     this.logOutSubmit = this.logOutSubmit.bind(this)
+  }
+
+  componentDidMount() {
+    this.props.getDiet(this.props.user.id)
   }
 
   logOutSubmit = () => {
@@ -27,6 +37,19 @@ class UserProfile extends React.Component {
   }
 
   render() {
+    console.log('YO MAMAAAAAA', this.props.state)
+    const dietOptions = [
+      'Ketogenic',
+      'Gluten Free',
+      'Vegetarian',
+      'Lacto-Vegetarian',
+      'Ovo-Vegetarian',
+      'Vegan',
+      'Paleo',
+      'Pescatarian',
+      'Primal',
+      'Whole30'
+    ]
     return (
       <View style={styles.container}>
         <ScrollView
@@ -35,16 +58,122 @@ class UserProfile extends React.Component {
         >
           <View style={styles.getStartedContainer}>
             <Text style={styles.getStartedText}>User Profile</Text>
+
+            <Modal
+            animationType="fade"
+            transparent={true}
+            visible={this.state.modalVisible}
+          >
+            <View
+              style={{
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#00000080"
+              }}
+            >
+              {/* View for Inner Box */}
+              <View
+                style={{
+                  width: Dimensions.get("window").width * 0.85,
+                  height: Dimensions.get("window").height * 0.85,
+                  backgroundColor: "#DABFDE",
+                  padding: 20,
+                  paddingBottom: 75,
+                  borderRadius: 15
+                }}
+              >
+                <ScrollView
+                  style={{
+                    flex: 1,
+                    flexDirection: "column",
+                    marginTop: 40
+                  }}
+                  contentContainerStyle={{
+                    justifyContent: "space-evenly",
+                    alignItems: "center"
+                  }}
+                >
+                  {this.props.diet(curr => {
+                    return (
+                      <View key={curr.id} style={{}}>
+                        <ItemCheckBox
+                          item={curr}
+                          isChecked={true}
+                        />
+                      </View>
+                    );
+                  })}
+                </ScrollView>
+
+                <View style={styles.filterHeaderContainer}>
+                  <View
+                    style={{
+                      width: 40,
+                      height: 40
+                    }}
+                  ></View>
+                  <Text
+                    style={{
+                      fontSize: 20,
+                      paddingVertical: 10
+                    }}
+                  >
+                    Filter By Ingredients
+                  </Text>
+                  <Button
+                    icon={
+                      <Icon
+                        name="close-box"
+                        type="material-community"
+                        color="red"
+                      />
+                    }
+                    type="clear"
+                    buttonStyle={{
+                      width: 40,
+                      height: 40,
+                      flexDirection: "column-reverse",
+                      marginTop: 2
+                    }}
+                    onPress={() => {
+                      this.setModalVisible(false);
+                    }}
+                  />
+                </View>
+
+                <View style={styles.tabBarInfoContainer}>
+                  <Button
+                    raised
+                    type="outline"
+                    title={"Submit Filter"}
+                    onPress={() => {
+                      console.log(
+                        "filtered items list ====>",
+                        // this.props.filteredItems
+                        //change method
+                      );
+                      this.setModalVisible(false);
+                      this.props.getFilteredRecipes(this.props.filteredItems);
+                      // this.setState({
+                      //   filteredItems: this.props.filteredItems
+                      // });
+                    }}
+                  />
+                </View>
+              </View>
+            </View>
+          </Modal>
+
+
             <Text style={styles.logOut} onPress={() => this.logOutSubmit()}>
               Log out
             </Text>
           </View>
         </ScrollView>
 
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>
-            This is a tab bar. You can edit it in:
-          </Text>
+       
 
           <View
             style={[styles.codeHighlightContainer, styles.navigationFilename]}
@@ -65,13 +194,15 @@ UserProfile.navigationOptions = {
 
 const mapStateToProps = state => {
   return {
-    user: state.user
+    user: state.user,
+    diet: state.diet
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    removeUser: () => dispatch(removeUserThunk())
+    removeUser: () => dispatch(removeUserThunk()),
+    getDiet: (userId) => dispatch(getDietThunk(userId))
   }
 }
 
