@@ -19,7 +19,6 @@ import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
 import getDate from "./utils";
-import { getUserThunk } from "../store/users";
 
 class CameraScanner extends React.Component {
   state = {
@@ -71,59 +70,73 @@ class CameraScanner extends React.Component {
         />
         {
           // MANUAL ADD START
-          <Modal isVisible={this.state.manualAddModal} transparent={false}>
-            <Text style={{ color: "#ffffff", textAlign: "center" }}>
-              Set expiration date (optional)
-            </Text>
-            <DatePicker
-              style={{ width: 200 }}
-              date={this.state.date} //initial date from state
-              mode="date" //The enum of date, datetime and time
-              placeholder="select date"
-              format="MM-DD-YYYY"
-              minDate="01-01-2019"
-              maxDate="01-01-2025"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: "absolute",
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-              }}
-              onDateChange={date => {
-                this.setState({ date: date });
-              }}
-            ></DatePicker>
-            <TextInput
-              style={{ height: 50, borderColor: "gray", borderWidth: 1 }}
-              onChangeText={text => this.setState({ manualName: text })}
-            />
-            <TouchableHighlight
-              onPress={() => this.handleManualInput()}
+          <Modal
+            isVisible={this.state.manualAddModal}
+            transparent={true}
+            animationType="fade"
+          >
+            <View
               style={{
+                flex: 1,
+                flexDirection: "column",
+                justifyContent: "center",
                 alignItems: "center",
-                backgroundColor: "#DDDDDD",
-                padding: 10
+                backgroundColor: "#00000080"
               }}
             >
-              <Text>Add</Text>
-            </TouchableHighlight>
-            <TouchableHighlight
-              onPress={() => this.setState({ manualAddModal: false })}
-              style={{
-                alignItems: "center",
-                backgroundColor: "#DDDDDD",
-                padding: 10
-              }}
-            >
-              <Text>Cancel</Text>
-            </TouchableHighlight>
+              <Text style={{ color: "#ffffff", textAlign: "center" }}>
+                Set expiration date (optional)
+              </Text>
+              <DatePicker
+                style={{ width: 200 }}
+                date={this.state.date} //initial date from state
+                mode="date" //The enum of date, datetime and time
+                placeholder="select date"
+                format="MM-DD-YYYY"
+                minDate="01-01-2019"
+                maxDate="01-01-2025"
+                confirmBtnText="Confirm"
+                cancelBtnText="Cancel"
+                customStyles={{
+                  dateIcon: {
+                    position: "absolute",
+                    left: 0,
+                    top: 4,
+                    marginLeft: 0
+                  },
+                  dateInput: {
+                    marginLeft: 36
+                  }
+                }}
+                onDateChange={date => {
+                  this.setState({ date: date });
+                }}
+              ></DatePicker>
+              <TextInput
+                style={{ height: 50, borderColor: "gray", borderWidth: 1 }}
+                onChangeText={text => this.setState({ manualName: text })}
+              />
+              <TouchableHighlight
+                onPress={() => this.handleManualInput()}
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "#DDDDDD",
+                  padding: 10
+                }}
+              >
+                <Text>Add</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                onPress={() => this.setState({ manualAddModal: false })}
+                style={{
+                  alignItems: "center",
+                  backgroundColor: "#DDDDDD",
+                  padding: 10
+                }}
+              >
+                <Text>Cancel</Text>
+              </TouchableHighlight>
+            </View>
           </Modal>
           // END OF MANUAL START
         }
