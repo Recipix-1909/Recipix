@@ -13,6 +13,7 @@ import store from "../store";
 import AppNavigator from "../navigation/AppNavigator";
 import Auth from "./Auth";
 
+console.disableYellowBox = true;
 
 export default class App extends React.Component {
   render() {
