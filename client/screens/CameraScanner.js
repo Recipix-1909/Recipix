@@ -6,6 +6,7 @@ import {
   Button,
   ScrollView,
   TextInput,
+  Dimensions,
   TouchableHighlight
 } from "react-native";
 import * as Permissions from "expo-permissions";
@@ -44,9 +45,6 @@ class CameraScanner extends React.Component {
   };
 
   render() {
-    console.log("THIS IS THIS>PROPS!!!!!!!!!", this.props);
-    console.log("THIS IS THIS>PROPS>USER!!!!!!!!!", this.props.user);
-
     const { hasCameraPermission, scanned } = this.state;
 
     if (hasCameraPermission === null) {
@@ -75,163 +73,133 @@ class CameraScanner extends React.Component {
             transparent={true}
             animationType="fade"
           >
-            <View
-              style={{
-                flex: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#00000080"
-              }}
-            >
-              <Text style={{ color: "#ffffff", textAlign: "center" }}>
-                Set expiration date (optional)
-              </Text>
-              <DatePicker
-                style={{ width: 200 }}
-                date={this.state.date} //initial date from state
-                mode="date" //The enum of date, datetime and time
-                placeholder="select date"
-                format="MM-DD-YYYY"
-                minDate="01-01-2019"
-                maxDate="01-01-2025"
-                confirmBtnText="Confirm"
-                cancelBtnText="Cancel"
-                customStyles={{
-                  dateIcon: {
-                    position: "absolute",
-                    left: 0,
-                    top: 4,
-                    marginLeft: 0
-                  },
-                  dateInput: {
-                    marginLeft: 36
-                  }
-                }}
-                onDateChange={date => {
-                  this.setState({ date: date });
-                }}
-              ></DatePicker>
-              <TextInput
-                style={{ height: 50, borderColor: "gray", borderWidth: 1 }}
-                onChangeText={text => this.setState({ manualName: text })}
-              />
-              <TouchableHighlight
-                onPress={() => this.handleManualInput()}
-                style={{
-                  alignItems: "center",
-                  backgroundColor: "#DDDDDD",
-                  padding: 10
-                }}
-              >
-                <Text>Add</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                onPress={() => this.setState({ manualAddModal: false })}
-                style={{
-                  alignItems: "center",
-                  backgroundColor: "#DDDDDD",
-                  padding: 10
-                }}
-              >
-                <Text>Cancel</Text>
-              </TouchableHighlight>
+            <View style={styles.modalExterior}>
+              <View style={styles.modalInterior}>
+                <Text style={styles.modalText}>
+                  Set expiration date (optional)
+                </Text>
+                <DatePicker
+                  style={{ width: 200 }}
+                  date={this.state.date} //initial date from state
+                  mode="date" //The enum of date, datetime and time
+                  placeholder="select date"
+                  format="MM-DD-YYYY"
+                  minDate="01-01-2019"
+                  maxDate="01-01-2025"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  customStyles={{
+                    dateIcon: {
+                      position: "absolute",
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0
+                    },
+                    dateInput: {
+                      marginLeft: 36
+                    }
+                  }}
+                  onDateChange={date => {
+                    this.setState({ date: date });
+                  }}
+                ></DatePicker>
+                <TextInput
+                  style={{ height: 50, borderColor: "gray", borderWidth: 1 }}
+                  onChangeText={text => this.setState({ manualName: text })}
+                />
+                <TouchableHighlight
+                  onPress={() => this.handleManualInput()}
+                  style={styles.modalButton}
+                >
+                  <Text>Add</Text>
+                </TouchableHighlight>
+                <TouchableHighlight
+                  onPress={() => this.setState({ manualAddModal: false })}
+                  style={styles.modalButton}
+                >
+                  <Text>Cancel</Text>
+                </TouchableHighlight>
+              </View>
             </View>
           </Modal>
           // END OF MANUAL START
         }
         {scanned && (
           // START OF SUCCESSFUL SCAN
-          <Modal isVisible={this.state.successScanModal} transparent={false}>
-            <Text style={{ color: "#ffffff", textAlign: "center" }}>
-              {" "}
-              Item Scanned!
-            </Text>
-            <Text style={{ color: "#ffffff", textAlign: "center" }}>
-              Set expiration date below (optional)
-            </Text>
-            <DatePicker
-              style={{ width: 200 }}
-              date={this.state.date} //initial date from state
-              mode="date" //The enum of date, datetime and time
-              placeholder="select date"
-              format="MM-DD-YYYY"
-              minDate="01-01-2019"
-              maxDate="01-01-2025"
-              confirmBtnText="Confirm"
-              cancelBtnText="Cancel"
-              customStyles={{
-                dateIcon: {
-                  position: "absolute",
-                  left: 0,
-                  top: 4,
-                  marginLeft: 0
-                },
-                dateInput: {
-                  marginLeft: 36
-                }
-              }}
-              onDateChange={date => {
-                this.setState({ date: date });
-              }}
-            ></DatePicker>
-            <TouchableHighlight
-              onPress={() => this.handleScanAdd()}
-              style={{
-                alignItems: "center",
-                backgroundColor: "#DDDDDD",
-                padding: 10
-              }}
-            >
-              <Text>Add to Fridge</Text>
-            </TouchableHighlight>
-            <Text></Text>
-            <TouchableHighlight
-              onPress={() => this.setState({ scanned: false })}
-              style={{
-                alignItems: "center",
-                backgroundColor: "#DDDDDD",
-                padding: 10
-              }}
-            >
-              <Text>Cancel</Text>
-            </TouchableHighlight>
 
-            <TouchableHighlight
-              onPress={() => this.handleBackToFridge()}
-              style={{
-                alignItems: "center",
-                backgroundColor: "#DDDDDD",
-                padding: 10
-              }}
-            >
-              <Text>Back to Fridge</Text>
-            </TouchableHighlight>
+          <Modal isVisible={this.state.successScanModal} transparent={false}>
+            <View style={styles.modalExterior}>
+              <View style={styles.modalInterior}>
+                <Text style={styles.modalText}> Item Scanned!</Text>
+                <Text style={styles.modalText}>
+                  Set expiration date below (optional)
+                </Text>
+                <DatePicker
+                  style={{ width: 200 }}
+                  date={this.state.date} //initial date from state
+                  mode="date" //The enum of date, datetime and time
+                  placeholder="select date"
+                  format="MM-DD-YYYY"
+                  minDate="01-01-2019"
+                  maxDate="01-01-2025"
+                  confirmBtnText="Confirm"
+                  cancelBtnText="Cancel"
+                  customStyles={{
+                    dateIcon: {
+                      position: "absolute",
+                      left: 0,
+                      top: 4,
+                      marginLeft: 0
+                    },
+                    dateInput: {
+                      marginLeft: 36
+                    }
+                  }}
+                  onDateChange={date => {
+                    this.setState({ date: date });
+                  }}
+                ></DatePicker>
+                <TouchableHighlight
+                  onPress={() => this.handleScanAdd()}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.modalText}>Add to Fridge</Text>
+                </TouchableHighlight>
+                <Text></Text>
+                <TouchableHighlight
+                  onPress={() => this.setState({ scanned: false })}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.modalText}>Cancel</Text>
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                  onPress={() => this.handleBackToFridge()}
+                  style={styles.modalButton}
+                >
+                  <Text style={styles.modalText}>Back to Fridge</Text>
+                </TouchableHighlight>
+              </View>
+            </View>
           </Modal>
         )}
-        <Modal isVisible={this.state.failureScanModal}>
-          <Text
-            style={{
-              fontSize: 16,
-              textAlign: "center",
-              backgroundColor: "#ffffff",
-              color: "#000000"
-            }}
-          >
-            Sorry! We couldn't find details for that item. Trying adding it
-            manually.
-          </Text>
 
-          <TouchableHighlight
-            onPress={() => this.setState({ failureScanModal: false })}
-            style={{
-              alignItems: "center",
-              backgroundColor: "#DDDDDD",
-              padding: 10
-            }}
-          >
-            <Text>Dismiss</Text>
-          </TouchableHighlight>
+        <Modal isVisible={this.state.failureScanModal}>
+          <View style={styles.modalExterior}>
+            <View style={styles.modalInterior}>
+              <Text style={styles.modalText}>
+                Sorry! We couldn't find details for that item. Trying adding it
+                manually.
+              </Text>
+
+              <TouchableHighlight
+                onPress={() => this.setState({ failureScanModal: false })}
+                style={styles.modalButton}
+              >
+                <Text style={styles.modalText}>Dismiss</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
         </Modal>
         <Text
           style={{
@@ -246,11 +214,7 @@ class CameraScanner extends React.Component {
         </Text>
         <View>
           <TouchableHighlight
-            style={{
-              alignItems: "center",
-              backgroundColor: "#DDDDDD",
-              padding: 10
-            }}
+            style={styles.modalButton}
             onPress={() => this.setState({ manualAddModal: true })}
           >
             <Text>Add Manually</Text>
@@ -351,5 +315,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginTop: 50,
     padding: 16
-  }
+  },
+  modalExterior: {
+    backgroundColor: "#00ffcc",
+    padding: 20,
+    paddingBottom: 75,
+    borderRadius: 15
+  },
+  modalInterior: {
+    backgroundColor: "white",
+    borderRadius: 15
+  },
+  modalButton: {
+    alignItems: "center",
+    backgroundColor: "#DDDDDD",
+    padding: 10
+  },
+  modalText: { color: "black", textAlign: "center" }
 });
