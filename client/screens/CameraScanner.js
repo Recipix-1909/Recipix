@@ -75,11 +75,18 @@ class CameraScanner extends React.Component {
           >
             <View style={styles.modalExterior}>
               <View style={styles.modalInterior}>
+                <TextInput
+                  style={styles.textInput}
+                  onChangeText={text => this.setState({ manualName: text })}
+                  autoCapitalize="words"
+                  placeholder="Enter food name here!"
+                  maxLength={20}
+                />
                 <Text style={styles.modalText}>
                   Set expiration date (optional)
                 </Text>
                 <DatePicker
-                  style={{ width: 200 }}
+                  style={styles.datePicker}
                   date={this.state.date} //initial date from state
                   mode="date" //The enum of date, datetime and time
                   placeholder="select date"
@@ -103,23 +110,19 @@ class CameraScanner extends React.Component {
                     this.setState({ date: date });
                   }}
                 ></DatePicker>
-                <TextInput
-                  style={{ height: 50, borderColor: "gray", borderWidth: 1 }}
-                  onChangeText={text => this.setState({ manualName: text })}
-                />
-                <TouchableHighlight
-                  onPress={() => this.handleManualInput()}
-                  style={styles.modalButton}
-                >
-                  <Text>Add</Text>
-                </TouchableHighlight>
-                <TouchableHighlight
-                  onPress={() => this.setState({ manualAddModal: false })}
-                  style={styles.modalButton}
-                >
-                  <Text>Cancel</Text>
-                </TouchableHighlight>
               </View>
+              <TouchableHighlight
+                onPress={() => this.handleManualInput()}
+                style={styles.modalButton}
+              >
+                <Text>Add</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                onPress={() => this.setState({ manualAddModal: false })}
+                style={styles.modalButton}
+              >
+                <Text>Cancel</Text>
+              </TouchableHighlight>
             </View>
           </Modal>
           // END OF MANUAL START
@@ -127,15 +130,14 @@ class CameraScanner extends React.Component {
         {scanned && (
           // START OF SUCCESSFUL SCAN
 
-          <Modal isVisible={this.state.successScanModal} transparent={false}>
+          <Modal isVisible={this.state.successScanModal} transparent={true}>
             <View style={styles.modalExterior}>
               <View style={styles.modalInterior}>
-                <Text style={styles.modalText}> Item Scanned!</Text>
                 <Text style={styles.modalText}>
                   Set expiration date below (optional)
                 </Text>
                 <DatePicker
-                  style={{ width: 200 }}
+                  style={styles.datePicker}
                   date={this.state.date} //initial date from state
                   mode="date" //The enum of date, datetime and time
                   placeholder="select date"
@@ -159,27 +161,26 @@ class CameraScanner extends React.Component {
                     this.setState({ date: date });
                   }}
                 ></DatePicker>
-                <TouchableHighlight
-                  onPress={() => this.handleScanAdd()}
-                  style={styles.modalButton}
-                >
-                  <Text style={styles.modalText}>Add to Fridge</Text>
-                </TouchableHighlight>
-                <Text></Text>
-                <TouchableHighlight
-                  onPress={() => this.setState({ scanned: false })}
-                  style={styles.modalButton}
-                >
-                  <Text style={styles.modalText}>Cancel</Text>
-                </TouchableHighlight>
+              </View>
+              <TouchableHighlight
+                onPress={() => this.handleScanAdd()}
+                style={styles.modalButton}
+              >
+                <Text style={styles.modalText}>Add to Fridge</Text>
+              </TouchableHighlight>
+              <TouchableHighlight
+                onPress={() => this.setState({ scanned: false })}
+                style={styles.modalButton}
+              >
+                <Text style={styles.modalText}>Cancel</Text>
+              </TouchableHighlight>
 
-                <TouchableHighlight
+              {/* <TouchableHighlight
                   onPress={() => this.handleBackToFridge()}
                   style={styles.modalButton}
                 >
                   <Text style={styles.modalText}>Back to Fridge</Text>
-                </TouchableHighlight>
-              </View>
+                </TouchableHighlight> */}
             </View>
           </Modal>
         )}
@@ -246,7 +247,6 @@ class CameraScanner extends React.Component {
         this.state.date
       );
 
-    // this next part doesn't get run when the UPC is valid but not present in the Edamam DB
     this.setState({ scannedName: this.props.lastItem });
 
     if (this.state.scannedName === "error") {
@@ -263,7 +263,6 @@ class CameraScanner extends React.Component {
   };
 
   handleManualInput = async () => {
-    console.log("this is this.state.manualNAME!!!!!", this.state.manualName);
     if (this.state.date === getDate()) {
       await this.props.getFridgeItemsManual(
         this.props.user.id,
@@ -317,9 +316,8 @@ const styles = StyleSheet.create({
     padding: 16
   },
   modalExterior: {
-    backgroundColor: "#00ffcc",
+    backgroundColor: "#78ffe4",
     padding: 20,
-    paddingBottom: 75,
     borderRadius: 15
   },
   modalInterior: {
@@ -328,8 +326,26 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     alignItems: "center",
-    backgroundColor: "#DDDDDD",
-    padding: 10
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 10,
+    margin: 10,
+    underlayColor: "white"
   },
-  modalText: { color: "black", textAlign: "center" }
+  modalText: {
+    color: "black",
+    textAlign: "center",
+    margin: 10
+  },
+  datePicker: {
+    margin: 10,
+    alignSelf: "center"
+    //  width: 200
+  },
+  textInput: {
+    height: 50,
+    borderColor: "gray",
+    borderWidth: 1,
+    margin: 10
+  }
 });
