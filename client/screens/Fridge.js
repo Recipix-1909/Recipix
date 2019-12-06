@@ -37,43 +37,29 @@ class Fridge extends React.Component {
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
           >
-            <View>
-              {this.props.items.map(item => {
-                return (
-                  <View key={item.id}>
-                    <FridgeItem
-                      id={item.id}
-                      name={item.name}
-                      imageUrl={item.imageUrl}
-                      expirationDate={item.fridge_stock.expirationDate}
-                    />
-                    {/* <Image
-                    source={{ uri: `${item.imageUrl}` }}
-                    style={{ width: 50, height: 50, borderRadius: 25 }}
-                    key={item.id}
-                  ></Image>
-                  <Text>{item.name}</Text>
-                  <Button
-                    icon={
-                      <Icon
-                        name="trash-can-outline"
-                        type="material-community"
-                        color="red"
+            {this.props.items.length < 1 ? (
+              <View>
+                <Text>
+                  Your fridge is empty! Begin adding items to your fridge by
+                  clicking on the scanner icon below.
+                </Text>
+              </View>
+            ) : (
+              <View>
+                {this.props.items.map(item => {
+                  return (
+                    <View key={item.id}>
+                      <FridgeItem
+                        id={item.id}
+                        name={item.name}
+                        imageUrl={item.imageUrl}
+                        expirationDate={item.fridge_stock.expirationDate}
                       />
-                    }
-                    type="clear"
-                    buttonStyle={{
-                      borderWidth: 1,
-                      borderColor: "red",
-                      width: 40,
-                      height: 40
-                    }}
-                    onPress={() => this.props.deleteItem(1, item.id)}
-                  /> */}
-                  </View>
-                );
-              })}
-            </View>
+                    </View>
+                  );
+                })}
+              </View>
+            )}
           </ScrollView>
 
           <View style={styles.topBarContainer}>
