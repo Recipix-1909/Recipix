@@ -1,20 +1,20 @@
-import React from 'react'
-import { Dimensions } from 'react-native'
-import { CheckBox } from 'react-native-elements'
-import { connect } from 'react-redux'
-import { addDietThunk } from '../store/profile'
+import React from "react";
+import { Dimensions } from "react-native";
+import { CheckBox } from "react-native-elements";
+import { connect } from "react-redux";
+import { addDietThunk } from "../store/profile";
 
 class DietCheckbox extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.state = {
       checked: this.props.isChecked
-    }
+    };
   }
   render() {
     return (
       <CheckBox
-        title="yo"
+        title={this.props.name}
         checkedColor="green"
         checked={this.state.checked}
         // onPress={() => {
@@ -32,17 +32,17 @@ class DietCheckbox extends React.Component {
         //   this.setState({ checked: !this.state.checked })
         // }}
         containerStyle={{
-          width: Dimensions.get('window').width * 0.85 - 65,
-          backgroundColor: 'transparent'
+          width: Dimensions.get("window").width * 0.85 - 65,
+          backgroundColor: "transparent"
         }}
       ></CheckBox>
-    )
+    );
   }
 }
 const mapDispatchToProps = dispatch => {
   return {
     addDiet: (userId, diet) => dispatch(addDietThunk(userId, diet))
-  }
-}
+  };
+};
 
-export default connect(null, mapDispatchToProps)(DietCheckbox)
+export default connect(null, mapDispatchToProps)(DietCheckbox);
