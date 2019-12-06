@@ -37,6 +37,7 @@ const getSingleRecipe = recipe => {
 export const getRecipesThunk = userId => {
   return async dispatch => {
     const { data } = await axios.get(`${ip}/api/recipes/${userId}`);
+    console.log("data from getRecipesThunk", data);
     dispatch(getRecipes(data));
   };
 };
@@ -48,6 +49,7 @@ export const getFilteredRecipesThunk = filteredItems => {
         `${ip}/api/recipes/filtered`,
         filteredItems
       );
+      console.log("data from getFilteredRecipesThunk", data);
       dispatch(getFilteredRecipes(data));
     } catch (error) {
       console.error(error);
