@@ -329,16 +329,16 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
-    margin: 10,
-    underlayColor: "white"
+    margin: 10
+    // underlayColor: "white"
   },
   manualAddButton: {
     justifyContent: "flex-end",
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
-    margin: 10,
-    underlayColor: "white"
+    margin: 10
+    // underlayColor: "white"
   },
   modalText: {
     color: "black",
