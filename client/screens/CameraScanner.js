@@ -11,15 +11,16 @@ import {
 } from "react-native";
 import * as Permissions from "expo-permissions";
 import { BarCodeScanner } from "expo-barcode-scanner";
+import { connect } from "react-redux";
+import DatePicker from "react-native-datepicker";
+import Modal from "react-native-modal";
+
+import getDate from "./utils";
 import { addItemThunk } from "../store/items";
 import {
   getFridgeItemsThunk,
   getFridgeItemsManualThunk
 } from "../store/fridge";
-import { connect } from "react-redux";
-import DatePicker from "react-native-datepicker";
-import Modal from "react-native-modal";
-import getDate from "./utils";
 
 class CameraScanner extends React.Component {
   state = {
@@ -58,14 +59,36 @@ class CameraScanner extends React.Component {
         style={{
           flex: 1,
           flexDirection: "column",
-          justifyContent: "flex-end",
+          // justifyContent: "flex-end",
           alignItems: "center"
         }}
       >
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
-          style={StyleSheet.absoluteFillObject}
-        />
+          style={[StyleSheet.absoluteFillObject, styles.barCodeScanner]}
+        >
+          <Text
+            style={{
+              fontSize: 16,
+              textAlign: "center",
+              backgroundColor: "#ffffff",
+              color: "#000000",
+              justifyContent: "flex-start",
+              alignSelf: "stretch"
+            }}
+          >
+            Hold your camera over a barcode to scan the item or manually add the
+            item below.
+          </Text>
+          <View></View>
+          <TouchableHighlight
+            style={styles.manualAddButton}
+            onPress={() => this.setState({ manualAddModal: true })}
+          >
+            <Text>ADD MANUALLY</Text>
+          </TouchableHighlight>
+        </BarCodeScanner>
+
         {
           // MANUAL ADD START
           <Modal
@@ -115,13 +138,13 @@ class CameraScanner extends React.Component {
                 onPress={() => this.handleManualInput()}
                 style={styles.modalButton}
               >
-                <Text>Add</Text>
+                <Text>ADD</Text>
               </TouchableHighlight>
               <TouchableHighlight
                 onPress={() => this.setState({ manualAddModal: false })}
                 style={styles.modalButton}
               >
-                <Text>Cancel</Text>
+                <Text>CANCEL</Text>
               </TouchableHighlight>
             </View>
           </Modal>
@@ -166,21 +189,14 @@ class CameraScanner extends React.Component {
                 onPress={() => this.handleScanAdd()}
                 style={styles.modalButton}
               >
-                <Text style={styles.modalText}>Add to Fridge</Text>
+                <Text style={styles.modalText}>ADD</Text>
               </TouchableHighlight>
               <TouchableHighlight
                 onPress={() => this.setState({ scanned: false })}
                 style={styles.modalButton}
               >
-                <Text style={styles.modalText}>Cancel</Text>
+                <Text style={styles.modalText}>CANCEL</Text>
               </TouchableHighlight>
-
-              {/* <TouchableHighlight
-                  onPress={() => this.handleBackToFridge()}
-                  style={styles.modalButton}
-                >
-                  <Text style={styles.modalText}>Back to Fridge</Text>
-                </TouchableHighlight> */}
             </View>
           </Modal>
         )}
@@ -197,30 +213,11 @@ class CameraScanner extends React.Component {
                 onPress={() => this.setState({ failureScanModal: false })}
                 style={styles.modalButton}
               >
-                <Text style={styles.modalText}>Dismiss</Text>
+                <Text style={styles.modalText}>DISMISS</Text>
               </TouchableHighlight>
             </View>
           </View>
         </Modal>
-        <Text
-          style={{
-            fontSize: 16,
-            textAlign: "center",
-            backgroundColor: "#ffffff",
-            color: "#000000"
-          }}
-        >
-          Hold camera over barcode to scan an item or manually add an item
-          below.
-        </Text>
-        <View>
-          <TouchableHighlight
-            style={styles.modalButton}
-            onPress={() => this.setState({ manualAddModal: true })}
-          >
-            <Text>Add Manually</Text>
-          </TouchableHighlight>
-        </View>
       </View>
     );
   }
@@ -315,6 +312,11 @@ const styles = StyleSheet.create({
     marginTop: 50,
     padding: 16
   },
+  barCodeScanner: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between"
+  },
   modalExterior: {
     backgroundColor: "#78ffe4",
     padding: 20,
@@ -326,6 +328,14 @@ const styles = StyleSheet.create({
   },
   modalButton: {
     alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 10,
+    margin: 10,
+    underlayColor: "white"
+  },
+  manualAddButton: {
+    justifyContent: "flex-end",
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
