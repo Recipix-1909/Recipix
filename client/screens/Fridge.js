@@ -43,6 +43,10 @@ class Fridge extends React.Component {
                   Your fridge is empty! Begin adding items to your fridge by
                   clicking on the scanner icon below.
                 </Text>
+                <Image
+                  source={require("../other/emptyFridge.png")}
+                  style={{ width: 300, height: 300 }}
+                ></Image>
               </View>
             ) : (
               <View>
