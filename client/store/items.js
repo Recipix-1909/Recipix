@@ -39,7 +39,6 @@ export const addItemThunk = (userId, serialNum, expirationDate) => {
 const itemsReducer = (lastItem = "", action) => {
   switch (action.type) {
     case ADD_ITEM: {
-      console.log("this is action.item.item.name", action.item.item.name);
       return action.item.item.name;
     }
     default:

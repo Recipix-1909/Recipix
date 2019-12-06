@@ -1,25 +1,16 @@
-import React from 'react'
-import {
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  Image,
-  View
-} from 'react-native'
-import { getFridgeItemsThunk, deleteItemThunk } from '../store/fridge'
-import { connect } from 'react-redux'
-import { Icon, Button } from 'react-native-elements'
-import { Svg, Path } from 'react-native-svg'
-import FridgeItem from '../components/FridgeItem'
+import React from "react";
+import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import { getFridgeItemsThunk, deleteItemThunk } from "../store/fridge";
+import { connect } from "react-redux";
+import FridgeItem from "../components/FridgeItem";
 
 class Fridge extends React.Component {
   constructor() {
-    super()
+    super();
   }
 
   async componentDidMount() {
-    await this.props.getFridgeItems(this.props.user.id)
+    await this.props.getFridgeItems(this.props.user.id);
   }
 
   render() {
@@ -40,31 +31,8 @@ class Fridge extends React.Component {
                       imageUrl={item.imageUrl}
                       expirationDate={item.fridge_stock.expirationDate}
                     />
-                    {/* <Image
-                    source={{ uri: `${item.imageUrl}` }}
-                    style={{ width: 50, height: 50, borderRadius: 25 }}
-                    key={item.id}
-                  ></Image>
-                  <Text>{item.name}</Text>
-                  <Button
-                    icon={
-                      <Icon
-                        name="trash-can-outline"
-                        type="material-community"
-                        color="red"
-                      />
-                    }
-                    type="clear"
-                    buttonStyle={{
-                      borderWidth: 1,
-                      borderColor: "red",
-                      width: 40,
-                      height: 40
-                    }}
-                    onPress={() => this.props.deleteItem(1, item.id)}
-                  /> */}
                   </View>
-                )
+                );
               })}
             </View>
           </ScrollView>
@@ -80,80 +48,80 @@ class Fridge extends React.Component {
             </Text>
           </View>
         </View>
-      )
-    else return null
+      );
+    else return null;
   }
 }
 
 Fridge.navigationOptions = {
   header: null
-}
+};
 
 const mapStateToProps = state => {
   return {
     items: state.items,
     user: state.user
-  }
-}
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     getFridgeItems: userId => dispatch(getFridgeItemsThunk(userId)),
     deleteItem: (userId, itemId) => dispatch(deleteItemThunk(userId, itemId))
-  }
-}
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Fridge)
+export default connect(mapStateToProps, mapDispatchToProps)(Fridge);
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#E0FEFE'
+    backgroundColor: "#E0FEFE"
   },
   contentContainer: {
     paddingTop: 65
   },
   welcomeContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: 10,
     marginBottom: 20
   },
   welcomeImage: {
     width: 100,
     height: 80,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginTop: 3,
     marginLeft: -10
   },
   getStartedContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginHorizontal: 50
   },
   homeScreenFilename: {
     marginVertical: 7
   },
   codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)'
+    color: "rgba(96,100,109, 0.8)"
   },
   codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    backgroundColor: "rgba(0,0,0,0.05)",
     borderRadius: 3,
     paddingHorizontal: 4
   },
   getStartedText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
+    color: "rgba(96,100,109, 1)",
     lineHeight: 24,
-    textAlign: 'center'
+    textAlign: "center"
   },
   tabBarInfoContainer: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     ...Platform.select({
       ios: {
-        shadowColor: 'black',
+        shadowColor: "black",
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -162,18 +130,18 @@ const styles = StyleSheet.create({
         elevation: 20
       }
     }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
+    alignItems: "center",
+    backgroundColor: "#fbfbfb",
     paddingVertical: 20
   },
   topBarContainer: {
-    position: 'absolute',
+    position: "absolute",
     top: 0,
     left: 0,
     right: 0,
     ...Platform.select({
       ios: {
-        shadowColor: 'black',
+        shadowColor: "black",
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -183,30 +151,30 @@ const styles = StyleSheet.create({
       }
     }),
 
-    backgroundColor: '#fbfbfb',
+    backgroundColor: "#fbfbfb",
     paddingTop: 20,
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     height: 65
   },
   tabBarInfoText: {
     fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center'
+    color: "rgba(96,100,109, 1)",
+    textAlign: "center"
   },
   navigationFilename: {
     marginTop: 5
   },
   helpContainer: {
     marginTop: 15,
-    alignItems: 'center'
+    alignItems: "center"
   },
   helpLink: {
     paddingVertical: 15
   },
   helpLinkText: {
     fontSize: 14,
-    color: '#2e78b7'
+    color: "#2e78b7"
   }
-})
+});

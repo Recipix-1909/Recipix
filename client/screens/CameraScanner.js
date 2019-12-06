@@ -3,8 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
-  ScrollView,
   TextInput,
   TouchableHighlight
 } from "react-native";
@@ -19,7 +17,6 @@ import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
 import getDate from "./utils";
-import { getUserThunk } from "../store/users";
 
 class CameraScanner extends React.Component {
   state = {
@@ -45,9 +42,6 @@ class CameraScanner extends React.Component {
   };
 
   render() {
-    console.log("THIS IS THIS>PROPS!!!!!!!!!", this.props);
-    console.log("THIS IS THIS>PROPS>USER!!!!!!!!!", this.props.user);
-
     const { hasCameraPermission, scanned } = this.state;
 
     if (hasCameraPermission === null) {
@@ -286,7 +280,6 @@ class CameraScanner extends React.Component {
   };
 
   handleManualInput = async () => {
-    console.log("this is this.state.manualNAME!!!!!", this.state.manualName);
     if (this.state.date === getDate()) {
       await this.props.getFridgeItemsManual(
         this.props.user.id,

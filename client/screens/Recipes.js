@@ -7,7 +7,8 @@ import {
   View,
   Modal,
   Dimensions,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { connect } from "react-redux";
@@ -15,7 +16,6 @@ import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
 import { Svg, Path } from "react-native-svg";
-import * as Progress from "react-native-progress";
 
 class Recipes extends React.Component {
   constructor(props) {
@@ -29,7 +29,6 @@ class Recipes extends React.Component {
 
   async componentDidMount() {
     await this.props.getRecipes(this.props.user.id);
-
     this.setState({ loaded: true });
   }
 
@@ -66,7 +65,7 @@ class Recipes extends React.Component {
                 alignItems: "center"
               }}
             >
-              {/* <Progress.CircleSnail size={70} color={["white"]} thickness={5} /> */}
+              <ActivityIndicator size="large" color="white"></ActivityIndicator>
               <Text style={{ fontSize: 20 }}>Cookin' up some recipes</Text>
             </View>
           </View>
@@ -224,7 +223,7 @@ class Recipes extends React.Component {
 
                         // if user did not filter for any ingredients, show default recipes containing any ingredients from fridge
                         if (this.props.filteredItems.length === 0) {
-                          this.props.getRecipes(this.props.userId);
+                          this.props.getRecipes(this.props.user.id);
                         }
                         // else get recipes based on filtered ingredients
                         else {
@@ -244,7 +243,7 @@ class Recipes extends React.Component {
         <View style={styles.topBarContainer}>
           <View
             style={{
-              width: 50,
+              width: 70,
               height: 40
             }}
           ></View>
@@ -321,10 +320,6 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: "#DABFDE"
-    // borderRadius: 4,
-    // borderWidth: 1,
-    // borderColor: "#425df5",
-    // width: 300
   },
 
   contentContainer: {
@@ -371,9 +366,7 @@ const styles = StyleSheet.create({
       }
     }),
     alignItems: "center",
-    // backgroundColor: "#fbfbfb",
     backgroundColor: "transparent",
-    // paddingVertical: 20,
     height: 65,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15

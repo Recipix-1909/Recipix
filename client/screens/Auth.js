@@ -34,7 +34,6 @@ class Auth extends React.Component {
   }
 
   loginSubmit = async () => {
-    console.log("hit!!!!!");
     const email = this.state.email;
     const password = this.state.password;
     let user = { email, password };
@@ -52,7 +51,6 @@ class Auth extends React.Component {
     const lastName = this.state.lastName;
     const email = this.state.email;
     const password = this.state.password;
-    console.log("password ====>", password);
     let newUser = { firstName, lastName, email, password };
     try {
       await this.props.createUser(newUser);

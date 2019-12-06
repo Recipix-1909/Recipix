@@ -1,24 +1,23 @@
 // import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import {
-  // Image,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
   Modal,
   Dimensions,
-  // TouchableOpacity,
   View
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
-import { getDietThunk } from "../store/profile";
 import { connect } from "react-redux";
 import { removeUserThunk } from "../store/users";
-import { addDietThunk } from "../store/profile";
+import { getDietThunk } from "../store/profile";
+import { getAllergyThunk } from "../store/allergy";
 import DietCheckbox from "../components/DietCheckbox";
-
-// import { MonoText } from "../components/StyledText";
+import AllergyCheckbox from "../components/AllergyCheckbox";
+import { ip } from "../../secrets";
+import axios from "axios";
 
 class UserProfile extends React.Component {
   constructor(props) {
@@ -26,7 +25,9 @@ class UserProfile extends React.Component {
 
     this.state = {
       isDietVisible: false,
-      isAllergyVisible: false
+      isAllergyVisible: false,
+      allDiets: [],
+      allAllergies: []
     };
 
     this.logOutSubmit = this.logOutSubmit.bind(this);
@@ -34,8 +35,10 @@ class UserProfile extends React.Component {
     this.setDietVisible = this.setDietVisible.bind(this);
   }
 
-  isChecked(current, all) {
-    return all.some(dietOrAllergy => current === dietOrAllergy.name);
+  isChecked(current, userPreferences) {
+    return userPreferences.some(
+      dietOrAllergy => current.name === dietOrAllergy.name
+    );
   }
 
   setDietVisible() {
@@ -46,12 +49,13 @@ class UserProfile extends React.Component {
     this.setState({ isAllergyVisible: !this.state.isAllergyVisible });
   }
 
-  submitHandleDiet(diet) {
-    this.addDiet(this.props.user.id, diet);
-  }
-
   async componentDidMount() {
     await this.props.getDiet(this.props.user.id);
+
+    // getting all diets and allergies from database
+    const { data: allDiets } = await axios.get(`${ip}/api/diet`);
+    const { data: allAllergies } = await axios.get(`${ip}/api/allergy`);
+    this.setState({ allDiets, allAllergies });
   }
 
   logOutSubmit = () => {
@@ -60,20 +64,8 @@ class UserProfile extends React.Component {
   };
 
   render() {
-    console.log("this.props.diet ====>", this.props.diet);
-    const dietOptions = [
-      "Ketogenic",
-      "Gluten Free",
-      "Vegetarian",
-      "Lacto-Vegetarian",
-      "Ovo-Vegetarian",
-      "Vegan",
-      "Paleo",
-      "Pescatarian",
-      "Primal",
-      "Whole30"
-    ];
-
+    const dietOptions = this.state.allDiets;
+    const allergyOptions = this.state.allAllergies;
     return (
       <View style={styles.container}>
         <ScrollView
@@ -86,7 +78,7 @@ class UserProfile extends React.Component {
               title="Diet"
               type="clear"
               buttonStyle={{
-                width: 50,
+                width: 100,
                 height: 40,
                 flexDirection: "column-reverse"
               }}
@@ -94,15 +86,31 @@ class UserProfile extends React.Component {
                 fontSize: 13
               }}
               onPress={() => {
-                this.setDietVisible(true);
+                this.setDietVisible();
               }}
             />
+
+            <Button
+              title="Allergy"
+              type="clear"
+              buttonStyle={{
+                width: 100,
+                height: 40,
+                flexDirection: "column-reverse"
+              }}
+              titleStyle={{
+                fontSize: 13
+              }}
+              onPress={() => {
+                this.setAllergyVisible();
+              }}
+            />
+
+            {/* -------- DIET MODAL-------- */}
             <Modal
               animationType="fade"
               transparent={true}
               visible={this.state.isDietVisible}
-
-              // visible={true}
             >
               <View
                 style={{
@@ -136,16 +144,11 @@ class UserProfile extends React.Component {
                     }}
                   >
                     {dietOptions.map(curr => {
-                      // console.log(
-                      //   "isChecked===>",
-                      //   this.isChecked(curr, this.props.diet)
-                      // );
                       return (
-                        <View key={curr} style={{}}>
+                        <View key={curr.id} style={{}}>
                           <DietCheckbox
-                            key={curr}
-                            isChecked={this.isChecked(curr, this.props.diet)}
-                            name={curr}
+                            isChecked={this.isChecked(curr, this.props.diets)}
+                            diet={curr}
                           />
                         </View>
                       );
@@ -188,14 +191,95 @@ class UserProfile extends React.Component {
                     />
                   </View>
 
-                  <View style={styles.tabBarInfoContainer}>
+                </View>
+              </View>
+            </Modal>
+
+            {/* -------- ALLERGY MODAL-------- */}
+            <Modal
+              animationType="fade"
+              transparent={true}
+              visible={this.state.isAllergyVisible}
+            >
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  backgroundColor: "#00000080"
+                }}
+              >
+                {/* View for Inner Box */}
+                <View
+                  style={{
+                    width: Dimensions.get("window").width * 0.85,
+                    height: Dimensions.get("window").height * 0.85,
+                    backgroundColor: "#DABFDE",
+                    padding: 20,
+                    paddingBottom: 75,
+                    borderRadius: 15
+                  }}
+                >
+                  <ScrollView
+                    style={{
+                      flex: 1,
+                      flexDirection: "column",
+                      marginTop: 40
+                    }}
+                    contentContainerStyle={{
+                      justifyContent: "space-evenly",
+                      alignItems: "center"
+                    }}
+                  >
+                    {allergyOptions.map(curr => {
+                      return (
+                        <View key={curr.id} style={{}}>
+                          <AllergyCheckbox
+                            isChecked={this.isChecked(
+                              curr,
+                              this.props.allergies
+                            )}
+
+                            allergy={curr}
+                          />
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+
+                  <View style={styles.filterHeaderContainer}>
+                    <View
+                      style={{
+                        width: 40,
+                        height: 40
+                      }}
+                    ></View>
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        paddingVertical: 10
+                      }}
+                    >
+                      Allergy
+                    </Text>
                     <Button
-                      raised
-                      type="outline"
-                      title="Submit Diet"
+                      icon={
+                        <Icon
+                          name="close-box"
+                          type="material-community"
+                          color="red"
+                        />
+                      }
+                      type="clear"
+                      buttonStyle={{
+                        width: 40,
+                        height: 40,
+                        flexDirection: "column-reverse",
+                        marginTop: 2
+                      }}
                       onPress={() => {
-                        console.log("yo");
-                        this.setModalVisible(false);
+                        this.setAllergyVisible();
                       }}
                     />
                   </View>
@@ -220,7 +304,8 @@ UserProfile.navigationOptions = {
 const mapStateToProps = state => {
   return {
     user: state.user,
-    diet: state.diet
+    diets: state.diets,
+    allergies: state.allergies
   };
 };
 
@@ -228,7 +313,7 @@ const mapDispatchToProps = dispatch => {
   return {
     removeUser: () => dispatch(removeUserThunk()),
     getDiet: userId => dispatch(getDietThunk(userId)),
-    addDiet: (userId, diet) => dispatch(addDietThunk(userId, diet))
+    getAllergy: userId => dispatch(getAllergyThunk(userId))
   };
 };
 
@@ -290,9 +375,36 @@ const styles = StyleSheet.create({
       }
     }),
     alignItems: "center",
-    backgroundColor: "#fbfbfb",
-    paddingVertical: 20
+    backgroundColor: "transparent",
+    height: 65,
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15
   },
+
+  filterHeaderContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: "black",
+        shadowOffset: { width: 0, height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3
+      },
+      android: {
+        elevation: 20
+      }
+    }),
+    backgroundColor: "#fbfbfb",
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15
+  },
+
   tabBarInfoText: {
     fontSize: 17,
     color: "rgba(96,100,109, 1)",

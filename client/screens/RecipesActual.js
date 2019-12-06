@@ -206,15 +206,8 @@ class Recipes extends React.Component {
                     type="outline"
                     title={"Submit Filter"}
                     onPress={() => {
-                      console.log(
-                        "filtered items list ====>",
-                        this.props.filteredItems
-                      );
                       this.setModalVisible(false);
                       this.props.getFilteredRecipes(this.props.filteredItems);
-                      // this.setState({
-                      //   filteredItems: this.props.filteredItems
-                      // });
                     }}
                   />
                 </View>
@@ -303,10 +296,6 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: "#DABFDE"
-    // borderRadius: 4,
-    // borderWidth: 1,
-    // borderColor: "#425df5",
-    // width: 300
   },
 
   contentContainer: {
@@ -353,9 +342,7 @@ const styles = StyleSheet.create({
       }
     }),
     alignItems: "center",
-    // backgroundColor: "#fbfbfb",
     backgroundColor: "transparent",
-    // paddingVertical: 20,
     height: 65,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15
