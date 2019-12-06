@@ -1,7 +1,16 @@
 import React from "react";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  Image,
+  View
+} from "react-native";
 import { getFridgeItemsThunk, deleteItemThunk } from "../store/fridge";
 import { connect } from "react-redux";
+import { Icon, Button } from "react-native-elements";
+import { Svg, Path } from "react-native-svg";
 import FridgeItem from "../components/FridgeItem";
 
 class Fridge extends React.Component {
@@ -14,27 +23,47 @@ class Fridge extends React.Component {
   }
 
   render() {
-    if (this.props.items)
+    if (!this.props.items) {
+      return (
+        <Text>
+          Your fridge is empty! Click on the camera icon to add items to your
+          fridge.
+        </Text>
+      );
+    } else
       return (
         <View style={styles.container}>
           <ScrollView
             style={styles.container}
             contentContainerStyle={styles.contentContainer}
           >
-            <View>
-              {this.props.items.map(item => {
-                return (
-                  <View key={item.id}>
-                    <FridgeItem
-                      id={item.id}
-                      name={item.name}
-                      imageUrl={item.imageUrl}
-                      expirationDate={item.fridge_stock.expirationDate}
-                    />
-                  </View>
-                );
-              })}
-            </View>
+            {this.props.items.length < 1 ? (
+              <View>
+                <Text>
+                  Your fridge is empty! Begin adding items to your fridge by
+                  clicking on the scanner icon below.
+                </Text>
+                <Image
+                  source={require("../other/emptyFridge.png")}
+                  style={{ width: 300, height: 300 }}
+                ></Image>
+              </View>
+            ) : (
+              <View>
+                {this.props.items.map(item => {
+                  return (
+                    <View key={item.id}>
+                      <FridgeItem
+                        id={item.id}
+                        name={item.name}
+                        imageUrl={item.imageUrl}
+                        expirationDate={item.fridge_stock.expirationDate}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
+            )}
           </ScrollView>
 
           <View style={styles.topBarContainer}>
@@ -49,7 +78,6 @@ class Fridge extends React.Component {
           </View>
         </View>
       );
-    else return null;
   }
 }
 

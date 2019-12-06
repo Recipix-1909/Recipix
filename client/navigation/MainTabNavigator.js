@@ -10,7 +10,6 @@ import CameraScanner from "../screens/CameraScanner";
 import { Svg, Path } from "react-native-svg";
 import Auth from "../screens/Auth";
 import SingleRecipe from "../screens/SingleRecipe";
-
 const config = Platform.select({
   web: { headerMode: "screen" },
   default: {}
