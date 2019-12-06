@@ -20,12 +20,6 @@ const CameraStack = createStackNavigator(
   },
   config
 );
-CameraStack.navigationOptions = {
-  // tabBarLabel: "Camera"
-  // tabBarIcon: (
-  //   <Icon name="barcode-scan" type="material-community" color="#00ffcc" />
-  // )
-};
 CameraStack.path = "";
 const FridgeStack = createStackNavigator(
   {
@@ -33,21 +27,9 @@ const FridgeStack = createStackNavigator(
   },
   config
 );
-FridgeStack.navigationOptions = {
-  // tabBarLabel: "Fridge"
-  // tabBarIcon: <Icon name="fridge" type="material-community" color="#00ffcc" />
-};
+
 FridgeStack.path = "";
-// const SingleRecipeStack = createStackNavigator(
-//   {
-//    SingleRecipe: SingleRecipe
-//   },
-//   config
-// );
-// SingleRecipeStack.navigationOptions = {
-//   t
-// };
-// SingleRecipeStack.path = "";
+
 const RecipesStack = createStackNavigator(
   {
     Recipes: Recipes,
@@ -55,20 +37,6 @@ const RecipesStack = createStackNavigator(
   },
   config
 );
-RecipesStack.navigationOptions = {
-  // tabBarLabel: "Recipes"
-  // tabBarIcon: (
-  //   <Svg
-  //     width="24"
-  //     height="24"
-  //     viewBox="0 0 24 24"
-  //     fill="white"
-  //     stroke="#00ffcc"
-  //   >
-  //     <Path d="M22 3L10 4.41V6H22V7H10V12H22C22 13.81 21.43 15.46 20.32 16.95S17.77 19.53 16 20.25V22H8V20.25C6.24 19.53 4.79 18.43 3.68 16.95S2 13.81 2 12H5V4L22 2V3M6 4.88V6H7V4.78L6 4.88M6 7V12H7V7H6M9 12V7H8V12H9M9 6V4.55L8 4.64V6H9Z" />
-  //   </Svg>
-  // )
-};
 RecipesStack.path = "";
 // UserProfile
 const UserProfileStack = createStackNavigator(
@@ -77,12 +45,6 @@ const UserProfileStack = createStackNavigator(
   },
   config
 );
-UserProfileStack.navigationOptions = {
-  // tabBarLabel: "Profile"
-  // tabBarIcon: (
-  //   <Icon name="account-circle" type="material-community" color="#00ffcc" />
-  // )
-};
 UserProfileStack.path = "";
 const tabNavigator = createBottomTabNavigator(
   {
@@ -92,6 +54,7 @@ const tabNavigator = createBottomTabNavigator(
     UserProfileStack
   },
   {
+    lazy: false,
     defaultNavigationOptions: ({ navigation }) => ({
       tabBarIcon: ({ focused }) => {
         const { routeName } = navigation.state;
@@ -138,7 +101,6 @@ const tabNavigator = createBottomTabNavigator(
     tabBarOptions: {
       activeTintColor: "black",
       showLabel: false,
-      // activeBackgroundColor: "#00ffcc",
       inactiveTintColor: "gray",
       style: {
         backgroundColor: "white",

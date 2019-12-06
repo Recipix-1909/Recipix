@@ -2,9 +2,9 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { connect } from "react-redux";
-import { deleteFromFilter, addToFilter } from "../store/filteredItems";
+import { addDietThunk, deleteDietThunk } from "../store/profile";
 
-class ItemCheckBox extends React.Component {
+class DietCheckbox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,22 +12,18 @@ class ItemCheckBox extends React.Component {
     };
   }
   render() {
-    const item = this.props.item;
-    const expirationDate = item.fridge_stock.expirationDate;
-    let titleName = item.name;
-    if (expirationDate) {
-      titleName += ` (expires: ${expirationDate.slice(0, 10)})`;
-    }
+    const diet = this.props.diet;
+    const userId = this.props.user.id;
     return (
       <CheckBox
-        title={titleName}
+        title={diet.name}
         checkedColor="green"
         checked={this.state.checked}
         onPress={() => {
           if (!this.state.checked) {
-            this.props.addToFilter(item);
+            this.props.addDiet(userId, { dietId: diet.id });
           } else {
-            this.props.deleteFromFilter(item);
+            this.props.deleteDiet(userId, diet.id);
           }
           this.setState({ checked: !this.state.checked });
         }}
@@ -39,11 +35,17 @@ class ItemCheckBox extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return { user: state.user };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    addToFilter: item => dispatch(addToFilter(item)),
-    deleteFromFilter: item => dispatch(deleteFromFilter(item))
+    addDiet: (userId, dietId) => dispatch(addDietThunk(userId, dietId)),
+
+    deleteDiet: (userId, dietId) => dispatch(deleteDietThunk(userId, dietId))
   };
 };
 
-export default connect(null, mapDispatchToProps)(ItemCheckBox);
+export default connect(mapStateToProps, mapDispatchToProps)(DietCheckbox);

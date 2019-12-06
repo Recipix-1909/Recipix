@@ -7,6 +7,8 @@ import fridgeReducer from "./fridge";
 import { recipesReducer, singleRecipeReducer } from "./recipes";
 import filteredItemsReducer from "./filteredItems";
 import userReducer from "./users";
+import { dietReducer } from "./profile";
+import { allergyReducer } from "./allergy";
 
 const rootReducer = combineReducers({
   lastItem: itemsReducer,
@@ -14,7 +16,9 @@ const rootReducer = combineReducers({
   filteredItems: filteredItemsReducer,
   recipes: recipesReducer,
   recipe: singleRecipeReducer,
-  user: userReducer
+  user: userReducer,
+  diets: dietReducer,
+  allergies: allergyReducer
 });
 
 export default createStore(rootReducer, applyMiddleware(thunkMiddleware));

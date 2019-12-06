@@ -44,9 +44,10 @@ export const getAllergyThunk = userId => {
 export const addAllergyThunk = (userId, allergyId) => {
   return async dispatch => {
     try {
-      const { data } = axios.post(`${ip}/api/allergy/${userId}`, {
-        allergyId: allergyId
-      });
+      const { data } = await axios.post(
+        `${ip}/api/allergy/${userId}`,
+        allergyId
+      );
       dispatch(addAllergy(data));
     } catch (error) {
       console.error(error);
@@ -57,7 +58,9 @@ export const addAllergyThunk = (userId, allergyId) => {
 export const deleteAllergyThunk = (userId, allergyId) => {
   return async dispatch => {
     try {
-      const { data } = axios.delete(`${ip}/api/allergy/${userId}/${allergyId}`);
+      const { data } = await axios.delete(
+        `${ip}/api/allergy/${userId}/${allergyId}`
+      );
       dispatch(deleteAllergy(data));
     } catch (error) {
       console.error(error);
@@ -66,23 +69,17 @@ export const deleteAllergyThunk = (userId, allergyId) => {
 };
 
 // reducer
-export default allergyReducer = (allergies = [], action) => {
+export const allergyReducer = (allergies = [], action) => {
   switch (action.type) {
     case GET_ALLERGY: {
       return action.allergies;
     }
     case ADD_ALLERGY: {
-      const allergyExists = allergies.some(
-        allergy => allergy.id === action.allergy.id
-      );
-      if (allergyExists) {
-        return allergies;
-      } else {
-        return [...allergies].push(action.allergy);
-      }
+      return [...allergies, action.allergy];
     }
+
     case DELETE_ALLERGY: {
-      const newAllergyList = allergies.filter(allergy => {
+      let newAllergyList = allergies.filter(allergy => {
         return allergy.id !== action.allergy.id;
       });
       return newAllergyList;

@@ -2,9 +2,9 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { connect } from "react-redux";
-import { deleteFromFilter, addToFilter } from "../store/filteredItems";
+import { addAllergyThunk, deleteAllergyThunk } from "../store/allergy";
 
-class ItemCheckBox extends React.Component {
+class AllergyCheckbox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,22 +12,18 @@ class ItemCheckBox extends React.Component {
     };
   }
   render() {
-    const item = this.props.item;
-    const expirationDate = item.fridge_stock.expirationDate;
-    let titleName = item.name;
-    if (expirationDate) {
-      titleName += ` (expires: ${expirationDate.slice(0, 10)})`;
-    }
+    const allergy = this.props.allergy;
+    const userId = this.props.user.id;
     return (
       <CheckBox
-        title={titleName}
+        title={allergy.name}
         checkedColor="green"
         checked={this.state.checked}
         onPress={() => {
           if (!this.state.checked) {
-            this.props.addToFilter(item);
+            this.props.addAllergy(userId, { allergyId: allergy.id });
           } else {
-            this.props.deleteFromFilter(item);
+            this.props.deleteAllergy(userId, allergy.id);
           }
           this.setState({ checked: !this.state.checked });
         }}
@@ -39,11 +35,19 @@ class ItemCheckBox extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => {
+  return { user: state.user };
+};
+
 const mapDispatchToProps = dispatch => {
   return {
-    addToFilter: item => dispatch(addToFilter(item)),
-    deleteFromFilter: item => dispatch(deleteFromFilter(item))
+    addAllergy: (userId, allergyId) =>
+      dispatch(addAllergyThunk(userId, allergyId)),
+
+    deleteAllergy: (userId, allergyId) =>
+      dispatch(deleteAllergyThunk(userId, allergyId))
   };
 };
 
-export default connect(null, mapDispatchToProps)(ItemCheckBox);
+export default connect(mapStateToProps, mapDispatchToProps)(AllergyCheckbox);
