@@ -1,65 +1,54 @@
 // import * as WebBrowser from "expo-web-browser";
-import React from "react";
+import React from 'react'
 import {
   Platform,
   ScrollView,
   StyleSheet,
   Text,
-  Image,
-  // Button,
   View,
   Modal,
   Dimensions,
-  ImageBackground,
-  TouchableHighlight,
-  Alert
-} from "react-native";
-import { CheckBox, Icon, Button } from "react-native-elements";
-import { connect } from "react-redux";
-import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
-import { resetFilter } from "../store/filteredItems";
-import ItemCheckBox from "../components/ItemCheckBox";
-import { Svg, Path } from "react-native-svg";
-import SingleRecipe from "./SingleRecipe";
+  ImageBackground
+} from 'react-native'
+import { Icon, Button } from 'react-native-elements'
+import { connect } from 'react-redux'
+import { getRecipesThunk, getFilteredRecipesThunk } from '../store/recipes'
+import { resetFilter } from '../store/filteredItems'
+import ItemCheckBox from '../components/ItemCheckBox'
+import { Svg, Path } from 'react-native-svg'
 
 class Recipes extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       modalVisible: false,
       loaded: false
-    };
-    this.isItemInFilter = this.isItemInFilter.bind(this);
+    }
+    this.isItemInFilter = this.isItemInFilter.bind(this)
   }
 
   async componentDidMount() {
-    await this.props.getRecipes(this.props.user.id);
-    // console.log("Recipes props===>", this.props);
-    this.setState({ loaded: true });
+    await this.props.getRecipes(this.props.user.id)
+    this.setState({ loaded: true })
   }
 
   setModalVisible(visible) {
-    this.setState({ modalVisible: visible });
+    this.setState({ modalVisible: visible })
   }
   // function to determine if item is in filter
   isItemInFilter(item) {
-    let filteredItems = this.props.filteredItems;
-    // console.log("isItemInFilter function; filteredItems ===>", filteredItems);
-    // console.log("item to check in filter ==>", item.name);
-    let isFound = false;
+    let filteredItems = this.props.filteredItems
+    let isFound = false
     for (let i = 0; i < filteredItems.length; i++) {
-      let currFilterItem = filteredItems[i];
-      // console.log("currFilterItem ===>", currFilterItem.name);
+      let currFilterItem = filteredItems[i]
       if (currFilterItem.id === item.id) {
-        isFound = true;
-        break;
+        isFound = true
+        break
       }
     }
-    // console.log("isFound ===>", isFound);
-    return isFound;
+    return isFound
   }
   render() {
-    // console.log("this.props.filteredItems ====>", this.props.filteredItems);
     return (
       <View style={styles.container}>
         <ScrollView
@@ -82,11 +71,11 @@ class Recipes extends React.Component {
                     <View key={curr.id}>
                       <ImageBackground
                         style={{
-                          width: Dimensions.get("window").width,
+                          width: Dimensions.get('window').width,
                           height: 350,
 
-                          justifyContent: "center",
-                          alignItems: "center"
+                          justifyContent: 'center',
+                          alignItems: 'center'
                         }}
                         resizeMode="cover"
                         source={{
@@ -95,27 +84,27 @@ class Recipes extends React.Component {
                       >
                         <Text
                           style={{
-                            fontWeight: "bold",
+                            fontWeight: 'bold',
                             fontSize: 40,
-                            textAlign: "center",
+                            textAlign: 'center',
 
-                            textShadowColor: "#FFFFFF",
+                            textShadowColor: '#FFFFFF',
                             textShadowOffset: { width: -2, height: 2 },
                             textShadowRadius: 3,
-                            backgroundColor: "rgba(52, 52, 52, 0.3)",
-                            width: "100%",
+                            backgroundColor: 'rgba(52, 52, 52, 0.3)',
+                            width: '100%',
                             paddingLeft: 50,
                             paddingRight: 50
                           }}
                           onPress={() =>
-                            this.props.navigation.navigate("SingleRecipe", {
+                            this.props.navigation.navigate('SingleRecipe', {
                               recipe: curr
                             })
                           }
                         >
                           <Text
                             style={{
-                              backgroundColor: "transparent"
+                              backgroundColor: 'transparent'
                             }}
                           >
                             {curr.title}
@@ -123,7 +112,7 @@ class Recipes extends React.Component {
                         </Text>
                       </ImageBackground>
                     </View>
-                  );
+                  )
                 })}
             </View>
           )}
@@ -136,18 +125,18 @@ class Recipes extends React.Component {
             <View
               style={{
                 flex: 1,
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                backgroundColor: "#00000080"
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: '#00000080'
               }}
             >
               {/* View for Inner Box */}
               <View
                 style={{
-                  width: Dimensions.get("window").width * 0.85,
-                  height: Dimensions.get("window").height * 0.85,
-                  backgroundColor: "#DABFDE",
+                  width: Dimensions.get('window').width * 0.85,
+                  height: Dimensions.get('window').height * 0.85,
+                  backgroundColor: '#DABFDE',
                   padding: 20,
                   paddingBottom: 75,
                   borderRadius: 15
@@ -156,12 +145,12 @@ class Recipes extends React.Component {
                 <ScrollView
                   style={{
                     flex: 1,
-                    flexDirection: "column",
+                    flexDirection: 'column',
                     marginTop: 40
                   }}
                   contentContainerStyle={{
-                    justifyContent: "space-evenly",
-                    alignItems: "center"
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center'
                   }}
                 >
                   {this.props.items.map(item => {
@@ -172,7 +161,7 @@ class Recipes extends React.Component {
                           isChecked={this.isItemInFilter(item)}
                         />
                       </View>
-                    );
+                    )
                   })}
                 </ScrollView>
 
@@ -203,11 +192,11 @@ class Recipes extends React.Component {
                     buttonStyle={{
                       width: 40,
                       height: 40,
-                      flexDirection: "column-reverse",
+                      flexDirection: 'column-reverse',
                       marginTop: 2
                     }}
                     onPress={() => {
-                      this.setModalVisible(false);
+                      this.setModalVisible(false)
                     }}
                   />
                 </View>
@@ -216,14 +205,14 @@ class Recipes extends React.Component {
                   <Button
                     raised
                     type="outline"
-                    title={"Submit Filter"}
+                    title={'Submit Filter'}
                     onPress={() => {
                       console.log(
-                        "filtered items list ====>",
+                        'filtered items list ====>',
                         this.props.filteredItems
-                      );
-                      this.setModalVisible(false);
-                      this.props.getFilteredRecipes(this.props.filteredItems);
+                      )
+                      this.setModalVisible(false)
+                      this.props.getFilteredRecipes(this.props.filteredItems)
                       // this.setState({
                       //   filteredItems: this.props.filteredItems
                       // });
@@ -267,24 +256,24 @@ class Recipes extends React.Component {
             buttonStyle={{
               width: 50,
               height: 40,
-              flexDirection: "column-reverse"
+              flexDirection: 'column-reverse'
             }}
             titleStyle={{
               fontSize: 13
             }}
             onPress={() => {
-              this.setModalVisible(true);
+              this.setModalVisible(true)
             }}
           />
         </View>
       </View>
-    );
+    )
   }
 }
 
 Recipes.navigationOptions = {
   header: null
-};
+}
 
 const mapStateToProps = state => {
   return {
@@ -292,8 +281,8 @@ const mapStateToProps = state => {
     filteredItems: state.filteredItems,
     items: state.items,
     user: state.user
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -301,20 +290,20 @@ const mapDispatchToProps = dispatch => {
     getFilteredRecipes: filteredItems =>
       dispatch(getFilteredRecipesThunk(filteredItems)),
     resetFilter: () => dispatch(resetFilter())
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
+export default connect(mapStateToProps, mapDispatchToProps)(Recipes)
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFDAC1"
+    backgroundColor: '#FFDAC1'
   },
 
   modalContainer: {
     flex: 1,
-    backgroundColor: "#DABFDE"
+    backgroundColor: '#DABFDE'
     // borderRadius: 4,
     // borderWidth: 1,
     // borderColor: "#425df5",
@@ -323,39 +312,39 @@ const styles = StyleSheet.create({
 
   contentContainer: {
     paddingTop: 65,
-    alignItems: "center"
+    alignItems: 'center'
   },
   welcomeContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 10,
     marginBottom: 20
   },
   welcomeImage: {
     width: 100,
     height: 80,
-    resizeMode: "contain",
+    resizeMode: 'contain',
     marginTop: 3,
     marginLeft: -10
   },
   getStartedContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginHorizontal: 50
   },
 
   getStartedText: {
     fontSize: 17,
-    color: "rgba(96,100,109, 1)",
+    color: 'rgba(96,100,109, 1)',
     lineHeight: 24,
-    textAlign: "center"
+    textAlign: 'center'
   },
   tabBarInfoContainer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     ...Platform.select({
       ios: {
-        shadowColor: "black",
+        shadowColor: 'black',
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -364,22 +353,22 @@ const styles = StyleSheet.create({
         elevation: 20
       }
     }),
-    alignItems: "center",
+    alignItems: 'center',
     // backgroundColor: "#fbfbfb",
-    backgroundColor: "transparent",
+    backgroundColor: 'transparent',
     // paddingVertical: 20,
     height: 65,
     borderBottomLeftRadius: 15,
     borderBottomRightRadius: 15
   },
   topBarContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     ...Platform.select({
       ios: {
-        shadowColor: "black",
+        shadowColor: 'black',
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -389,22 +378,22 @@ const styles = StyleSheet.create({
       }
     }),
 
-    backgroundColor: "#fbfbfb",
+    backgroundColor: '#fbfbfb',
     paddingTop: 20,
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     height: 65
   },
 
   filterHeaderContainer: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
     ...Platform.select({
       ios: {
-        shadowColor: "black",
+        shadowColor: 'black',
         shadowOffset: { width: 0, height: -3 },
         shadowOpacity: 0.1,
         shadowRadius: 3
@@ -413,31 +402,31 @@ const styles = StyleSheet.create({
         elevation: 20
       }
     }),
-    backgroundColor: "#fbfbfb",
+    backgroundColor: '#fbfbfb',
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15
   },
 
   tabBarInfoText: {
     fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    textAlign: "center"
+    color: 'rgba(96,100,109, 1)',
+    textAlign: 'center'
   },
   navigationFilename: {
     marginTop: 5
   },
   helpContainer: {
     marginTop: 15,
-    alignItems: "center"
+    alignItems: 'center'
   },
   helpLink: {
     paddingVertical: 15
   },
   helpLinkText: {
     fontSize: 14,
-    color: "#2e78b7"
+    color: '#2e78b7'
   }
-});
+})
