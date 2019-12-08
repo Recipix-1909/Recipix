@@ -36,9 +36,8 @@ const getSingleRecipe = recipe => {
 
 export const getRecipesThunk = userId => {
   return async dispatch => {
-    // console.log("WE ARE IN THE THUNK");
-    const { data } = await axios.get(`http://${ip}:8080/api/recipes/${userId}`);
-    // console.log("data from getRecipesThunk=====>", data);
+    const { data } = await axios.get(`${ip}/api/recipes/${userId}`);
+    console.log("data from getRecipesThunk", data);
     dispatch(getRecipes(data));
   };
 };
@@ -47,9 +46,10 @@ export const getFilteredRecipesThunk = filteredItems => {
   return async dispatch => {
     try {
       const { data } = await axios.put(
-        `http://${ip}:8080/api/recipes/filtered`,
+        `${ip}/api/recipes/filtered`,
         filteredItems
       );
+      console.log("data from getFilteredRecipesThunk", data);
       dispatch(getFilteredRecipes(data));
     } catch (error) {
       console.error(error);
@@ -61,9 +61,8 @@ export const getSingleRecipeThunk = recipeId => {
   return async dispatch => {
     try {
       const { data } = await axios.get(
-        `http://${ip}:8080/api/recipes/singleRecipe/${recipeId}`
+        `${ip}/api/recipes/singleRecipe/${recipeId}`
       );
-      // console.log("this is data!!!!!!!!!!!!!!", data);
       dispatch(getSingleRecipe(data));
     } catch (error) {}
   };
@@ -72,7 +71,6 @@ export const getSingleRecipeThunk = recipeId => {
 //reducer
 
 const singleRecipeReducer = (recipe = [], action) => {
-  // console.log("DO I GO INTO THE GET SINGLE RECIPE CASE IN REDUCER!!!!");
   switch (action.type) {
     case GET_SINGLE_RECIPE: {
       return action.recipe;

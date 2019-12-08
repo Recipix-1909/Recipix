@@ -1,24 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   Image,
-  // Button,
   View,
-  Modal,
-  Dimensions,
-  ImageBackground,
-  TouchableHighlight,
-  Alert,
-  Button
+  Dimensions
 } from "react-native";
 
 import { CheckBox } from "react-native-elements";
 
 import { connect } from "react-redux";
-import { getSingleRecipeThunk, getRecipesThunk } from "../store/recipes";
+import { getSingleRecipeThunk } from "../store/recipes";
 
 class SingleRecipe extends React.Component {
   constructor(props) {
@@ -56,7 +49,6 @@ class SingleRecipe extends React.Component {
           {recipe.usedIngredients.map(ingred => {
             return (
               <View key={ingred.id} style={styles.usedIngredients}>
-                {/* <Text style={styles.usedIngredients}>○{ingred.original}</Text> */}
                 <CheckBox
                   title={ingred.original}
                   checked={true}
@@ -69,9 +61,6 @@ class SingleRecipe extends React.Component {
             {recipe.missedIngredients.map(ingred => {
               return (
                 <View key={ingred.id} style={styles.missedIngredients}>
-                  {/* <Text style={styles.missedIngredients}>
-                    ○{ingred.original}
-                  </Text> */}
                   <CheckBox
                     title={ingred.original}
                     checked={false}
@@ -86,7 +75,7 @@ class SingleRecipe extends React.Component {
             <Text style={styles.header}>PREPARATION</Text>
             {this.state.instructions.map((step, idx) => {
               return (
-                <View key={step.id} style={{}}>
+                <View key={step.step} style={{}}>
                   <Text style={{ fontWeight: "bold" }}>Step {idx + 1}</Text>
                   <Text>{step.step}</Text>
                   <Text> </Text>

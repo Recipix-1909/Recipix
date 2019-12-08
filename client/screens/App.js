@@ -1,18 +1,13 @@
 import React from "react";
 import { Provider } from "react-redux";
 import { StyleSheet, Text, View, Button, ScrollView } from "react-native";
-import { RectButton } from "react-native-gesture-handler";
 import { createAppContainer, NavigationEvents } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
 
-import CameraScanner from "./CameraScanner";
-import Fridge from "./Fridge";
-import Recipes from "./Recipes";
-import UserProfile from "./UserProfile";
 import store from "../store";
 import AppNavigator from "../navigation/AppNavigator";
 import Auth from "./Auth";
 
+console.disableYellowBox = true;
 
 export default class App extends React.Component {
   render() {
@@ -41,13 +36,6 @@ export class HomeScreen extends React.Component {
   }
 }
 
-// const AppNavigator = createStackNavigator({
-//   Home: HomeScreen,
-//   Camera: CameraScanner,
-//   Fridge: Fridge,
-//   Recipes: Recipes,
-//   Profile: UserProfile
-// });
 const AppContainer = createAppContainer(AppNavigator);
 
 const styles = StyleSheet.create({

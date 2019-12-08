@@ -12,7 +12,6 @@ class FridgeItem extends React.Component {
 
   render() {
     let expirationDate = this.props.expirationDate;
-    // console.log("type of expdate", typeof expirationDate);
     if (expirationDate) {
       expirationDate = `(expires: ${expirationDate.slice(0, 10)})`;
     }
@@ -44,11 +43,6 @@ class FridgeItem extends React.Component {
               this.props.deleteItem(this.props.user.id, this.props.id)
             }
           />
-        }
-        containerStyle={
-          {
-            // backgroundColor: "#E0FEFE"
-          }
         }
       />
     );

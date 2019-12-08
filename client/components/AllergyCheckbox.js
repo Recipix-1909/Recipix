@@ -2,9 +2,9 @@ import React from "react";
 import { Dimensions } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { connect } from "react-redux";
-import { addDietThunk, deleteDietThunk } from "../store/profile";
+import { addAllergyThunk, deleteAllergyThunk } from "../store/allergy";
 
-class DietCheckbox extends React.Component {
+class AllergyCheckbox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,18 +12,18 @@ class DietCheckbox extends React.Component {
     };
   }
   render() {
-    const diet = this.props.diet;
+    const allergy = this.props.allergy;
     const userId = this.props.user.id;
     return (
       <CheckBox
-        title={diet.name}
+        title={allergy.name}
         checkedColor="green"
         checked={this.state.checked}
         onPress={() => {
           if (!this.state.checked) {
-            this.props.addDiet(userId, { dietId: diet.id });
+            this.props.addAllergy(userId, { allergyId: allergy.id });
           } else {
-            this.props.deleteDiet(userId, diet.id);
+            this.props.deleteAllergy(userId, allergy.id);
           }
           this.setState({ checked: !this.state.checked });
         }}
@@ -42,10 +42,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    addDiet: (userId, dietId) => dispatch(addDietThunk(userId, dietId)),
+    addAllergy: (userId, allergyId) =>
+      dispatch(addAllergyThunk(userId, allergyId)),
 
-    deleteDiet: (userId, dietId) => dispatch(deleteDietThunk(userId, dietId))
+    deleteAllergy: (userId, allergyId) =>
+      dispatch(deleteAllergyThunk(userId, allergyId))
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DietCheckbox);
+export default connect(mapStateToProps, mapDispatchToProps)(AllergyCheckbox);
