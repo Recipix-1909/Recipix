@@ -27,6 +27,16 @@ class Recipes extends React.Component {
     this.isItemInFilter = this.isItemInFilter.bind(this);
   }
 
+  // static navigationOptions = {
+  //   headerTitle: "Recipes",
+  //   headerStyle: {
+  //     backgroundColor: "#78ffe4"
+  //   },
+  //   headerTitleStyle: {
+  //     fontFamily: "Gill Sans"
+  //   }
+  // };
+
   async componentDidMount() {
     await this.props.getRecipes(this.props.user.id);
     this.setState({ loaded: true });
@@ -66,7 +76,7 @@ class Recipes extends React.Component {
               }}
             >
               <ActivityIndicator size="large" color="white"></ActivityIndicator>
-              <Text style={{ fontSize: 20 }}>Cookin' up some recipes</Text>
+              <Text style={styles.recipesText}>Cookin' up some recipes</Text>
             </View>
           </View>
         ) : (
@@ -79,7 +89,7 @@ class Recipes extends React.Component {
           >
             {this.props.recipes.length === 0 ? (
               <View>
-                <Text>No recipes to show...</Text>
+                <Text style={styles.recipesText}>No recipes to show...</Text>
               </View>
             ) : (
               <View style={styles.getStartedContainer}>
@@ -187,7 +197,8 @@ class Recipes extends React.Component {
                     <Text
                       style={{
                         fontSize: 20,
-                        paddingVertical: 10
+                        paddingVertical: 10,
+                        fontFamily: "Gill Sans"
                       }}
                     >
                       Filter By Ingredients
@@ -249,8 +260,10 @@ class Recipes extends React.Component {
           ></View>
           <Text
             style={{
-              fontSize: 20,
-              paddingTop: 5
+              fontSize: 22,
+              paddingTop: 5,
+              fontFamily: "Gill Sans",
+              backgroundColor: "#78ffe4"
             }}
           >
             Recipes
@@ -314,7 +327,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#00ffcc"
+    backgroundColor: "#E0FEFE",
+    fontFamily: "Gill Sans"
+  },
+
+  recipesText: {
+    fontFamily: "Gill Sans",
+    fontSize: 18
   },
 
   modalContainer: {
@@ -326,51 +345,7 @@ const styles = StyleSheet.create({
     paddingTop: 65,
     alignItems: "center"
   },
-  welcomeContainer: {
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 20
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: "contain",
-    marginTop: 3,
-    marginLeft: -10
-  },
-  getStartedContainer: {
-    alignItems: "center",
-    marginHorizontal: 50
-  },
 
-  getStartedText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "center"
-  },
-  tabBarInfoContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-    alignItems: "center",
-    backgroundColor: "transparent",
-    height: 65,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15
-  },
   topBarContainer: {
     position: "absolute",
     top: 0,
@@ -412,31 +387,12 @@ const styles = StyleSheet.create({
         elevation: 20
       }
     }),
-    backgroundColor: "#fbfbfb",
+    backgroundColor: "#78ffe4",
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     borderTopLeftRadius: 15,
-    borderTopRightRadius: 15
-  },
-
-  tabBarInfoText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    textAlign: "center"
-  },
-  navigationFilename: {
-    marginTop: 5
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: "center"
-  },
-  helpLink: {
-    paddingVertical: 15
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: "#2e78b7"
+    borderTopRightRadius: 15,
+    fontFamily: "Gill Sans"
   }
 });

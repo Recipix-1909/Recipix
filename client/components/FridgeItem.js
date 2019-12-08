@@ -1,27 +1,30 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import { ListItem } from "react-native-elements";
 import { Icon, Button } from "react-native-elements";
 import { deleteItemThunk } from "../store/fridge";
 import { connect } from "react-redux";
 
 class FridgeItem extends React.Component {
-  constructor() {
-    super();
-  }
+  state = {
+    name: this.props.name,
+    expirationDate: this.props.expirationDate
+  };
 
   render() {
-    let expirationDate = this.props.expirationDate;
+    console.log("THIS IS THIS.PROPS!!!!!", this.props);
+    console.log("THIS IS THIS> STATE!!!!", this.state);
+    let expirationDate = this.state.expirationDate;
     if (expirationDate) {
       expirationDate = `(expires: ${expirationDate.slice(0, 10)})`;
     }
     return (
       <ListItem
         bottomDivider
-        title={this.props.name}
+        title={<Text style={styles.text}>{this.state.name}</Text>}
         subtitle={
           <View>
-            <Text>{expirationDate}</Text>
+            <Text style={styles.text}>{expirationDate}</Text>
           </View>
         }
         leftAvatar={{ source: { uri: this.props.imageUrl } }}
@@ -61,5 +64,11 @@ const mapDispatchToProps = dispatch => {
     deleteItem: (userId, itemId) => dispatch(deleteItemThunk(userId, itemId))
   };
 };
+
+const styles = StyleSheet.create({
+  text: {
+    fontFamily: "Gill Sans"
+  }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(FridgeItem);

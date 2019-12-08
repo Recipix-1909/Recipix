@@ -34,6 +34,16 @@ class CameraScanner extends React.Component {
     failureScanModal: false
   };
 
+  static navigationOptions = {
+    headerTitle: "Camera",
+    headerStyle: {
+      backgroundColor: "#78ffe4"
+    },
+    headerTitleStyle: {
+      fontFamily: "Gill Sans"
+    }
+  };
+
   async componentDidMount() {
     this.getPermissionsAsync();
   }
@@ -59,6 +69,7 @@ class CameraScanner extends React.Component {
           flexDirection: "column",
           alignItems: "center"
         }}
+        contentContainerStyle={styles.contentContainer}
       >
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
@@ -364,5 +375,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     margin: 10,
     fontFamily: "Gill Sans"
+  },
+
+  contentContainer: {
+    paddingTop: 65
   }
 });

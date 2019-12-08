@@ -14,12 +14,19 @@ import { connect } from "react-redux";
 import { getSingleRecipeThunk } from "../store/recipes";
 
 class SingleRecipe extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      instructions: []
-    };
-  }
+  state = {
+    instructions: []
+  };
+
+  static navigationOptions = {
+    headerTitle: "Recipe",
+    headerStyle: {
+      backgroundColor: "#78ffe4"
+    },
+    headerTitleStyle: {
+      fontFamily: "Gill Sans"
+    }
+  };
 
   async componentDidMount() {
     const recipe = this.props.navigation.state.params.recipe;
