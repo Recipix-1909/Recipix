@@ -156,13 +156,6 @@ class Auth extends React.Component {
   }
 }
 
-Auth.navigationOptions = {
-  headerTitle: "Welcome",
-  headerStyle: {
-    color: "#78ffe4"
-  }
-};
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1
@@ -185,7 +178,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
     paddingVertical: 5,
     borderBottomColor: "#ccc",
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
+    fontFamily: "Gill Sans"
   },
   image: {
     flex: 1,

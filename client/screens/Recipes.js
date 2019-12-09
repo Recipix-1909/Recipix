@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,24 +7,35 @@ import {
   Modal,
   Dimensions,
   ImageBackground,
-  ActivityIndicator
+  Image,
+  TouchableHighlight
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { connect } from "react-redux";
+import { Svg, Path } from "react-native-svg";
+
 import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
-import { Svg, Path } from "react-native-svg";
+import filterIcon from "../other/filter";
 
 class Recipes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalVisible: false,
-      loaded: false
-    };
-    this.isItemInFilter = this.isItemInFilter.bind(this);
-  }
+  state = {
+    modalVisible: false,
+    loaded: false
+  };
+
+  static navigationOptions = {
+    headerTitle: "Recipes",
+    headerStyle: {
+      backgroundColor: "#00ffcc"
+    },
+    headerTitleStyle: {
+      fontFamily: "Gill Sans",
+      color: "white",
+      fontSize: 25
+    }
+  };
 
   async componentDidMount() {
     await this.props.getRecipes(this.props.user.id);
@@ -48,248 +58,165 @@ class Recipes extends React.Component {
     }
     return isFound;
   }
+
+  handleFilter() {
+    this.setModalVisible(false);
+
+    // if user did not filter for any ingredients, show default recipes containing any ingredients from fridge
+    if (this.props.filteredItems.length === 0) {
+      this.props.getRecipes(this.props.user.id);
+    }
+    // else get recipes based on filtered ingredients
+    else {
+      this.props.getFilteredRecipes(this.props.filteredItems);
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        {!this.state.loaded ? (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center"
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "column",
-                alignItems: "center"
+        {this.props.recipes.length === 0 ? (
+          <View style={styles.noRecipes}>
+            <Button
+              title=""
+              icon={
+                <Svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 512 512"
+                  fill="#517fa4"
+                  stroke="#517fa4"
+                >
+                  <Path d={filterIcon} />
+                </Svg>
+              }
+              type="clear"
+              buttonStyle={{
+                width: 70,
+                height: 40,
+                flexDirection: "row-reverse"
               }}
-            >
-              <ActivityIndicator size="large" color="white"></ActivityIndicator>
-              <Text style={{ fontSize: 20 }}>Cookin' up some recipes</Text>
-            </View>
+              titleStyle={{
+                fontSize: 12
+              }}
+              onPress={() => {
+                this.setModalVisible(true);
+              }}
+            />
+            <Text style={styles.recipesText}>No recipes to show...</Text>
+            <Image
+              source={require("../other/sadChef.png")}
+              style={{ width: 121, height: 261 }}
+            ></Image>
           </View>
         ) : (
-          <ScrollView
-            style={styles.container}
-            contentContainerStyle={{
-              paddingTop: 65,
-              alignItems: "center"
-            }}
-          >
-            {this.props.recipes.length === 0 ? (
-              <View>
-                <Text>No recipes to show...</Text>
-              </View>
-            ) : (
-              <View style={styles.getStartedContainer}>
-                {this.props.recipes[0] !== undefined &&
-                  this.props.recipes.map(curr => {
-                    return (
-                      <View key={curr.id}>
-                        <ImageBackground
-                          style={{
-                            width: Dimensions.get("window").width,
-                            height: 350,
-
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}
-                          resizeMode="cover"
-                          source={{
-                            uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
-                          }}
-                        >
-                          <Text
-                            onPress={() =>
-                              this.props.navigation.navigate("SingleRecipe", {
-                                recipe: curr
-                              })
-                            }
-                            style={{
-                              fontWeight: "bold",
-                              fontSize: 40,
-                              textAlign: "center",
-
-                              textShadowColor: "#FFFFFF",
-                              textShadowOffset: { width: -2, height: 2 },
-                              textShadowRadius: 3,
-                              backgroundColor: "rgba(52, 52, 52, 0.3)",
-                              width: "100%",
-                              paddingLeft: 50,
-                              paddingRight: 50
-                            }}
-                          >
-                            {curr.title}
-                          </Text>
-                        </ImageBackground>
-                      </View>
-                    );
-                  })}
-              </View>
-            )}
-
+          <ScrollView style={styles.recipesList}>
+            <Button
+              title=""
+              icon={
+                <Svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 512 512"
+                  fill="#517fa4"
+                  stroke="#517fa4"
+                >
+                  <Path d={filterIcon} />
+                </Svg>
+              }
+              type="clear"
+              buttonStyle={{
+                alignSelf: "flex-end"
+              }}
+              titleStyle={{
+                fontSize: 12
+              }}
+              onPress={() => {
+                this.setModalVisible(true);
+              }}
+            />
+            {this.props.recipes.map(curr => {
+              return (
+                <View
+                  key={curr.id}
+                  style={{ flex: 1 }}
+                  onPress={() =>
+                    this.props.navigation.navigate("SingleRecipe", {
+                      recipe: curr
+                    })
+                  }
+                >
+                  <ImageBackground
+                    style={styles.imageBackground}
+                    resizeMode="cover"
+                    source={{
+                      uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
+                    }}
+                  >
+                    <Text
+                      onPress={() =>
+                        this.props.navigation.navigate("SingleRecipe", {
+                          recipe: curr
+                        })
+                      }
+                      style={styles.recipeInList}
+                    >
+                      {curr.title}
+                    </Text>
+                  </ImageBackground>
+                </View>
+              );
+            })}
             <Modal
               animationType="fade"
               transparent={true}
               visible={this.state.modalVisible}
+              style={styles.modalContent}
             >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#00000080"
-                }}
-              >
+              <View style={styles.modalExterior}>
                 {/* View for Inner Box */}
-                <View
-                  style={{
-                    width: Dimensions.get("window").width * 0.85,
-                    height: Dimensions.get("window").height * 0.85,
-                    backgroundColor: "#DABFDE",
-                    padding: 20,
-                    paddingBottom: 75,
-                    borderRadius: 15
+                <Button
+                  icon={
+                    <Icon
+                      name="close-box"
+                      type="material-community"
+                      color="white"
+                    />
+                  }
+                  type="clear"
+                  buttonStyle={{
+                    alignSelf: "flex-end"
                   }}
-                >
-                  <ScrollView
-                    style={{
-                      flex: 1,
-                      flexDirection: "column",
-                      marginTop: 40
-                    }}
-                    contentContainerStyle={{
-                      justifyContent: "space-evenly",
-                      alignItems: "center"
-                    }}
-                  >
-                    {this.props.items.map(item => {
-                      return (
-                        <View key={item.id}>
-                          <ItemCheckBox
-                            item={item}
-                            isChecked={this.isItemInFilter(item)}
-                          />
-                        </View>
-                      );
-                    })}
-                  </ScrollView>
-
-                  <View style={styles.filterHeaderContainer}>
-                    <View
-                      style={{
-                        width: 40,
-                        height: 40
-                      }}
-                    ></View>
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        paddingVertical: 10
-                      }}
-                    >
-                      Filter By Ingredients
-                    </Text>
-                    <Button
-                      icon={
-                        <Icon
-                          name="close-box"
-                          type="material-community"
-                          color="red"
+                  onPress={() => {
+                    this.setModalVisible(false);
+                  }}
+                />
+                <ScrollView style={styles.modalInterior}>
+                  {this.props.items.map(item => {
+                    return (
+                      <View key={item.id}>
+                        <ItemCheckBox
+                          item={item}
+                          isChecked={this.isItemInFilter(item)}
                         />
-                      }
-                      type="clear"
-                      buttonStyle={{
-                        width: 40,
-                        height: 40,
-                        flexDirection: "column-reverse",
-                        marginTop: 2
-                      }}
-                      onPress={() => {
-                        this.setModalVisible(false);
-                      }}
-                    />
-                  </View>
-
-                  <View style={styles.tabBarInfoContainer}>
-                    <Button
-                      raised
-                      type="outline"
-                      title={"Submit Filter"}
-                      onPress={() => {
-                        this.setModalVisible(false);
-
-                        // if user did not filter for any ingredients, show default recipes containing any ingredients from fridge
-                        if (this.props.filteredItems.length === 0) {
-                          this.props.getRecipes(this.props.user.id);
-                        }
-                        // else get recipes based on filtered ingredients
-                        else {
-                          this.props.getFilteredRecipes(
-                            this.props.filteredItems
-                          );
-                        }
-                      }}
-                    />
-                  </View>
-                </View>
+                      </View>
+                    );
+                  })}
+                </ScrollView>
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={() => this.handleFilter()}
+                >
+                  <Text style={styles.buttonText}>FILTER</Text>
+                </TouchableHighlight>
               </View>
             </Modal>
           </ScrollView>
         )}
-
-        <View style={styles.topBarContainer}>
-          <View
-            style={{
-              width: 70,
-              height: 40
-            }}
-          ></View>
-          <Text
-            style={{
-              fontSize: 20,
-              paddingTop: 5
-            }}
-          >
-            Recipes
-          </Text>
-          <Button
-            title="Filter  "
-            icon={
-              <Svg
-                width="24"
-                height="24"
-                viewBox="0 0 512 512"
-                fill="#517fa4"
-                stroke="#517fa4"
-              >
-                <Path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" />
-              </Svg>
-            }
-            type="clear"
-            buttonStyle={{
-              width: 70,
-              height: 40,
-              flexDirection: "row-reverse"
-            }}
-            titleStyle={{
-              fontSize: 12
-            }}
-            onPress={() => {
-              this.setModalVisible(true);
-            }}
-          />
-        </View>
       </View>
     );
   }
 }
-
-Recipes.navigationOptions = {
-  header: null
-};
 
 const mapStateToProps = state => {
   return {
@@ -314,129 +241,78 @@ export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#00ffcc"
+    alignItems: "center",
+    justifyContent: "center",
+
+    fontFamily: "Gill Sans",
+    backgroundColor: "#E0FEFE"
+  },
+  noRecipes: {
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex"
+  },
+  recipesText: {
+    fontFamily: "Gill Sans",
+    fontSize: 18,
+    alignSelf: "center",
+    margin: 10
   },
 
   modalContainer: {
     flex: 1,
     backgroundColor: "#DABFDE"
   },
-
-  contentContainer: {
-    paddingTop: 65,
-    alignItems: "center"
+  modalExterior: {
+    backgroundColor: "#00ffcc",
+    borderRadius: 15,
+    paddingTop: 0,
+    padding: 20,
+    fontFamily: "Gill Sans",
+    margin: 30,
+    marginTop: 100,
+    marginBottom: 200
   },
-  welcomeContainer: {
-    alignItems: "center",
-    marginTop: 10,
-    marginBottom: 20
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: "contain",
-    marginTop: 3,
-    marginLeft: -10
-  },
-  getStartedContainer: {
-    alignItems: "center",
-    marginHorizontal: 50
-  },
-
-  getStartedText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    lineHeight: 24,
-    textAlign: "center"
-  },
-  tabBarInfoContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-    alignItems: "center",
-    backgroundColor: "transparent",
-    height: 65,
-    borderBottomLeftRadius: 15,
-    borderBottomRightRadius: 15
-  },
-  topBarContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-
+  modalInterior: {
     backgroundColor: "white",
-    paddingTop: 30,
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 65
+    borderRadius: 15,
+    fontFamily: "Gill Sans",
+    flexDirection: "column"
   },
-
-  filterHeaderContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-    backgroundColor: "#fbfbfb",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15
+  modalContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 30
   },
-
-  tabBarInfoText: {
-    fontSize: 17,
-    color: "rgba(96,100,109, 1)",
-    textAlign: "center"
+  button: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 10,
+    margin: 10,
+    fontFamily: "Gill Sans"
   },
-  navigationFilename: {
-    marginTop: 5
+  buttonText: {
+    fontFamily: "Gill Sans",
+    fontSize: 20
   },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: "center"
+  imageBackground: {
+    width: Dimensions.get("window").width * 0.95,
+    height: 350,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    marginBottom: 15
   },
-  helpLink: {
-    paddingVertical: 15
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: "#2e78b7"
+  recipeInList: {
+    fontSize: 30,
+    textAlign: "center",
+    fontFamily: "Gill Sans",
+    backgroundColor: "#8fafc8",
+    color: "white",
+    width: "100%",
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignSelf: "flex-end"
   }
 });
