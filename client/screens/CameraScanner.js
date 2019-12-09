@@ -37,7 +37,7 @@ class CameraScanner extends React.Component {
   static navigationOptions = {
     headerTitle: "Camera",
     headerStyle: {
-      backgroundColor: "#00ffcc"
+      backgroundColor: "#20CE99"
     },
     headerTitleStyle: {
       fontFamily: "Gill Sans",
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     fontFamily: "Gill Sans"
   },
   modalExterior: {
-    backgroundColor: "#00ffcc",
+    backgroundColor: "#20CE99",
     padding: 20,
     borderRadius: 15,
     fontFamily: "Gill Sans",

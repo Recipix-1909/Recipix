@@ -28,7 +28,7 @@ class Recipes extends React.Component {
   static navigationOptions = {
     headerTitle: "Recipes",
     headerStyle: {
-      backgroundColor: "#00ffcc"
+      backgroundColor: "#20CE99"
     },
     headerTitleStyle: {
       fontFamily: "Gill Sans",
@@ -139,7 +139,7 @@ class Recipes extends React.Component {
               return (
                 <View
                   key={curr.id}
-                  style={{ flex: 1 }}
+                  style={{ display: "flex" }}
                   onPress={() =>
                     this.props.navigation.navigate("SingleRecipe", {
                       recipe: curr
@@ -243,9 +243,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-
-    fontFamily: "Gill Sans",
-    backgroundColor: "#E0FEFE"
+    fontFamily: "Gill Sans"
   },
   noRecipes: {
     alignItems: "center",
@@ -264,7 +262,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#DABFDE"
   },
   modalExterior: {
-    backgroundColor: "#00ffcc",
+    backgroundColor: "#20CE99",
     borderRadius: 15,
     paddingTop: 0,
     padding: 20,
@@ -305,7 +303,7 @@ const styles = StyleSheet.create({
     marginBottom: 15
   },
   recipeInList: {
-    fontSize: 30,
+    fontSize: 22,
     textAlign: "center",
     fontFamily: "Gill Sans",
     backgroundColor: "#8fafc8",

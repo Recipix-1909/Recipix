@@ -15,7 +15,7 @@ class Fridge extends React.Component {
   static navigationOptions = {
     headerTitle: "Fridge",
     headerStyle: {
-      backgroundColor: "#00ffcc"
+      backgroundColor: "#20CE99"
     },
     headerTitleStyle: {
       fontFamily: "Gill Sans",

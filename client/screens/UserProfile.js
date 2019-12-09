@@ -23,7 +23,7 @@ class UserProfile extends React.Component {
   static navigationOptions = {
     headerTitle: "Profile",
     headerStyle: {
-      backgroundColor: "#00ffcc"
+      backgroundColor: "#20CE99"
     },
     headerTitleStyle: {
       fontFamily: "Gill Sans",
@@ -281,7 +281,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   modalExterior: {
-    backgroundColor: "#00ffcc",
+    backgroundColor: "#20CE99",
     borderRadius: 15,
     paddingTop: 0,
     padding: 20,

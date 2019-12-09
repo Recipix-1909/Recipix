@@ -74,7 +74,7 @@ class Auth extends React.Component {
         keyboardVerticalOffset={50}
         style={styles.screen}
       >
-        <LinearGradient colors={["#00ffcc", "#00ffcc"]} style={styles.gradient}>
+        <LinearGradient colors={["#20CE99", "#20CE99"]} style={styles.gradient}>
           <Image
             source={require("../other/flogo.png")}
             style={{ width: 225, height: 225 }}
