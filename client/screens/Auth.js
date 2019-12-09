@@ -70,7 +70,6 @@ class Auth extends React.Component {
 
   render() {
     let loginScreen = Dimensions.get("screen");
-    console.log(loginScreen);
     return (
       <KeyboardAvoidingView
         behavior="padding"
