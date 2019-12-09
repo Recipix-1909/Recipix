@@ -60,6 +60,7 @@ class SingleRecipe extends React.Component {
               <View key={ingred.id} style={styles.usedIngredients}>
                 <CheckBox
                   title={ingred.original}
+                  textStyle={{ fontFamily: "Gill Sans", fontWeight: "normal" }}
                   checked={true}
                   checkedColor="green"
                 />
@@ -72,6 +73,10 @@ class SingleRecipe extends React.Component {
                 <View key={ingred.id} style={styles.missedIngredients}>
                   <CheckBox
                     title={ingred.original}
+                    textStyle={{
+                      fontFamily: "Gill Sans",
+                      fontWeight: "normal"
+                    }}
                     checked={false}
                     checkedColor="green"
                   />
@@ -84,9 +89,11 @@ class SingleRecipe extends React.Component {
             <Text style={styles.header}>PREPARATION</Text>
             {this.state.instructions.map((step, idx) => {
               return (
-                <View key={step.step} style={{}}>
-                  <Text style={{ fontWeight: "bold" }}>Step {idx + 1}</Text>
-                  <Text>{step.step}</Text>
+                <View key={step.step}>
+                  <Text style={{ fontWeight: "bold", fontFamily: "Gill Sans" }}>
+                    Step {idx + 1}
+                  </Text>
+                  <Text style={{ fontFamily: "Gill Sans" }}>{step.step}</Text>
                   <Text> </Text>
                 </View>
               );
@@ -105,19 +112,25 @@ const styles = StyleSheet.create({
     padding: 12
   },
   usedIngredients: {
-    color: "#33FF61"
+    color: "#33FF61",
+    fontFamily: "Gill Sans"
   },
   missedIngredients: {
-    color: "#FF5733"
+    color: "#FF5733",
+    fontFamily: "Gill Sans"
   },
-  instructions: {},
+  instructions: {
+    fontFamily: "Gill Sans"
+  },
   header: {
     fontSize: 20,
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: "Gill Sans"
   },
   title: {
     fontSize: 25,
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: "Gill Sans"
   }
 });
 

@@ -1,14 +1,13 @@
 // import * as WebBrowser from "expo-web-browser";
 import React from "react";
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
   Modal,
-  Dimensions,
   View,
-  Image
+  Image,
+  TouchableHighlight
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { connect } from "react-redux";
@@ -19,7 +18,6 @@ import DietCheckbox from "../components/DietCheckbox";
 import AllergyCheckbox from "../components/AllergyCheckbox";
 import { ip } from "../../secrets";
 import axios from "axios";
-import { TouchableHighlight } from "react-native-gesture-handler";
 
 class UserProfile extends React.Component {
   static navigationOptions = {
