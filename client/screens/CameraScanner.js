@@ -108,6 +108,22 @@ class CameraScanner extends React.Component {
             animationType="fade"
           >
             <View style={styles.modalExterior}>
+              <Button
+                icon={
+                  <Icon
+                    name="close-box"
+                    type="material-community"
+                    color="white"
+                  />
+                }
+                type="clear"
+                buttonStyle={{
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => {
+                  this.setState({ manualAddModal: false });
+                }}
+              />
               <View style={styles.modalInterior}>
                 <TextInput
                   style={styles.textInput}
@@ -151,12 +167,6 @@ class CameraScanner extends React.Component {
               >
                 <Text style={styles.modalText}>ADD</Text>
               </TouchableHighlight>
-              <TouchableHighlight
-                onPress={() => this.setState({ manualAddModal: false })}
-                style={styles.modalButton}
-              >
-                <Text style={styles.modalText}>CANCEL</Text>
-              </TouchableHighlight>
             </View>
           </Modal>
           // END OF MANUAL START
@@ -166,6 +176,20 @@ class CameraScanner extends React.Component {
 
           <Modal isVisible={this.state.successScanModal} transparent={true}>
             <View style={styles.modalExterior}>
+              <Button
+                icon={
+                  <Icon
+                    name="close-box"
+                    type="material-community"
+                    color="white"
+                  />
+                }
+                type="clear"
+                buttonStyle={{
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => this.setState({ scanned: false })}
+              />
               <View style={styles.modalInterior}>
                 <Text style={styles.modalText}>
                   Set expiration date below (optional)
@@ -202,12 +226,12 @@ class CameraScanner extends React.Component {
               >
                 <Text style={styles.modalText}>ADD</Text>
               </TouchableHighlight>
-              <TouchableHighlight
+              {/* <TouchableHighlight
                 onPress={() => this.setState({ scanned: false })}
                 style={styles.modalButton}
               >
                 <Text style={styles.modalText}>CANCEL</Text>
-              </TouchableHighlight>
+              </TouchableHighlight> */}
             </View>
           </Modal>
         )}
@@ -236,12 +260,6 @@ class CameraScanner extends React.Component {
                 manually.
               </Text>
             </View>
-            {/* <TouchableHighlight
-              onPress={() => this.setState({ failureScanModal: false })}
-              style={styles.modalButton}
-            >
-              <Text style={styles.modalText}>DISMISS</Text>
-            </TouchableHighlight> */}
           </View>
         </Modal>
       </View>
@@ -349,7 +367,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#00ffcc",
     padding: 20,
     borderRadius: 15,
-    fontFamily: "Gill Sans"
+    fontFamily: "Gill Sans",
+    paddingTop: 0
   },
   modalInterior: {
     backgroundColor: "white",
