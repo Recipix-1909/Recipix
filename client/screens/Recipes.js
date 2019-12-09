@@ -28,10 +28,6 @@ class Recipes extends React.Component {
     };
     this.setModalVisible = this.setModalVisible.bind(this);
   }
-  // state = {
-  //   modalVisible: false,
-  //   loaded: false
-  // };
 
   static navigationOptions = ({ navigation }) => {
     return {
@@ -44,6 +40,27 @@ class Recipes extends React.Component {
         color: "white",
         fontSize: 25
       },
+      headerLeft: () => (
+        <Button
+          title=""
+          icon={<Icon name="refresh" type="material-community" color="white" />}
+          type="clear"
+          buttonStyle={{
+            width: 70,
+            height: 40,
+            flexDirection: "row-reverse"
+          }}
+          titleStyle={{
+            fontSize: 12
+          }}
+          onPress={async () => {
+            await navigation.state.params.getRecipes();
+
+            // console.log(navigation)
+          }}
+        />
+      ),
+
       headerRight: () => (
         <Button
           title=""
@@ -52,8 +69,8 @@ class Recipes extends React.Component {
               width="24"
               height="24"
               viewBox="0 0 512 512"
-              fill="#517fa4"
-              stroke="#517fa4"
+              fill="white"
+              stroke="white"
             >
               <Path d={filterIcon} />
             </Svg>
@@ -67,14 +84,9 @@ class Recipes extends React.Component {
           titleStyle={{
             fontSize: 12
           }}
-          onPress={
-            // () => {
-            //   this.setModalVisible(true);
-            // }
-            () => {
-              navigation.state.params.setModalVisible(true);
-            }
-          }
+          onPress={() => {
+            navigation.state.params.setModalVisible(true);
+          }}
         />
       )
     };
@@ -82,7 +94,8 @@ class Recipes extends React.Component {
 
   async componentDidMount() {
     this.props.navigation.setParams({
-      setModalVisible: visible => this.setModalVisible(visible)
+      setModalVisible: visible => this.setModalVisible(visible),
+      getRecipes: () => this.props.getRecipes(this.props.user.id)
     });
     await this.props.getRecipes(this.props.user.id);
     this.setState({ loaded: true });
