@@ -133,8 +133,6 @@ class UserProfile extends React.Component {
                 }
                 type="clear"
                 buttonStyle={{
-                  // width: 40,
-                  // height: 40,
                   alignSelf: "flex-end"
                 }}
                 onPress={() => {

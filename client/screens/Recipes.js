@@ -8,7 +8,8 @@ import {
   Modal,
   Dimensions,
   ImageBackground,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableHighlight
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { connect } from "react-redux";
@@ -56,6 +57,20 @@ class Recipes extends React.Component {
     }
     return isFound;
   }
+
+  handleFilter() {
+    this.setModalVisible(false);
+
+    // if user did not filter for any ingredients, show default recipes containing any ingredients from fridge
+    if (this.props.filteredItems.length === 0) {
+      this.props.getRecipes(this.props.user.id);
+    }
+    // else get recipes based on filtered ingredients
+    else {
+      this.props.getFilteredRecipes(this.props.filteredItems);
+    }
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -165,109 +180,44 @@ class Recipes extends React.Component {
               animationType="fade"
               transparent={true}
               visible={this.state.modalVisible}
+              style={styles.modalContent}
             >
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: "column",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  backgroundColor: "#00000080"
-                }}
-              >
+              <View style={styles.modalExterior}>
                 {/* View for Inner Box */}
-                <View
-                  style={{
-                    width: Dimensions.get("window").width * 0.85,
-                    height: Dimensions.get("window").height * 0.85,
-                    backgroundColor: "#DABFDE",
-                    padding: 20,
-                    paddingBottom: 75,
-                    borderRadius: 15
+                <Button
+                  icon={
+                    <Icon
+                      name="close-box"
+                      type="material-community"
+                      color="white"
+                    />
+                  }
+                  type="clear"
+                  buttonStyle={{
+                    alignSelf: "flex-end"
                   }}
-                >
-                  <ScrollView
-                    style={{
-                      flex: 1,
-                      flexDirection: "column",
-                      marginTop: 40
-                    }}
-                    contentContainerStyle={{
-                      justifyContent: "space-evenly",
-                      alignItems: "center"
-                    }}
-                  >
-                    {this.props.items.map(item => {
-                      return (
-                        <View key={item.id}>
-                          <ItemCheckBox
-                            item={item}
-                            isChecked={this.isItemInFilter(item)}
-                          />
-                        </View>
-                      );
-                    })}
-                  </ScrollView>
-
-                  <View>
-                    <View
-                      style={{
-                        width: 40,
-                        height: 40
-                      }}
-                    ></View>
-                    <Text
-                      style={{
-                        fontSize: 20,
-                        paddingVertical: 10,
-                        fontFamily: "Gill Sans"
-                      }}
-                    >
-                      Filter By Ingredients
-                    </Text>
-                    <Button
-                      icon={
-                        <Icon
-                          name="close-box"
-                          type="material-community"
-                          color="red"
+                  onPress={() => {
+                    this.setModalVisible(false);
+                  }}
+                />
+                <ScrollView style={styles.modalInterior}>
+                  {this.props.items.map(item => {
+                    return (
+                      <View key={item.id}>
+                        <ItemCheckBox
+                          item={item}
+                          isChecked={this.isItemInFilter(item)}
                         />
-                      }
-                      type="clear"
-                      buttonStyle={{
-                        width: 40,
-                        height: 40,
-                        flexDirection: "column-reverse",
-                        marginTop: 2
-                      }}
-                      onPress={() => {
-                        this.setModalVisible(false);
-                      }}
-                    />
-                  </View>
-
-                  <View style={styles.tabBarInfoContainer}>
-                    <Button
-                      raised
-                      type="outline"
-                      title={"Submit Filter"}
-                      onPress={() => {
-                        this.setModalVisible(false);
-
-                        // if user did not filter for any ingredients, show default recipes containing any ingredients from fridge
-                        if (this.props.filteredItems.length === 0) {
-                          this.props.getRecipes(this.props.user.id);
-                        }
-                        // else get recipes based on filtered ingredients
-                        else {
-                          this.props.getFilteredRecipes(
-                            this.props.filteredItems
-                          );
-                        }
-                      }}
-                    />
-                  </View>
-                </View>
+                      </View>
+                    );
+                  })}
+                </ScrollView>
+                <TouchableHighlight
+                  style={styles.button}
+                  onPress={() => this.handleFilter()}
+                >
+                  <Text style={styles.buttonText}>FILTER</Text>
+                </TouchableHighlight>
               </View>
             </Modal>
           </ScrollView>
@@ -318,5 +268,38 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: "#DABFDE"
+  },
+  modalExterior: {
+    backgroundColor: "#00ffcc",
+    borderRadius: 15,
+    paddingTop: 0,
+    padding: 20,
+    fontFamily: "Gill Sans",
+    margin: 30,
+    marginTop: 100,
+    marginBottom: 200
+  },
+  modalInterior: {
+    backgroundColor: "white",
+    borderRadius: 15,
+    fontFamily: "Gill Sans",
+    flexDirection: "column"
+  },
+  modalContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 30
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 10,
+    margin: 10,
+    fontFamily: "Gill Sans"
+  },
+  buttonText: {
+    fontFamily: "Gill Sans",
+    fontSize: 20
   }
 });
