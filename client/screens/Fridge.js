@@ -15,10 +15,12 @@ class Fridge extends React.Component {
   static navigationOptions = {
     headerTitle: "Fridge",
     headerStyle: {
-      backgroundColor: "#78ffe4"
+      backgroundColor: "#00ffcc"
     },
     headerTitleStyle: {
-      fontFamily: "Gill Sans"
+      fontFamily: "Gill Sans",
+      color: "white",
+      fontSize: 25
     }
   };
 
@@ -100,6 +102,7 @@ const styles = StyleSheet.create({
   fridgeText: {
     fontFamily: "Gill Sans",
     fontSize: 18,
-    textAlign: "center"
+    textAlign: "center",
+    margin: 5
   }
 });

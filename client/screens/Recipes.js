@@ -18,24 +18,22 @@ import ItemCheckBox from "../components/ItemCheckBox";
 import { Svg, Path } from "react-native-svg";
 
 class Recipes extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      modalVisible: false,
-      loaded: false
-    };
-    this.isItemInFilter = this.isItemInFilter.bind(this);
-  }
+  state = {
+    modalVisible: false,
+    loaded: false
+  };
 
-  // static navigationOptions = {
-  //   headerTitle: "Recipes",
-  //   headerStyle: {
-  //     backgroundColor: "#78ffe4"
-  //   },
-  //   headerTitleStyle: {
-  //     fontFamily: "Gill Sans"
-  //   }
-  // };
+  static navigationOptions = {
+    headerTitle: "Recipes",
+    headerStyle: {
+      backgroundColor: "#00ffcc"
+    },
+    headerTitleStyle: {
+      fontFamily: "Gill Sans",
+      color: "white",
+      fontSize: 25
+    }
+  };
 
   async componentDidMount() {
     await this.props.getRecipes(this.props.user.id);
@@ -93,10 +91,36 @@ class Recipes extends React.Component {
               </View>
             ) : (
               <View style={styles.getStartedContainer}>
+                <Button
+                  title="Filter  "
+                  icon={
+                    <Svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 512 512"
+                      fill="#517fa4"
+                      stroke="#517fa4"
+                    >
+                      <Path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" />
+                    </Svg>
+                  }
+                  type="clear"
+                  buttonStyle={{
+                    width: 70,
+                    height: 40,
+                    flexDirection: "row-reverse"
+                  }}
+                  titleStyle={{
+                    fontSize: 12
+                  }}
+                  onPress={() => {
+                    this.setModalVisible(true);
+                  }}
+                />
                 {this.props.recipes[0] !== undefined &&
                   this.props.recipes.map(curr => {
                     return (
-                      <View key={curr.id}>
+                      <View key={curr.id} style={{ flex: 1 }}>
                         <ImageBackground
                           style={{
                             width: Dimensions.get("window").width,
@@ -117,17 +141,15 @@ class Recipes extends React.Component {
                               })
                             }
                             style={{
-                              fontWeight: "bold",
-                              fontSize: 40,
+                              fontSize: 30,
                               textAlign: "center",
-
-                              textShadowColor: "#FFFFFF",
-                              textShadowOffset: { width: -2, height: 2 },
-                              textShadowRadius: 3,
-                              backgroundColor: "rgba(52, 52, 52, 0.3)",
+                              fontFamily: "Gill Sans",
+                              backgroundColor: "#8fafc8",
+                              color: "white",
                               width: "100%",
-                              paddingLeft: 50,
-                              paddingRight: 50
+                              paddingLeft: 10,
+                              paddingRight: 10,
+                              alignSelf: "start"
                             }}
                           >
                             {curr.title}
@@ -187,7 +209,7 @@ class Recipes extends React.Component {
                     })}
                   </ScrollView>
 
-                  <View style={styles.filterHeaderContainer}>
+                  <View>
                     <View
                       style={{
                         width: 40,
@@ -250,59 +272,10 @@ class Recipes extends React.Component {
             </Modal>
           </ScrollView>
         )}
-
-        <View style={styles.topBarContainer}>
-          <View
-            style={{
-              width: 70,
-              height: 40
-            }}
-          ></View>
-          <Text
-            style={{
-              fontSize: 22,
-              paddingTop: 5,
-              fontFamily: "Gill Sans",
-              backgroundColor: "#78ffe4"
-            }}
-          >
-            Recipes
-          </Text>
-          <Button
-            title="Filter  "
-            icon={
-              <Svg
-                width="24"
-                height="24"
-                viewBox="0 0 512 512"
-                fill="#517fa4"
-                stroke="#517fa4"
-              >
-                <Path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" />
-              </Svg>
-            }
-            type="clear"
-            buttonStyle={{
-              width: 70,
-              height: 40,
-              flexDirection: "row-reverse"
-            }}
-            titleStyle={{
-              fontSize: 12
-            }}
-            onPress={() => {
-              this.setModalVisible(true);
-            }}
-          />
-        </View>
       </View>
     );
   }
 }
-
-Recipes.navigationOptions = {
-  header: null
-};
 
 const mapStateToProps = state => {
   return {
@@ -326,9 +299,15 @@ export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#E0FEFE",
-    fontFamily: "Gill Sans"
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: 50,
+      padding: 16,
+      fontFamily: "Gill Sans",
+      backgroundColor: "#E0FEFE"
+    }
   },
 
   recipesText: {
@@ -339,60 +318,5 @@ const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
     backgroundColor: "#DABFDE"
-  },
-
-  contentContainer: {
-    paddingTop: 65,
-    alignItems: "center"
-  },
-
-  topBarContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-
-    backgroundColor: "white",
-    paddingTop: 30,
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    height: 65
-  },
-
-  filterHeaderContainer: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: "black",
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-    backgroundColor: "#78ffe4",
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    fontFamily: "Gill Sans"
   }
 });

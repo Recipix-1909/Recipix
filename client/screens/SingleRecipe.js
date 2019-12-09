@@ -21,10 +21,12 @@ class SingleRecipe extends React.Component {
   static navigationOptions = {
     headerTitle: "Recipe",
     headerStyle: {
-      backgroundColor: "#78ffe4"
+      backgroundColor: "#00ffcc"
     },
     headerTitleStyle: {
-      fontFamily: "Gill Sans"
+      fontFamily: "Gill Sans",
+      color: "white",
+      fontSize: 25
     }
   };
 

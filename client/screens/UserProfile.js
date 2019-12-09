@@ -7,7 +7,8 @@ import {
   Text,
   Modal,
   Dimensions,
-  View
+  View,
+  Image
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { connect } from "react-redux";
@@ -18,15 +19,18 @@ import DietCheckbox from "../components/DietCheckbox";
 import AllergyCheckbox from "../components/AllergyCheckbox";
 import { ip } from "../../secrets";
 import axios from "axios";
+import { TouchableHighlight } from "react-native-gesture-handler";
 
 class UserProfile extends React.Component {
   static navigationOptions = {
     headerTitle: "Profile",
     headerStyle: {
-      backgroundColor: "#78ffe4"
+      backgroundColor: "#00ffcc"
     },
     headerTitleStyle: {
-      fontFamily: "Gill Sans"
+      fontFamily: "Gill Sans",
+      color: "white",
+      fontSize: 25
     }
   };
   state = {
@@ -35,11 +39,10 @@ class UserProfile extends React.Component {
     allDiets: [],
     allAllergies: []
   };
-  // this.logOutSubmit = this.logOutSubmit.bind(this);
-  // this.setAllergyVisible = this.setAllergyVisible.bind(this);
-  // this.setDietVisible = this.setDietVisible.bind(this);
+
   async componentDidMount() {
     await this.props.getDiet(this.props.user.id);
+    await this.props.getAllergy(this.props.user.id);
 
     // getting all diets and allergies from database
     const { data: allDiets } = await axios.get(`${ip}/api/diet`);
@@ -70,56 +73,49 @@ class UserProfile extends React.Component {
     const dietOptions = this.state.allDiets;
     const allergyOptions = this.state.allAllergies;
     return (
-      <ScrollView
-        style={{
-          flex: 1,
-          flexDirection: "column",
-          alignItems: "center"
-        }}
+      <View
+        style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
-        <Text
-          style={{
-            justifyContent: "flex-start",
-            alignSelf: "stretch",
-            fontFamily: "Gill Sans"
-          }}
-        >
-          User Profile
-        </Text>
-        <Button
-          title="Diet"
-          type="clear"
-          buttonStyle={{
-            width: 100,
-            height: 40,
-            flexDirection: "column-reverse"
-          }}
-          titleStyle={{
-            fontSize: 13,
-            fontFamily: "Gill Sans"
-          }}
-          onPress={() => {
-            this.setDietVisible();
-          }}
-        />
+        <View style={styles.userInfo}>
+          <Image
+            source={require("../other/icon.png")}
+            style={{ width: 100, height: 100 }}
+          ></Image>
 
-        <Button
-          title="Allergy"
-          type="clear"
-          buttonStyle={{
-            width: 100,
-            height: 40,
-            flexDirection: "column-reverse"
-          }}
-          titleStyle={{
-            fontSize: 13,
-            fontFamily: "Gill Sans"
-          }}
-          onPress={() => {
-            this.setAllergyVisible();
-          }}
-        />
+          <Text style={styles.userText}>
+            Name: {this.props.user.firstName} {this.props.user.lastName}
+          </Text>
+          <Text style={styles.userText}>Email: {this.props.user.email}</Text>
+        </View>
+        <View style={styles.dietInfo}>
+          <Text style={styles.userTextHeader}>
+            Dietary restrictions or allergies? Set preferences below!{" "}
+          </Text>
+          <View
+            style={{
+              flexDirection: "row"
+            }}
+          >
+            <TouchableHighlight
+              style={styles.button}
+              onPress={() => {
+                this.setDietVisible();
+              }}
+            >
+              <Text style={styles.buttonText}>Dietary</Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              style={styles.button}
+              onPress={() => {
+                this.setAllergyVisible();
+              }}
+            >
+              <Text style={styles.buttonText}>Allergy</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
 
         {/* -------- DIET MODAL-------- */}
         <Modal
@@ -211,7 +207,6 @@ class UserProfile extends React.Component {
             </View>
           </View>
         </Modal>
-
         {/* -------- ALLERGY MODAL-------- */}
         <Modal
           animationType="fade"
@@ -300,11 +295,15 @@ class UserProfile extends React.Component {
             </View>
           </View>
         </Modal>
-
-        <Text style={styles.logOut} onPress={() => this.logOutSubmit()}>
-          Log out
-        </Text>
-      </ScrollView>
+        <View style={styles.logOutView}>
+          <Text style={styles.userText}>
+            Not {this.props.user.firstName}?{" "}
+            <Text style={styles.logOut} onPress={() => this.logOutSubmit()}>
+              Log out
+            </Text>
+          </Text>
+        </View>
+      </View>
     );
   }
 }
@@ -328,16 +327,54 @@ const mapDispatchToProps = dispatch => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 50,
-    padding: 16,
     fontFamily: "Gill Sans",
-    backgroundColor: "#E0FEFE"
+    backgroundColor: "#E0FEFE",
+    justifyContent: "space-between",
+    flexDirection: "column",
+    alignItems: "center"
   },
   logOut: {
     color: "#F44336",
     fontFamily: "Gill Sans"
+  },
+  logOutView: {
+    padding: 10,
+    justifyContent: "flex-end"
+  },
+  userText: {
+    alignSelf: "stretch",
+    fontFamily: "Gill Sans",
+    fontSize: 18
+  },
+  userTextHeader: {
+    alignSelf: "stretch",
+    fontFamily: "Gill Sans",
+    fontSize: 22,
+    textAlign: "center"
+  },
+  userInfo: {
+    padding: 10,
+    flexDirection: "column",
+    alignItems: "center",
+    flex: 1
+  },
+  dietInfo: {
+    padding: 10,
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center"
+  },
+  button: {
+    alignItems: "center",
+    backgroundColor: "white",
+    borderRadius: 15,
+    padding: 10,
+    margin: 10,
+    fontFamily: "Gill Sans"
+  },
+  buttonText: {
+    fontFamily: "Gill Sans",
+    fontSize: 20
   }
 });
 
