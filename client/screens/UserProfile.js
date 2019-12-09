@@ -23,7 +23,7 @@ class UserProfile extends React.Component {
   static navigationOptions = {
     headerTitle: "Profile",
     headerStyle: {
-      backgroundColor: "#00ffcc"
+      backgroundColor: "#20CE99"
     },
     headerTitleStyle: {
       fontFamily: "Gill Sans",
@@ -78,13 +78,15 @@ class UserProfile extends React.Component {
         <View style={styles.userInfo}>
           <Image
             source={require("../other/icon.png")}
-            style={{ width: 100, height: 100 }}
+            style={{ width: 200, height: 200 }}
           ></Image>
 
-          <Text style={styles.userText}>
+          <Text style={styles.userTextHeader}>
             Name: {this.props.user.firstName} {this.props.user.lastName}
           </Text>
-          <Text style={styles.userText}>Email: {this.props.user.email}</Text>
+          <Text style={styles.userTextHeader}>
+            Email: {this.props.user.email}
+          </Text>
         </View>
         <View style={styles.dietInfo}>
           <Text style={styles.userTextHeader}>
@@ -239,7 +241,8 @@ const styles = StyleSheet.create({
   },
   logOut: {
     color: "#F44336",
-    fontFamily: "Gill Sans"
+    fontFamily: "Gill Sans",
+    fontSize: 22
   },
   logOutView: {
     padding: 10,
@@ -248,7 +251,7 @@ const styles = StyleSheet.create({
   userText: {
     alignSelf: "stretch",
     fontFamily: "Gill Sans",
-    fontSize: 18
+    fontSize: 22
   },
   userTextHeader: {
     alignSelf: "stretch",
@@ -281,7 +284,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   modalExterior: {
-    backgroundColor: "#00ffcc",
+    backgroundColor: "#20CE99",
     borderRadius: 15,
     paddingTop: 0,
     padding: 20,
