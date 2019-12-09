@@ -8,6 +8,7 @@ import {
   View,
   Button,
   ActivityIndicator,
+  Keyboard,
   TextInput,
   Text
 } from "react-native";
@@ -80,7 +81,7 @@ class Auth extends React.Component {
           />
           {!this.state.form ? (
             <Card style={styles.authContainer}>
-              <ScrollView>
+              <ScrollView keyboardShouldPersistTaps="always">
                 <TextInput
                   style={styles.input}
                   placeholder="email"
@@ -112,7 +113,7 @@ class Auth extends React.Component {
             </Card>
           ) : (
             <Card style={styles.authContainer}>
-              <ScrollView>
+              <ScrollView keyboardShouldPersistTaps="always">
                 <TextInput
                   style={styles.input}
                   placeholder="First Name"
