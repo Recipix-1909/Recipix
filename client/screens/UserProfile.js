@@ -231,7 +231,7 @@ const mapDispatchToProps = dispatch => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    fontFamily: "Gill Sans",
+    // fontFamily: "Gill Sans",
     backgroundColor: "#E0FEFE",
     justifyContent: "space-between",
     flexDirection: "column",
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 10,
     margin: 10,
-    fontFamily: "Gill Sans"
+    // fontFamily: "Gill Sans"
   },
   buttonText: {
     fontFamily: "Gill Sans",
@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     paddingTop: 0,
     padding: 20,
-    fontFamily: "Gill Sans",
+    // fontFamily: "Gill Sans",
     margin: 30,
     marginTop: 100,
     marginBottom: 125
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   modalInterior: {
     backgroundColor: "white",
     borderRadius: 15,
-    fontFamily: "Gill Sans",
+    // fontFamily: "Gill Sans",
     margin: 0,
     flexDirection: "column"
   },

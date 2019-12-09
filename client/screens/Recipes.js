@@ -20,59 +20,77 @@ import ItemCheckBox from "../components/ItemCheckBox";
 import filterIcon from "../other/filter";
 
 class Recipes extends React.Component {
-  state = {
-    modalVisible: false,
-    loaded: false
-  };
+  constructor() {
+    super();
+    this.state = {
+      modalVisible: false,
+      loaded: false
+    };
+    this.setModalVisible = this.setModalVisible.bind(this);
+  }
+  // state = {
+  //   modalVisible: false,
+  //   loaded: false
+  // };
 
-  static navigationOptions = {
-    headerTitle: "Recipes",
-    headerStyle: {
-      backgroundColor: "#00ffcc"
-    },
-    headerTitleStyle: {
-      fontFamily: "Gill Sans",
-      color: "white",
-      fontSize: 25
-    },
-    headerRight: () => (
-      <Button
-        title=""
-        icon={
-          <Svg
-            width="24"
-            height="24"
-            viewBox="0 0 512 512"
-            fill="#517fa4"
-            stroke="#517fa4"
-          >
-            <Path d={filterIcon} />
-          </Svg>
-        }
-        type="clear"
-        buttonStyle={{
-          width: 70,
-          height: 40,
-          flexDirection: "row-reverse"
-        }}
-        titleStyle={{
-          fontSize: 12
-        }}
-        onPress={() => {
-          this.setModalVisible(true);
-        }}
-      />
-    )
+  static navigationOptions = ({ navigation }) => {
+    return {
+      headerTitle: "Recipes",
+      headerStyle: {
+        backgroundColor: "#00ffcc"
+      },
+      headerTitleStyle: {
+        fontFamily: "Gill Sans",
+        color: "white",
+        fontSize: 25
+      },
+      headerRight: () => (
+        <Button
+          title=""
+          icon={
+            <Svg
+              width="24"
+              height="24"
+              viewBox="0 0 512 512"
+              fill="#517fa4"
+              stroke="#517fa4"
+            >
+              <Path d={filterIcon} />
+            </Svg>
+          }
+          type="clear"
+          buttonStyle={{
+            width: 70,
+            height: 40,
+            flexDirection: "row-reverse"
+          }}
+          titleStyle={{
+            fontSize: 12
+          }}
+          onPress={
+            // () => {
+            //   this.setModalVisible(true);
+            // }
+            () => {
+              navigation.state.params.setModalVisible(true);
+            }
+          }
+        />
+      )
+    };
   };
 
   async componentDidMount() {
+    this.props.navigation.setParams({
+      setModalVisible: visible => this.setModalVisible(visible)
+    });
     await this.props.getRecipes(this.props.user.id);
     this.setState({ loaded: true });
   }
 
-  setModalVisible(visible) {
+  setModalVisible = visible => {
     this.setState({ modalVisible: visible });
-  }
+  };
   // function to determine if item is in filter
   isItemInFilter(item) {
     let filteredItems = this.props.filteredItems;
@@ -101,6 +119,7 @@ class Recipes extends React.Component {
   }
 
   render() {
+    // console.log("this.state.modalVisible===>", this.state.modalVisible);
     return (
       <View style={styles.container}>
         {this.props.recipes.length === 0 ? (
@@ -291,8 +310,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
-    margin: 10,
-    fontFamily: "Gill Sans"
+    margin: 10
+    // fontFamily: "Gill Sans"
   },
   buttonText: {
     fontFamily: "Gill Sans",

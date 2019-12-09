@@ -360,28 +360,28 @@ const styles = StyleSheet.create({
   barCodeScanner: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-between",
-    fontFamily: "Gill Sans"
+    justifyContent: "space-between"
+    // fontFamily: "Gill Sans"
   },
   modalExterior: {
     backgroundColor: "#00ffcc",
     padding: 20,
     borderRadius: 15,
-    fontFamily: "Gill Sans",
+    // fontFamily: "Gill Sans",
     paddingTop: 0
   },
   modalInterior: {
     backgroundColor: "white",
-    borderRadius: 15,
-    fontFamily: "Gill Sans"
+    borderRadius: 15
+    // fontFamily: "Gill Sans"
   },
   modalButton: {
     alignItems: "center",
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
-    margin: 10,
-    fontFamily: "Gill Sans"
+    margin: 10
+    // fontFamily: "Gill Sans"
     // underlayColor: "white"
   },
   manualAddButton: {
@@ -389,8 +389,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
-    margin: 10,
-    fontFamily: "Gill Sans"
+    margin: 10
+    // fontFamily: "Gill Sans"
     // underlayColor: "white"
   },
   modalText: {
@@ -401,8 +401,8 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     margin: 10,
-    alignSelf: "center",
-    fontFamily: "Gill Sans"
+    alignSelf: "center"
+    // fontFamily: "Gill Sans"
     //  width: 200
   },
   textInput: {
