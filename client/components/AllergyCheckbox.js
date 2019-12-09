@@ -17,6 +17,7 @@ class AllergyCheckbox extends React.Component {
     return (
       <CheckBox
         title={allergy.name}
+        textStyle={{ fontFamily: "Gill Sans", fontWeight: "normal" }}
         checkedColor="green"
         checked={this.state.checked}
         onPress={() => {
@@ -28,7 +29,6 @@ class AllergyCheckbox extends React.Component {
           this.setState({ checked: !this.state.checked });
         }}
         containerStyle={{
-          width: Dimensions.get("window").width * 0.85 - 65,
           backgroundColor: "transparent"
         }}
       ></CheckBox>

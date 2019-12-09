@@ -103,7 +103,7 @@ class UserProfile extends React.Component {
                 this.setDietVisible();
               }}
             >
-              <Text style={styles.buttonText}>Dietary</Text>
+              <Text style={styles.buttonText}>DIETARY</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
@@ -112,49 +112,38 @@ class UserProfile extends React.Component {
                 this.setAllergyVisible();
               }}
             >
-              <Text style={styles.buttonText}>Allergy</Text>
+              <Text style={styles.buttonText}>ALLERGY</Text>
             </TouchableHighlight>
           </View>
-        </View>
-
-        {/* -------- DIET MODAL-------- */}
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={this.state.isDietVisible}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#00000080",
-              fontFamily: "Gill Sans"
-            }}
+          {/* -------- DIET MODAL-------- */}
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={this.state.isDietVisible}
+            style={styles.modalContent}
           >
-            {/* View for Inner Box */}
-            <View
-              style={{
-                width: Dimensions.get("window").width * 0.85,
-                height: Dimensions.get("window").height * 0.85,
-                backgroundColor: "#DABFDE",
-                padding: 20,
-                paddingBottom: 75,
-                borderRadius: 15,
-                fontFamily: "Gill Sans"
-              }}
-            >
+            <View style={styles.modalExterior}>
+              <Button
+                icon={
+                  <Icon
+                    name="close-box"
+                    type="material-community"
+                    color="white"
+                  />
+                }
+                type="clear"
+                buttonStyle={{
+                  // width: 40,
+                  // height: 40,
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => {
+                  this.setDietVisible();
+                }}
+              />
               <ScrollView
-                style={{
-                  flex: 1,
-                  flexDirection: "column",
-                  marginTop: 40
-                }}
-                contentContainerStyle={{
-                  justifyContent: "space-evenly",
-                  alignItems: "center"
-                }}
+                style={styles.modalInterior}
+                contentContainerStyle={{ flexGrow: 1 }}
               >
                 {dietOptions.map(curr => {
                   return (
@@ -167,82 +156,37 @@ class UserProfile extends React.Component {
                   );
                 })}
               </ScrollView>
-
-              <View style={styles.filterHeaderContainer}>
-                <View
-                  style={{
-                    width: 40,
-                    height: 40
-                  }}
-                ></View>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    paddingVertical: 10,
-                    fontFamily: "Gill Sans"
-                  }}
-                >
-                  Diet
-                </Text>
-                <Button
-                  icon={
-                    <Icon
-                      name="close-box"
-                      type="material-community"
-                      color="red"
-                    />
-                  }
-                  type="clear"
-                  buttonStyle={{
-                    width: 40,
-                    height: 40,
-                    flexDirection: "column-reverse",
-                    marginTop: 2
-                  }}
-                  onPress={() => {
-                    this.setDietVisible();
-                  }}
-                />
-              </View>
             </View>
-          </View>
-        </Modal>
-        {/* -------- ALLERGY MODAL-------- */}
-        <Modal
-          animationType="fade"
-          transparent={true}
-          visible={this.state.isAllergyVisible}
-        >
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "center",
-              backgroundColor: "#00000080"
-            }}
+          </Modal>
+          {/* -------- ALLERGY MODAL-------- */}
+          <Modal
+            animationType="fade"
+            transparent={true}
+            visible={this.state.isAllergyVisible}
+            style={styles.modalContent}
           >
-            {/* View for Inner Box */}
-            <View
-              style={{
-                width: Dimensions.get("window").width * 0.85,
-                height: Dimensions.get("window").height * 0.85,
-                backgroundColor: "#DABFDE",
-                padding: 20,
-                paddingBottom: 75,
-                borderRadius: 15
-              }}
-            >
+            <View style={styles.modalExterior}>
+              <Button
+                icon={
+                  <Icon
+                    name="close-box"
+                    type="material-community"
+                    color="white"
+                  />
+                }
+                type="clear"
+                buttonStyle={{
+                  // width: 40,
+                  // height: 40,
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => {
+                  this.setAllergyVisible();
+                }}
+              />
               <ScrollView
-                style={{
-                  flex: 1,
-                  flexDirection: "column",
-                  marginTop: 40
-                }}
-                contentContainerStyle={{
-                  justifyContent: "space-evenly",
-                  alignItems: "center"
-                }}
+                style={styles.modalInterior}
+                contentContainerStyle={{ flexGrow: 1 }}
               >
                 {allergyOptions.map(curr => {
                   return (
@@ -255,46 +199,10 @@ class UserProfile extends React.Component {
                   );
                 })}
               </ScrollView>
-
-              <View style={styles.filterHeaderContainer}>
-                <View
-                  style={{
-                    width: 40,
-                    height: 40
-                  }}
-                ></View>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontFamily: "Gill Sans",
-                    paddingVertical: 10
-                  }}
-                >
-                  Allergy
-                </Text>
-                <Button
-                  icon={
-                    <Icon
-                      name="close-box"
-                      type="material-community"
-                      color="red"
-                    />
-                  }
-                  type="clear"
-                  buttonStyle={{
-                    width: 40,
-                    height: 40,
-                    flexDirection: "column-reverse",
-                    marginTop: 2
-                  }}
-                  onPress={() => {
-                    this.setAllergyVisible();
-                  }}
-                />
-              </View>
             </View>
-          </View>
-        </Modal>
+          </Modal>
+        </View>
+
         <View style={styles.logOutView}>
           <Text style={styles.userText}>
             Not {this.props.user.firstName}?{" "}
@@ -375,6 +283,28 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "Gill Sans",
     fontSize: 20
+  },
+  modalExterior: {
+    backgroundColor: "#00ffcc",
+    borderRadius: 15,
+    paddingTop: 0,
+    padding: 20,
+    fontFamily: "Gill Sans",
+    margin: 30,
+    marginTop: 100,
+    marginBottom: 125
+  },
+  modalInterior: {
+    backgroundColor: "white",
+    borderRadius: 15,
+    fontFamily: "Gill Sans",
+    margin: 0,
+    flexDirection: "column"
+  },
+  modalContent: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 30
   }
 });
 

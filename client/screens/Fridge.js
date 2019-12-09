@@ -31,10 +31,7 @@ class Fridge extends React.Component {
   render() {
     return (
       <View
-        style={{
-          flex: 1,
-          flexDirection: "column"
-        }}
+        style={styles.container}
         contentContainerStyle={styles.contentContainer}
       >
         <ScrollView
@@ -96,12 +93,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(Fridge);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection: "column",
     backgroundColor: "#E0FEFE",
     fontFamily: "Gill Sans"
   },
   fridgeText: {
     fontFamily: "Gill Sans",
-    fontSize: 18,
+    fontSize: 22,
     textAlign: "center",
     margin: 5
   }
