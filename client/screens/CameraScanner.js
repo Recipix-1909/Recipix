@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TextInput,
-  Dimensions,
   TouchableHighlight
 } from "react-native";
 import * as Permissions from "expo-permissions";
@@ -12,6 +11,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
+import { Icon, Button } from "react-native-elements";
 
 import getDate from "./utils";
 import { addItemThunk } from "../store/items";
@@ -214,18 +214,34 @@ class CameraScanner extends React.Component {
 
         <Modal isVisible={this.state.failureScanModal}>
           <View style={styles.modalExterior}>
+            <Button
+              icon={
+                <Icon
+                  name="close-box"
+                  type="material-community"
+                  color="white"
+                />
+              }
+              type="clear"
+              buttonStyle={{
+                alignSelf: "flex-end"
+              }}
+              onPress={() => {
+                this.setState({ failureScanModal: false });
+              }}
+            />
             <View style={styles.modalInterior}>
               <Text style={styles.modalText}>
                 Sorry! We couldn't find details for that item. Trying adding it
                 manually.
               </Text>
             </View>
-            <TouchableHighlight
+            {/* <TouchableHighlight
               onPress={() => this.setState({ failureScanModal: false })}
               style={styles.modalButton}
             >
               <Text style={styles.modalText}>DISMISS</Text>
-            </TouchableHighlight>
+            </TouchableHighlight> */}
           </View>
         </Modal>
       </View>

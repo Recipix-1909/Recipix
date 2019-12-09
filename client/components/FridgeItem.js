@@ -66,7 +66,7 @@ const mapDispatchToProps = dispatch => {
 const styles = StyleSheet.create({
   text: {
     fontFamily: "Gill Sans",
-    fontSize: 22
+    fontSize: 16
   }
 });
 
