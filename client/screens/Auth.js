@@ -1,5 +1,5 @@
-import React from "react";
-import { Provider } from "react-redux";
+import React from 'react'
+import { Provider } from 'react-redux'
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -10,73 +10,76 @@ import {
   ActivityIndicator,
   Keyboard,
   TextInput,
-  Text
-} from "react-native";
-import { connect } from "react-redux";
-import { getUserThunk, createUserThunk } from "../store/users";
-import Card from "../other/Card";
-import Color from "../other/Color";
-import { LinearGradient } from "expo-linear-gradient";
+  Text,
+  Dimensions
+} from 'react-native'
+import { connect } from 'react-redux'
+import { getUserThunk, createUserThunk } from '../store/users'
+import Card from '../other/Card'
+import Color from '../other/Color'
+import { LinearGradient } from 'expo-linear-gradient'
 
 class Auth extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',
       form: false
-    };
-    this.loginSubmit = this.loginSubmit.bind(this);
-    this.signUpSubmit = this.signUpSubmit.bind(this);
-    this.changeForm = this.changeForm.bind(this);
+    }
+    this.loginSubmit = this.loginSubmit.bind(this)
+    this.signUpSubmit = this.signUpSubmit.bind(this)
+    this.changeForm = this.changeForm.bind(this)
   }
 
   loginSubmit = async () => {
-    const email = this.state.email;
-    const password = this.state.password;
-    let user = { email, password };
-    this.setState({ isLoading: true });
+    const email = this.state.email
+    const password = this.state.password
+    let user = { email, password }
+    this.setState({ isLoading: true })
     try {
-      await this.props.getUser(user);
-      this.props.navigation.navigate("Main");
+      await this.props.getUser(user)
+      this.props.navigation.navigate('Main')
     } catch (error) {
-      alert("Wrong email or password, please try again");
+      alert('Wrong email or password, please try again')
     }
-  };
+  }
 
   signUpSubmit = async () => {
-    const firstName = this.state.firstName;
-    const lastName = this.state.lastName;
-    const email = this.state.email;
-    const password = this.state.password;
-    let newUser = { firstName, lastName, email, password };
+    const firstName = this.state.firstName
+    const lastName = this.state.lastName
+    const email = this.state.email
+    const password = this.state.password
+    let newUser = { firstName, lastName, email, password }
     try {
-      await this.props.createUser(newUser);
-      this.loginSubmit();
+      await this.props.createUser(newUser)
+      this.loginSubmit()
     } catch (error) {
-      alert("Something went wrong");
+      alert('Something went wrong')
     }
-  };
+  }
 
   changeForm() {
     this.setState({
       form: !this.state.form
-    });
+    })
   }
 
   render() {
+    let loginScreen = Dimensions.get('screen')
+    console.log(loginScreen)
     return (
       <KeyboardAvoidingView
         behavior="padding"
-        keyboardVerticalOffset={50}
+        keyboardVerticalOffset={loginScreen.height * 0.079}
         style={styles.screen}
       >
-        <LinearGradient colors={["#00ffcc", "#00ffcc"]} style={styles.gradient}>
+        <LinearGradient colors={['#20CE99', '#20CE99']} style={styles.gradient}>
           <Image
-            source={require("../other/flogo.png")}
+            source={require('../other/rlogo.png')}
             style={{ width: 225, height: 225 }}
           />
           {!this.state.form ? (
@@ -92,7 +95,7 @@ class Auth extends React.Component {
                   style={styles.input}
                   placeholder="password"
                   onChangeText={input => {
-                    this.setState({ password: input });
+                    this.setState({ password: input })
                   }}
                   secureTextEntry
                 />
@@ -152,7 +155,14 @@ class Auth extends React.Component {
           )}
         </LinearGradient>
       </KeyboardAvoidingView>
-    );
+    )
+  }
+}
+
+Auth.navigationOptions = {
+  headerTitle: 'Welcome',
+  headerStyle: {
+    color: '#78ffe4'
   }
 }
 
@@ -162,11 +172,11 @@ const styles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   authContainer: {
-    width: "80%",
+    width: '80%',
     maxWidth: 400,
     maxHeight: 400,
     padding: 20
@@ -177,28 +187,28 @@ const styles = StyleSheet.create({
   input: {
     paddingHorizontal: 2,
     paddingVertical: 5,
-    borderBottomColor: "#ccc",
+    borderBottomColor: '#ccc',
     borderBottomWidth: 2,
-    fontFamily: "Gill Sans"
+    fontFamily: 'Gill Sans'
   },
   image: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center'
   }
-});
+})
 
 const mapStateToProps = state => {
   return {
     user: state.user
-  };
-};
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     getUser: user => dispatch(getUserThunk(user)),
     createUser: newUser => dispatch(createUserThunk(newUser))
-  };
-};
+  }
+}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth)
