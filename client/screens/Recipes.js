@@ -34,35 +34,35 @@ class Recipes extends React.Component {
       fontFamily: "Gill Sans",
       color: "white",
       fontSize: 25
-    }
-    // headerRight: () => (
-    //   <Button
-    //     title=""
-    //     icon={
-    //       <Svg
-    //         width="24"
-    //         height="24"
-    //         viewBox="0 0 512 512"
-    //         fill="#517fa4"
-    //         stroke="#517fa4"
-    //       >
-    //         <Path d={filterIcon} />
-    //       </Svg>
-    //     }
-    //     type="clear"
-    //     buttonStyle={{
-    //       width: 70,
-    //       height: 40,
-    //       flexDirection: "row-reverse"
-    //     }}
-    //     titleStyle={{
-    //       fontSize: 12
-    //     }}
-    //     onPress={() => {
-    //       this.setModalVisible(true);
-    //     }}
-    //   />
-    // )
+    },
+    headerRight: () => (
+      <Button
+        title=""
+        icon={
+          <Svg
+            width="24"
+            height="24"
+            viewBox="0 0 512 512"
+            fill="#517fa4"
+            stroke="#517fa4"
+          >
+            <Path d={filterIcon} />
+          </Svg>
+        }
+        type="clear"
+        buttonStyle={{
+          width: 70,
+          height: 40,
+          flexDirection: "row-reverse"
+        }}
+        titleStyle={{
+          fontSize: 12
+        }}
+        onPress={() => {
+          this.setModalVisible(true);
+        }}
+      />
+    )
   };
 
   async componentDidMount() {
@@ -113,31 +113,7 @@ class Recipes extends React.Component {
           </View>
         ) : (
           <ScrollView style={styles.recipesList}>
-            <Button
-              title=""
-              icon={
-                <Svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 512 512"
-                  fill="#517fa4"
-                  stroke="#517fa4"
-                >
-                  <Path d={filterIcon} />
-                </Svg>
-              }
-              type="clear"
-              buttonStyle={{
-                alignSelf: "flex-start"
-              }}
-              titleStyle={{
-                fontSize: 12
-              }}
-              onPress={() => {
-                this.setModalVisible(true);
-              }}
-            />
-            <Button
+            {/* <Button
               title=""
               icon={
                 <Svg
@@ -160,7 +136,7 @@ class Recipes extends React.Component {
               onPress={() => {
                 this.setModalVisible(true);
               }}
-            />
+            /> */}
             {this.props.recipes.map(curr => {
               return (
                 <View
