@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -8,15 +7,17 @@ import {
   Modal,
   Dimensions,
   ImageBackground,
-  ActivityIndicator,
+  Image,
   TouchableHighlight
 } from "react-native";
 import { Icon, Button } from "react-native-elements";
 import { connect } from "react-redux";
+import { Svg, Path } from "react-native-svg";
+
 import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
-import { Svg, Path } from "react-native-svg";
+import filterIcon from "../other/filter";
 
 class Recipes extends React.Component {
   state = {
@@ -74,108 +75,106 @@ class Recipes extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {!this.state.loaded ? (
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "column",
-              justifyContent: "center"
-            }}
-          >
-            <View
-              style={{
-                flexDirection: "column",
-                alignItems: "center"
+        {this.props.recipes.length === 0 ? (
+          <View style={styles.noRecipes}>
+            <Button
+              title=""
+              icon={
+                <Svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 512 512"
+                  fill="#517fa4"
+                  stroke="#517fa4"
+                >
+                  <Path d={filterIcon} />
+                </Svg>
+              }
+              type="clear"
+              buttonStyle={{
+                width: 70,
+                height: 40,
+                flexDirection: "row-reverse"
               }}
-            >
-              <ActivityIndicator size="large" color="white"></ActivityIndicator>
-              <Text style={styles.recipesText}>Cookin' up some recipes</Text>
-            </View>
+              titleStyle={{
+                fontSize: 12
+              }}
+              onPress={() => {
+                this.setModalVisible(true);
+              }}
+            />
+            <Text style={styles.recipesText}>No recipes to show...</Text>
+            <Image
+              source={require("../other/sadChef.png")}
+              style={{ width: 121, height: 261 }}
+            ></Image>
           </View>
         ) : (
-          <ScrollView
-            style={styles.container}
-            contentContainerStyle={{
-              paddingTop: 65,
-              alignItems: "center"
-            }}
-          >
-            {this.props.recipes.length === 0 ? (
-              <View>
-                <Text style={styles.recipesText}>No recipes to show...</Text>
-              </View>
-            ) : (
-              <View style={styles.getStartedContainer}>
-                <Button
-                  title="Filter  "
-                  icon={
-                    <Svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 512 512"
-                      fill="#517fa4"
-                      stroke="#517fa4"
+          <ScrollView style={styles.recipesList}>
+            <Button
+              title=""
+              icon={
+                <Svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 512 512"
+                  fill="#517fa4"
+                  stroke="#517fa4"
+                >
+                  <Path d={filterIcon} />
+                </Svg>
+              }
+              type="clear"
+              buttonStyle={{
+                alignSelf: "flex-end"
+              }}
+              titleStyle={{
+                fontSize: 12
+              }}
+              onPress={() => {
+                this.setModalVisible(true);
+              }}
+            />
+            {this.props.recipes.map(curr => {
+              return (
+                <View key={curr.id} style={{ flex: 1 }}>
+                  <ImageBackground
+                    style={{
+                      width: Dimensions.get("window").width,
+                      height: 350,
+
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                    resizeMode="cover"
+                    source={{
+                      uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
+                    }}
+                  >
+                    <Text
+                      onPress={() =>
+                        this.props.navigation.navigate("SingleRecipe", {
+                          recipe: curr
+                        })
+                      }
+                      style={{
+                        fontSize: 30,
+                        textAlign: "center",
+                        fontFamily: "Gill Sans",
+                        backgroundColor: "#8fafc8",
+                        color: "white",
+                        width: "100%",
+                        paddingLeft: 10,
+                        paddingRight: 10,
+                        alignSelf: "start"
+                      }}
                     >
-                      <Path d="M139.61 35.5a12 12 0 0 0-17 0L58.93 98.81l-22.7-22.12a12 12 0 0 0-17 0L3.53 92.41a12 12 0 0 0 0 17l47.59 47.4a12.78 12.78 0 0 0 17.61 0l15.59-15.62L156.52 69a12.09 12.09 0 0 0 .09-17zm0 159.19a12 12 0 0 0-17 0l-63.68 63.72-22.7-22.1a12 12 0 0 0-17 0L3.53 252a12 12 0 0 0 0 17L51 316.5a12.77 12.77 0 0 0 17.6 0l15.7-15.69 72.2-72.22a12 12 0 0 0 .09-16.9zM64 368c-26.49 0-48.59 21.5-48.59 48S37.53 464 64 464a48 48 0 0 0 0-96zm432 16H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16zm0-320H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16zm0 160H208a16 16 0 0 0-16 16v32a16 16 0 0 0 16 16h288a16 16 0 0 0 16-16v-32a16 16 0 0 0-16-16z" />
-                    </Svg>
-                  }
-                  type="clear"
-                  buttonStyle={{
-                    width: 70,
-                    height: 40,
-                    flexDirection: "row-reverse"
-                  }}
-                  titleStyle={{
-                    fontSize: 12
-                  }}
-                  onPress={() => {
-                    this.setModalVisible(true);
-                  }}
-                />
-                {this.props.recipes[0] !== undefined &&
-                  this.props.recipes.map(curr => {
-                    return (
-                      <View key={curr.id} style={{ flex: 1 }}>
-                        <ImageBackground
-                          style={{
-                            width: Dimensions.get("window").width,
-                            height: 350,
-
-                            justifyContent: "center",
-                            alignItems: "center"
-                          }}
-                          resizeMode="cover"
-                          source={{
-                            uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
-                          }}
-                        >
-                          <Text
-                            onPress={() =>
-                              this.props.navigation.navigate("SingleRecipe", {
-                                recipe: curr
-                              })
-                            }
-                            style={{
-                              fontSize: 30,
-                              textAlign: "center",
-                              fontFamily: "Gill Sans",
-                              backgroundColor: "#8fafc8",
-                              color: "white",
-                              width: "100%",
-                              paddingLeft: 10,
-                              paddingRight: 10,
-                              alignSelf: "start"
-                            }}
-                          >
-                            {curr.title}
-                          </Text>
-                        </ImageBackground>
-                      </View>
-                    );
-                  })}
-              </View>
-            )}
-
+                      {curr.title}
+                    </Text>
+                  </ImageBackground>
+                </View>
+              );
+            })}
             <Modal
               animationType="fade"
               transparent={true}
@@ -249,20 +248,23 @@ export default connect(mapStateToProps, mapDispatchToProps)(Recipes);
 
 const styles = StyleSheet.create({
   container: {
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: 50,
-      padding: 16,
-      fontFamily: "Gill Sans",
-      backgroundColor: "#E0FEFE"
-    }
-  },
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
 
+    fontFamily: "Gill Sans",
+    backgroundColor: "#E0FEFE"
+  },
+  noRecipes: {
+    alignItems: "center",
+    justifyContent: "center",
+    display: "flex"
+  },
   recipesText: {
     fontFamily: "Gill Sans",
-    fontSize: 18
+    fontSize: 18,
+    alignSelf: "center",
+    margin: 10
   },
 
   modalContainer: {
