@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TextInput,
-  Dimensions,
   TouchableHighlight
 } from "react-native";
 import * as Permissions from "expo-permissions";
@@ -12,6 +11,7 @@ import { BarCodeScanner } from "expo-barcode-scanner";
 import { connect } from "react-redux";
 import DatePicker from "react-native-datepicker";
 import Modal from "react-native-modal";
+import { Icon, Button } from "react-native-elements";
 
 import getDate from "./utils";
 import { addItemThunk } from "../store/items";
@@ -32,6 +32,18 @@ class CameraScanner extends React.Component {
     successScanModal: false,
     manualAddModal: false,
     failureScanModal: false
+  };
+
+  static navigationOptions = {
+    headerTitle: "Camera",
+    headerStyle: {
+      backgroundColor: "#00ffcc"
+    },
+    headerTitleStyle: {
+      fontFamily: "Gill Sans",
+      color: "white",
+      fontSize: 25
+    }
   };
 
   async componentDidMount() {
@@ -57,9 +69,9 @@ class CameraScanner extends React.Component {
         style={{
           flex: 1,
           flexDirection: "column",
-          // justifyContent: "flex-end",
           alignItems: "center"
         }}
+        contentContainerStyle={styles.contentContainer}
       >
         <BarCodeScanner
           onBarCodeScanned={scanned ? undefined : this.handleBarCodeScanned}
@@ -72,7 +84,8 @@ class CameraScanner extends React.Component {
               backgroundColor: "#ffffff",
               color: "#000000",
               justifyContent: "flex-start",
-              alignSelf: "stretch"
+              alignSelf: "stretch",
+              fontFamily: "Gill Sans"
             }}
           >
             Hold your camera over a barcode to scan the item or manually add the
@@ -83,7 +96,7 @@ class CameraScanner extends React.Component {
             style={styles.manualAddButton}
             onPress={() => this.setState({ manualAddModal: true })}
           >
-            <Text>ADD MANUALLY</Text>
+            <Text style={styles.modalText}>ADD MANUALLY</Text>
           </TouchableHighlight>
         </BarCodeScanner>
 
@@ -95,6 +108,22 @@ class CameraScanner extends React.Component {
             animationType="fade"
           >
             <View style={styles.modalExterior}>
+              <Button
+                icon={
+                  <Icon
+                    name="close-box"
+                    type="material-community"
+                    color="white"
+                  />
+                }
+                type="clear"
+                buttonStyle={{
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => {
+                  this.setState({ manualAddModal: false });
+                }}
+              />
               <View style={styles.modalInterior}>
                 <TextInput
                   style={styles.textInput}
@@ -136,13 +165,7 @@ class CameraScanner extends React.Component {
                 onPress={() => this.handleManualInput()}
                 style={styles.modalButton}
               >
-                <Text>ADD</Text>
-              </TouchableHighlight>
-              <TouchableHighlight
-                onPress={() => this.setState({ manualAddModal: false })}
-                style={styles.modalButton}
-              >
-                <Text>CANCEL</Text>
+                <Text style={styles.modalText}>ADD</Text>
               </TouchableHighlight>
             </View>
           </Modal>
@@ -153,6 +176,20 @@ class CameraScanner extends React.Component {
 
           <Modal isVisible={this.state.successScanModal} transparent={true}>
             <View style={styles.modalExterior}>
+              <Button
+                icon={
+                  <Icon
+                    name="close-box"
+                    type="material-community"
+                    color="white"
+                  />
+                }
+                type="clear"
+                buttonStyle={{
+                  alignSelf: "flex-end"
+                }}
+                onPress={() => this.setState({ scanned: false })}
+              />
               <View style={styles.modalInterior}>
                 <Text style={styles.modalText}>
                   Set expiration date below (optional)
@@ -189,30 +226,39 @@ class CameraScanner extends React.Component {
               >
                 <Text style={styles.modalText}>ADD</Text>
               </TouchableHighlight>
-              <TouchableHighlight
+              {/* <TouchableHighlight
                 onPress={() => this.setState({ scanned: false })}
                 style={styles.modalButton}
               >
                 <Text style={styles.modalText}>CANCEL</Text>
-              </TouchableHighlight>
+              </TouchableHighlight> */}
             </View>
           </Modal>
         )}
 
         <Modal isVisible={this.state.failureScanModal}>
           <View style={styles.modalExterior}>
+            <Button
+              icon={
+                <Icon
+                  name="close-box"
+                  type="material-community"
+                  color="white"
+                />
+              }
+              type="clear"
+              buttonStyle={{
+                alignSelf: "flex-end"
+              }}
+              onPress={() => {
+                this.setState({ failureScanModal: false });
+              }}
+            />
             <View style={styles.modalInterior}>
               <Text style={styles.modalText}>
                 Sorry! We couldn't find details for that item. Trying adding it
                 manually.
               </Text>
-
-              <TouchableHighlight
-                onPress={() => this.setState({ failureScanModal: false })}
-                style={styles.modalButton}
-              >
-                <Text style={styles.modalText}>DISMISS</Text>
-              </TouchableHighlight>
             </View>
           </View>
         </Modal>
@@ -308,28 +354,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginTop: 50,
-    padding: 16
+    padding: 16,
+    fontFamily: "Gill Sans"
   },
   barCodeScanner: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    fontFamily: "Gill Sans"
   },
   modalExterior: {
-    backgroundColor: "#78ffe4",
+    backgroundColor: "#00ffcc",
     padding: 20,
-    borderRadius: 15
+    borderRadius: 15,
+    fontFamily: "Gill Sans",
+    paddingTop: 0
   },
   modalInterior: {
     backgroundColor: "white",
-    borderRadius: 15
+    borderRadius: 15,
+    fontFamily: "Gill Sans"
   },
   modalButton: {
     alignItems: "center",
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
-    margin: 10
+    margin: 10,
+    fontFamily: "Gill Sans"
     // underlayColor: "white"
   },
   manualAddButton: {
@@ -337,23 +389,31 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 15,
     padding: 10,
-    margin: 10
+    margin: 10,
+    fontFamily: "Gill Sans"
     // underlayColor: "white"
   },
   modalText: {
     color: "black",
     textAlign: "center",
-    margin: 10
+    margin: 10,
+    fontFamily: "Gill Sans"
   },
   datePicker: {
     margin: 10,
-    alignSelf: "center"
+    alignSelf: "center",
+    fontFamily: "Gill Sans"
     //  width: 200
   },
   textInput: {
     height: 50,
     borderColor: "gray",
     borderWidth: 1,
-    margin: 10
+    margin: 10,
+    fontFamily: "Gill Sans"
+  },
+
+  contentContainer: {
+    paddingTop: 65
   }
 });
