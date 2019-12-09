@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
   fridgeText: {
     fontFamily: "Gill Sans",
-    fontSize: 22,
+    fontSize: 18,
     textAlign: "center",
     margin: 5
   }

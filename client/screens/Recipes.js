@@ -137,15 +137,17 @@ class Recipes extends React.Component {
             />
             {this.props.recipes.map(curr => {
               return (
-                <View key={curr.id} style={{ flex: 1 }}>
+                <View
+                  key={curr.id}
+                  style={{ flex: 1 }}
+                  onPress={() =>
+                    this.props.navigation.navigate("SingleRecipe", {
+                      recipe: curr
+                    })
+                  }
+                >
                   <ImageBackground
-                    style={{
-                      width: Dimensions.get("window").width,
-                      height: 350,
-
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
+                    style={styles.imageBackground}
                     resizeMode="cover"
                     source={{
                       uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
@@ -157,17 +159,7 @@ class Recipes extends React.Component {
                           recipe: curr
                         })
                       }
-                      style={{
-                        fontSize: 30,
-                        textAlign: "center",
-                        fontFamily: "Gill Sans",
-                        backgroundColor: "#8fafc8",
-                        color: "white",
-                        width: "100%",
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        alignSelf: "start"
-                      }}
+                      style={styles.recipeInList}
                     >
                       {curr.title}
                     </Text>
@@ -303,5 +295,24 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "Gill Sans",
     fontSize: 20
+  },
+  imageBackground: {
+    width: Dimensions.get("window").width * 0.95,
+    height: 350,
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    marginBottom: 15
+  },
+  recipeInList: {
+    fontSize: 30,
+    textAlign: "center",
+    fontFamily: "Gill Sans",
+    backgroundColor: "#8fafc8",
+    color: "white",
+    width: "100%",
+    paddingLeft: 10,
+    paddingRight: 10,
+    alignSelf: "flex-end"
   }
 });

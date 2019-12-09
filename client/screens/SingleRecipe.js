@@ -90,7 +90,7 @@ class SingleRecipe extends React.Component {
             {this.state.instructions.map((step, idx) => {
               return (
                 <View key={step.step}>
-                  <Text style={{ fontWeight: "bold", fontFamily: "Gill Sans" }}>
+                  <Text style={{ fontWeight: "200", fontFamily: "Gill Sans" }}>
                     Step {idx + 1}
                   </Text>
                   <Text style={{ fontFamily: "Gill Sans" }}>{step.step}</Text>
@@ -110,6 +110,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     padding: 12
+  },
+  allIngredients: {
+    margin: 10
   },
   usedIngredients: {
     color: "#33FF61",
