@@ -10,7 +10,8 @@ import {
   ActivityIndicator,
   Keyboard,
   TextInput,
-  Text
+  Text,
+  Dimensions
 } from "react-native";
 import { connect } from "react-redux";
 import { getUserThunk, createUserThunk } from "../store/users";
@@ -68,15 +69,17 @@ class Auth extends React.Component {
   }
 
   render() {
+    let loginScreen = Dimensions.get("screen");
+    console.log(loginScreen);
     return (
       <KeyboardAvoidingView
         behavior="padding"
-        keyboardVerticalOffset={50}
+        keyboardVerticalOffset={loginScreen.height * 0.079}
         style={styles.screen}
       >
         <LinearGradient colors={["#20CE99", "#20CE99"]} style={styles.gradient}>
           <Image
-            source={require("../other/flogo.png")}
+            source={require("../other/rlogo.png")}
             style={{ width: 225, height: 225 }}
           />
           {!this.state.form ? (
@@ -155,6 +158,13 @@ class Auth extends React.Component {
     );
   }
 }
+
+Auth.navigationOptions = {
+  headerTitle: "Welcome",
+  headerStyle: {
+    color: "#78ffe4"
+  }
+};
 
 const styles = StyleSheet.create({
   screen: {
