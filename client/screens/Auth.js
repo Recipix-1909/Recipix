@@ -188,7 +188,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomColor: "#ccc",
     borderBottomWidth: 2,
-    fontFamily: "Gill Sans"
+    fontFamily: "Gill Sans",
+    fontSize: 18
   },
   image: {
     flex: 1,
