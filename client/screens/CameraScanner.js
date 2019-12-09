@@ -79,7 +79,7 @@ class CameraScanner extends React.Component {
         >
           <Text
             style={{
-              fontSize: 16,
+              fontSize: 18,
               textAlign: "center",
               backgroundColor: "#ffffff",
               color: "#000000",

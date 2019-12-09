@@ -42,14 +42,16 @@ class Fridge extends React.Component {
           contentContainerStyle={styles.contentContainer}
         >
           {this.props.items.length < 1 ? (
-            <View>
+            <View
+              style={{ flex: 1, alignItems: "center", alignContent: "center" }}
+            >
               <Text style={styles.fridgeText}>
                 Your fridge is empty! Begin adding items to your fridge by
                 clicking on the scanner icon below.
               </Text>
               <Image
                 source={require("../other/emptyFridge.png")}
-                style={{ width: 300, height: 300 }}
+                style={{ width: 500, height: 500 }}
               ></Image>
             </View>
           ) : (
@@ -101,6 +103,6 @@ const styles = StyleSheet.create({
     fontFamily: "Gill Sans",
     fontSize: 18,
     textAlign: "center",
-    margin: 5
+    margin: 10
   }
 });
