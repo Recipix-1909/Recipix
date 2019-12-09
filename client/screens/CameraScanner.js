@@ -219,14 +219,13 @@ class CameraScanner extends React.Component {
                 Sorry! We couldn't find details for that item. Trying adding it
                 manually.
               </Text>
-
-              <TouchableHighlight
-                onPress={() => this.setState({ failureScanModal: false })}
-                style={styles.modalButton}
-              >
-                <Text style={styles.modalText}>DISMISS</Text>
-              </TouchableHighlight>
             </View>
+            <TouchableHighlight
+              onPress={() => this.setState({ failureScanModal: false })}
+              style={styles.modalButton}
+            >
+              <Text style={styles.modalText}>DISMISS</Text>
+            </TouchableHighlight>
           </View>
         </Modal>
       </View>
