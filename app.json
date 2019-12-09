@@ -10,9 +10,9 @@
     "orientation": "portrait",
     "icon": "./assets/iconrecipix.png",
     "splash": {
-      "image": "./assets/iconrecipix.png",
+      "image": "./assets/newsplash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#20CE99"
+      "backgroundColor": "#FFFFFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
