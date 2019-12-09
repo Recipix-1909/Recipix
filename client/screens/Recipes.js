@@ -18,6 +18,7 @@ import { getRecipesThunk, getFilteredRecipesThunk } from "../store/recipes";
 import { resetFilter } from "../store/filteredItems";
 import ItemCheckBox from "../components/ItemCheckBox";
 import filterIcon from "../other/filter";
+import RecipeThumbnail from "../components/RecipeThumbnail";
 
 class Recipes extends React.Component {
   state = {
@@ -135,46 +136,22 @@ class Recipes extends React.Component {
                 this.setModalVisible(true);
               }}
             />
-            {this.props.recipes.map(curr => {
-              return (
-                <View key={curr.id} style={{ flex: 1 }}>
-                  <ImageBackground
-                    style={{
-                      width: Dimensions.get("window").width,
-                      height: 350,
-
-                      justifyContent: "center",
-                      alignItems: "center"
-                    }}
-                    resizeMode="cover"
-                    source={{
-                      uri: `https://spoonacular.com/recipeImages/${curr.id}-480x360.${curr.imageType}`
-                    }}
-                  >
-                    <Text
+            <View style={styles.allRecipes}>
+              {this.props.recipes.map(curr => {
+                return (
+                  <View key={curr.id} style={styles.recipesThumbnails}>
+                    <RecipeThumbnail
+                      recipe={curr}
                       onPress={() =>
                         this.props.navigation.navigate("SingleRecipe", {
                           recipe: curr
                         })
                       }
-                      style={{
-                        fontSize: 30,
-                        textAlign: "center",
-                        fontFamily: "Gill Sans",
-                        backgroundColor: "#8fafc8",
-                        color: "white",
-                        width: "100%",
-                        paddingLeft: 10,
-                        paddingRight: 10,
-                        alignSelf: "start"
-                      }}
-                    >
-                      {curr.title}
-                    </Text>
-                  </ImageBackground>
-                </View>
-              );
-            })}
+                    ></RecipeThumbnail>
+                  </View>
+                );
+              })}
+            </View>
             <Modal
               animationType="fade"
               transparent={true}
@@ -265,6 +242,16 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignSelf: "center",
     margin: 10
+  },
+  allRecipes: {
+    display: "flex",
+    flexWrap: "wrap",
+    flexDirecton: "row",
+    borderColor: "black"
+  },
+  recipesThumbnails: {
+    flexBasis: "50%",
+    borderColor: "pink"
   },
 
   modalContainer: {
