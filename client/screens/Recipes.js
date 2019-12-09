@@ -35,6 +35,34 @@ class Recipes extends React.Component {
       color: "white",
       fontSize: 25
     }
+    // headerRight: () => (
+    //   <Button
+    //     title=""
+    //     icon={
+    //       <Svg
+    //         width="24"
+    //         height="24"
+    //         viewBox="0 0 512 512"
+    //         fill="#517fa4"
+    //         stroke="#517fa4"
+    //       >
+    //         <Path d={filterIcon} />
+    //       </Svg>
+    //     }
+    //     type="clear"
+    //     buttonStyle={{
+    //       width: 70,
+    //       height: 40,
+    //       flexDirection: "row-reverse"
+    //     }}
+    //     titleStyle={{
+    //       fontSize: 12
+    //     }}
+    //     onPress={() => {
+    //       this.setModalVisible(true);
+    //     }}
+    //   />
+    // )
   };
 
   async componentDidMount() {
@@ -77,6 +105,14 @@ class Recipes extends React.Component {
       <View style={styles.container}>
         {this.props.recipes.length === 0 ? (
           <View style={styles.noRecipes}>
+            <Text style={styles.recipesText}>No recipes to show...</Text>
+            <Image
+              source={require("../other/sadChef.png")}
+              style={{ width: 121, height: 261 }}
+            ></Image>
+          </View>
+        ) : (
+          <ScrollView style={styles.recipesList}>
             <Button
               title=""
               icon={
@@ -92,9 +128,7 @@ class Recipes extends React.Component {
               }
               type="clear"
               buttonStyle={{
-                width: 70,
-                height: 40,
-                flexDirection: "row-reverse"
+                alignSelf: "flex-start"
               }}
               titleStyle={{
                 fontSize: 12
@@ -103,14 +137,6 @@ class Recipes extends React.Component {
                 this.setModalVisible(true);
               }}
             />
-            <Text style={styles.recipesText}>No recipes to show...</Text>
-            <Image
-              source={require("../other/sadChef.png")}
-              style={{ width: 121, height: 261 }}
-            ></Image>
-          </View>
-        ) : (
-          <ScrollView style={styles.recipesList}>
             <Button
               title=""
               icon={
